@@ -23,5 +23,5 @@ export interface Usage {
   status: VerificationStatus | undefined;
   type: AddressUsageType | undefined;
   id: number | undefined | null;
-  verificationDate: string | undefined | null;
+  verificationDate: Date | undefined | null;
 }
