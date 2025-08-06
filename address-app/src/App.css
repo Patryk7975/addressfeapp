@@ -1,0 +1,119 @@
+.client-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 20px;
+}
+
+/* Styl przycisku dodawania klienta */
+.add-client-button button {
+  background-color: #007bff; /* niebieski */
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.add-client-button button:hover {
+  background-color: #0056b3; /* ciemniejszy niebieski */
+}
+
+/* Lista klientów */
+.client-list {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+/* Styl pojedynczego klienta */
+.client-card {
+  background-color: #f5f5f5;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 16px;
+  padding-top: 0;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  transition: transform 0.2s ease;
+  display: flex;
+  gap: 20px;
+}
+
+.client-card:hover {
+  transform: scale(1.03);
+}
+
+.new-address-form-controls, .new-phone-form-controls  {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.textbox, .dropdown, .checkbox {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+}
+
+.add-new-address-buttons, .add-new-phone-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.remove-usage-button, .new-address-form-usages-usage-p {
+  display: inline;
+}
+
+.new-address-form-usages-usage-status:hover {
+  cursor: pointer;
+}
+
+.remove-usage-button {
+  margin-left: 10px;
+}
+
+.add-new-usage-submit-buttons {
+ margin-top: 5px;
+}
+
+.add-usage-button {
+  margin-left: 10px;
+}
+
+.address-data, .phone-data {
+  border: solid;
+}
+
+.address-details-div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.verify-usage-button {
+  margin-right: 5px;
+}
+
+.address-data-header, .phone-data-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.address-data-header button,.phone-data-header button {
+  margin-right: 5px;
+}
+
+.add-new-item-buttons-container {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  margin-bottom: 10px;
+}
