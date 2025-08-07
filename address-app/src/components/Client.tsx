@@ -81,6 +81,7 @@ export const Client = ({ client }: { client: ClientData }) => {
         {clientData.addresses.map(e => <Address key={e.id} clientId={client.id} address={e} onSubmitAddingNewAddress={onSubmitAddingNewAddress} onStartingUpdatingAddress={onStartingUpdatingAddress} />)}
         {clientData.phones.length > 0 && <h3>Telefony:</h3>}
         {clientData.phones.map(e => <Phone key={e.id} phone={e} onStartingUpdatingPhone={onStartingUpdatingPhone} />)}
+        {clientData.emails.length > 0 && <h3>Emaile:</h3>}
         {clientData.emails.map(e => <Email key={e.id} email={e} onStartingUpdatingEmail={onStartingUpdatingEmail} />)}
 
       </div>
