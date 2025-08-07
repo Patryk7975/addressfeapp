@@ -1,0 +1,4 @@
+1. na podmanie pobieramy obraz docker.io/library/node:latest i stawiamy z niego kontener mapując porty 3000:3000 i ścieżkę gdzie mamy aplikację na folder /app w kontenerze - jak na załączonym obrazku (containerconfiguration.png)
+2. odpalamy kontener, przechodzimy w podmanie do okienka terminal i odpalamy po kolei: cd app, npm install, npm run dev (obrazek runnapp.png)
+3. jeśli chcemy coś developować w aplikacji to robimy to normalnie w vs code na lokalnej maszynie - aplikacja powinna się automatycznie odświeżać po wprowadzeniu zmiany
+4. aplikacja stoi pod adresem http://localhost:3000/ i odpytuje api pod adresem http://localhost:7000/
