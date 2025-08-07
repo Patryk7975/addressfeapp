@@ -80,8 +80,6 @@ export const UpdateAddressForm = ({address, clientId, onCancelAddingNewAddress, 
         setAddingUsage(false);
     }
 
-
-
     const handleTextBoxChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
         setFormData((prev) => ({

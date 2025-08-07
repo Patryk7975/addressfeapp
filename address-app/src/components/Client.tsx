@@ -10,6 +10,7 @@ import { Phone } from "./Phone";
 import { UpdateEmailForm } from "./UpdateEmailForm";
 import type { EmailData } from "../models/EmailData";
 import { Email } from "./Email";
+import { ConsentsForm } from "./ConsentsForm";
 
 export const Client = ({ client }: { client: ClientData }) => {
 
@@ -56,16 +57,23 @@ export const Client = ({ client }: { client: ClientData }) => {
     setActionId(NewClientsItemAction.Idle);
   }
 
-  return (
+  const onConsentButtonClicked = () => {
+    setActionId(prev => prev !== NewClientsItemAction.Consents ? NewClientsItemAction.Consents : NewClientsItemAction.Idle);
+  }
 
+  return (
     <div key={client.id} className="client-card">
+
       <div className="client-basic-data">
-        <h3>{client.name}</h3>
+        <div className="client-basic-data-header">
+          <h3>{client.name}</h3>
+          <button onClick={onConsentButtonClicked}>{actionId === NewClientsItemAction.Consents ? "Ukryj zgody" : "Pokaż zgody"}</button>
+        </div>
         <p>ID: {client.id}</p>
         <div className="add-new-item-buttons-container">
-          {actionId === NewClientsItemAction.Idle && <button className="add-new-address-button" onClick={() => setActionId(NewClientsItemAction.AddingNewAddress)}>Dodaj adres</button>}
-          {actionId === NewClientsItemAction.Idle && <button className="add-new-phone-button" onClick={() => setActionId(NewClientsItemAction.AddingNewPhone)}>Dodaj telefon</button>}
-          {actionId === NewClientsItemAction.Idle && <button className="add-new-email-button" onClick={() => setActionId(NewClientsItemAction.AddingNewEmail)}>Dodaj maila</button>}
+          {(actionId === NewClientsItemAction.Idle || actionId === NewClientsItemAction.Consents) && <button className="add-new-address-button" onClick={() => setActionId(NewClientsItemAction.AddingNewAddress)}>Dodaj adres</button>}
+          {(actionId === NewClientsItemAction.Idle || actionId === NewClientsItemAction.Consents) && <button className="add-new-phone-button" onClick={() => setActionId(NewClientsItemAction.AddingNewPhone)}>Dodaj telefon</button>}
+          {(actionId === NewClientsItemAction.Idle || actionId === NewClientsItemAction.Consents) && <button className="add-new-email-button" onClick={() => setActionId(NewClientsItemAction.AddingNewEmail)}>Dodaj maila</button>}
         </div>
         {actionId === NewClientsItemAction.AddingNewAddress && <UpdateAddressForm address={null} clientId={client.id} onSubmitAddingNewAddress={onSubmitAddingNewAddress} onCancelAddingNewAddress={() => setActionId(NewClientsItemAction.Idle)} />}
         {actionId === NewClientsItemAction.UpdatingAddress && <UpdateAddressForm address={updatedAddress} clientId={client.id} onSubmitAddingNewAddress={onSubmitAddingNewAddress} onCancelAddingNewAddress={() => setActionId(NewClientsItemAction.Idle)} />}
@@ -73,7 +81,6 @@ export const Client = ({ client }: { client: ClientData }) => {
         {actionId === NewClientsItemAction.UpdatingPhone && <UpdatePhoneForm phone={updatedPhone} clientId={client.id} onSubmitAddingNewPhone={onSubmitAddingNewPhone} onCancelAddingNewPhone={() => setActionId(NewClientsItemAction.Idle)} />}
         {actionId === NewClientsItemAction.AddingNewEmail && <UpdateEmailForm email={null} clientId={client.id} onSubmitAddingNewEmail={onSubmitAddingNewEmail} onCancelAddingNewEmail={() => setActionId(NewClientsItemAction.Idle)} />}
         {actionId === NewClientsItemAction.UpdatingEmail && <UpdateEmailForm email={updatedEmail} clientId={client.id} onSubmitAddingNewEmail={onSubmitAddingNewEmail} onCancelAddingNewEmail={() => setActionId(NewClientsItemAction.Idle)} />}
-
       </div>
 
       <div className="client-addresses">
@@ -83,9 +90,12 @@ export const Client = ({ client }: { client: ClientData }) => {
         {clientData.phones.map(e => <Phone key={e.id} phone={e} onStartingUpdatingPhone={onStartingUpdatingPhone} />)}
         {clientData.emails.length > 0 && <h3>Emaile:</h3>}
         {clientData.emails.map(e => <Email key={e.id} email={e} onStartingUpdatingEmail={onStartingUpdatingEmail} />)}
-
       </div>
 
+      <div className="client-consents">
+        {actionId === NewClientsItemAction.Consents && <ConsentsForm />}
+      </div>
+      
     </div>
 
   );

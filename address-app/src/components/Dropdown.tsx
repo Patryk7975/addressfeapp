@@ -9,7 +9,7 @@ interface DropdownProps {
 export const Dropdown = ({ propertyName, displayName, value, options, handleChange }: DropdownProps) => {
 
 return <div className="dropdown">
-        <label htmlFor={propertyName} >{displayName}</label>
+        {displayName.length > 0 && <label htmlFor={propertyName} >{displayName}</label>}
         <select
           id={propertyName}
           name={propertyName}

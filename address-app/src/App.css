@@ -5,6 +5,10 @@
   padding: 20px;
 }
 
+button {
+  cursor: pointer;
+}
+
 /* Styl przycisku dodawania klienta */
 .add-client-button button {
   background-color: #007bff; /* niebieski */
@@ -13,12 +17,17 @@
   padding: 10px 16px;
   border-radius: 6px;
   font-size: 16px;
-  cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
 .add-client-button button:hover {
   background-color: #0056b3; /* ciemniejszy niebieski */
+}
+
+.client-basic-data-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 /* Lista klientów */
@@ -116,4 +125,10 @@
   gap: 5px;
   align-items: center;
   margin-bottom: 10px;
+}
+
+.consent-type-row {
+  display: grid;
+  grid-template-columns: 1fr 0.5fr 0.5fr 0.5fr;
+  align-items: center;
 }
