@@ -5,6 +5,7 @@ import type { ChangeSource } from '../enums/ChangeSource';
 import type { ChangeBasis } from '../enums/ChangeBasis';
 import type { PhoneData } from '../models/PhoneData';
 import { PhoneType } from '../enums/PhoneType';
+import type { EmailData } from '../models/EmailData';
 
 interface ClientApiResponse {
     client: {
@@ -13,7 +14,8 @@ interface ClientApiResponse {
             fullName: string
         },
         addresses: AddressData[],
-        phones: PhoneData[]
+        phones: PhoneData[],
+        emails: EmailData[]
     };
 }
 
@@ -179,6 +181,32 @@ export const UpdateClientPhone = async (clientId: string, phoneId: string, phone
     }
 }
 
+export const AddEmailToClient = async (clientId: string, email: EmailData) => {
+    const url = `${baseUrl}api/email/${clientId}/emails`;
+
+    try {
+        const response = await axios.post<ClientApiResponse>(url, email);
+        console.log('Odpowiedź:', response.data);
+
+        return normalizeClientResponse(response.data);
+    } catch (error) {
+        handleError(error)
+    }
+}
+
+export const UpdateClientEmail = async (clientId: string, emailId: string, email: EmailData) => {
+    const url = `${baseUrl}api/email/${clientId}/emails/${emailId}`;
+
+    try {
+        const response = await axios.put<ClientApiResponse>(url, email);
+        console.log('Odpowiedź:', response.data);
+
+        return normalizeClientResponse(response.data);
+    } catch (error) {
+        handleError(error)
+    }
+}
+
 export const ConfirmUsage = async (
     clientId: string,
     addressId: number,
@@ -219,12 +247,14 @@ const handleError = (error: unknown) => {
 const normalizeClientResponse = (data: ClientApiResponse) => {
     data.client.addresses = deepCapitalize(data.client.addresses);
     data.client.phones = deepCapitalize(data.client.phones);
+    data.client.emails = deepCapitalize(data.client.emails);
 
     const newClient: ClientData = {
         id: data.client.id,
         name: data.client.legalForm.fullName,
         addresses: data.client.addresses,
-        phones: data.client.phones
+        phones: data.client.phones,
+        emails: data.client.emails
     };
 
     for(let p of newClient.phones) {

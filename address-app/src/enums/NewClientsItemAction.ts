@@ -4,6 +4,6 @@ export enum NewClientsItemAction {
     UpdatingAddress,
     AddingNewPhone,
     UpdatingPhone,
-    AddingEmail,
+    AddingNewEmail,
     UpdatingEmail
 }

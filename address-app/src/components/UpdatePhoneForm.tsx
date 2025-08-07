@@ -8,9 +8,8 @@ import { VerificationStatus } from "../enums/VerificationStatus";
 import type { PhoneData } from "../models/PhoneData";
 import { PhoneType } from "../enums/PhoneType";
 import { PhoneUsage } from "../enums/PhoneUsage";
-import { CheckBox } from "./Checkbox";
 import { AddPhoneToClient, UpdateClientPhone } from "../services/Api";
-
+import { CheckBox } from "./CheckBox";
 
 interface UpdatePhoneFormProps {
     phone: PhoneData | null,
