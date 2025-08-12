@@ -6,7 +6,9 @@ import type { ChangeBasis } from '../enums/ChangeBasis';
 import type { PhoneData } from '../models/PhoneData';
 import { PhoneType } from '../enums/PhoneType';
 import type { EmailData } from '../models/EmailData';
-import type {ConsentConfiguration} from '../models/consents/ConsentConfiguration'
+import type { ConsentConfigurationRow } from '../models/consents/ConsentConfigurationRow';
+
+
 
 interface ClientApiResponse {
     client: {
@@ -21,7 +23,7 @@ interface ClientApiResponse {
 }
 
 interface ConsentApiResponse {
-    items: ConsentConfiguration[]
+    items: ConsentConfigurationRow[]
 }
 
 interface ErrorApiResponse {
@@ -234,8 +236,8 @@ export const ConfirmUsage = async (
     }
 }
 
-export const GetConsents = async () => {
-    const url = `${baseUrl}api/consent/consentGroupConfigurations`;
+export const GetConsents = async (clientId: string) => {
+    const url = `${baseUrl}api/consent/${clientId}/consentsInterface`;
 
     try {
         const response = await axios.get<ConsentApiResponse>(url);

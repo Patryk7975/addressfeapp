@@ -93,7 +93,7 @@ export const Client = ({ client }: { client: ClientData }) => {
       </div>
 
       <div className="client-consents">
-        {actionId === NewClientsItemAction.Consents && <ConsentsForm />}
+        {actionId === NewClientsItemAction.Consents && <ConsentsForm clientId={client.id} />}
       </div>
       
     </div>

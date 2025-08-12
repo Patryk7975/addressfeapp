@@ -1,25 +1,43 @@
-import type { ConsentTypeForInterface } from "../models/consents/ConsentTypeForInterface";
+import type { ConsentConfigurationRow } from "../models/consents/ConsentConfigurationRow";
 import { Dropdown } from "./Dropdown";
 
 interface ConsentTypeForInterfaceProps {
-  consentType: ConsentTypeForInterface,
+  config: ConsentConfigurationRow,
 }
 
-export const ConsentTypeRow = ({consentType}: ConsentTypeForInterfaceProps) => {
+export const ConsentTypeRow = ({ config }: ConsentTypeForInterfaceProps) => {
 
-    //const sour = Object.keys(Country).filter((key) => isNaN(Number(key))) as (keyof typeof Country)[];
+  const consentStatusArray: string[] = ['No', 'No Information', 'Yes'];
 
+  const calculateConsentDisplayValue = () => {
+    if (config.consent == null)
+      return 'Wybierz'
+    if (config.consent.approved == null)
+      return consentStatusArray[1];
 
+    return config.consent.approved ? consentStatusArray[2] : consentStatusArray[0]
+  }
 
-    const handleDropdownChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const calculateConsentSourceDisplayValue = () => {
+    if (config.consent == null)
+      return 'Wybierz'
 
-    };
+    const sources = config.consentSources.filter(e => e.id ?? -1 === config.consent?.consentSourceId ?? -2);
+    if (sources.length == 1)
+      return sources[0].name;
 
-    return <div className="consent-type-row">
-    <p>{consentType.name}</p>
-    <Dropdown propertyName={"status"} displayName={""} value={'No Information'} options={consentType.statuses} handleChange={handleDropdownChange} />
-    <Dropdown propertyName={"source"} displayName={""} value={consentType.sources[0].name} options={consentType.sources.map(e => e.name)} handleChange={handleDropdownChange} />
-    <input type="date"/>
+    return 'Wybierz'
+  }
 
-    </div>
+  const onStatusChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { value } = e.target;
+  };
+
+  return <div className="consent-type-row">
+    <div></div>
+    <p>{config.consentType.name}</p>
+    <Dropdown propertyName={"status"} displayName={""} value={calculateConsentDisplayValue()} options={['Wybierz', ...consentStatusArray]} handleChange={onStatusChange} />
+    <Dropdown propertyName={"source"} displayName={""} value={calculateConsentSourceDisplayValue()} options={['Wybierz', ...config.consentSources.map(e => e.name)]} handleChange={onStatusChange} />
+    <input type="date" />
+  </div>
 }

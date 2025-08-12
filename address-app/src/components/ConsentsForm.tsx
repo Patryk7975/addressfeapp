@@ -1,50 +1,53 @@
 import { useEffect, useState } from "react"
-import type { ConsentConfiguration } from "../models/consents/ConsentConfiguration";
 import { GetConsents } from "../services/Api";
 import { ConsentTypeRow } from "./ConsentTypeRow";
-import type { ConsentTypeForInterface } from "../models/consents/ConsentTypeForInterface";
-import { ConsentStatusArray } from "../enums/ConsentStatus";
+import type { ConsentConfigurationRow } from "../models/consents/ConsentConfigurationRow";
 
-export const ConsentsForm = () => {
+interface ConsentsFormProps {
+  clientId: string,
+}
 
-  const [formData, setFormData] = useState<null | ConsentTypeForInterface[]>(null);
+export const ConsentsForm = ({clientId} : ConsentsFormProps) => {
+
+  const [formData, setFormData] = useState<null | ConsentConfigurationRow[]>(null);
+
+  const setApproval = (typeId: number, approval : boolean | null) => {
+    if (formData == null)
+      return;
+
+    const data = {...formData};
+    const row = data.filter(e => e.consentType.id == typeId)[0];
+    if(row.consent == null) {
+      
+    }
+
+
+  }
 
   useEffect(() => {
     const setConsents = async () => {
-      let consentConfig = await GetConsents();
-
-      consentConfig = consentConfig
-        ?.filter(e => e.consentType.isVisibleOnInterface)
-        .sort((a, b) => a.consentType.order - b.consentType.order);
-
-      const rows: ConsentTypeForInterface[] = [];
+      let consentConfig = await GetConsents(clientId);
 
       if (consentConfig) {
-        for (const c of consentConfig) {
-          if (rows.filter(e => e.id == c.consentType.id).length == 0) {
-            const sourcesToPush = consentConfig
-              .filter(e => e.consentType.id == c.consentType.id)
-              .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
-              .map(e => e.consentSource);
-
-            rows.push(
-              {
-                id: c.consentType.id ?? 0,
-                name: c.consentType.name,
-                statuses: ConsentStatusArray,
-                sources: sourcesToPush
-              });
-          }
-        }
+        setFormData(consentConfig);
       }
-
-      setFormData(rows);
     };
 
     setConsents();
   }, [])
 
   return <div className="consent-types">
-    {formData?.map(e => <ConsentTypeRow consentType={e} />)}
+    <div className="consent-types-header">
+      <div className="consent-type-row">
+        <div></div>
+        <p><b>Typ</b></p>
+        <p><b>Zgoda</b></p>
+        <p><b>Źródło</b></p>
+        <p><b>Data</b></p>
+      </div>
+    </div>
+    <div className="consent-types-data">
+    {formData?.map(e => <ConsentTypeRow config={e} />)}
+    </div>
   </div>
 }

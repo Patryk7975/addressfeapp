@@ -129,6 +129,6 @@ button {
 
 .consent-type-row {
   display: grid;
-  grid-template-columns: 1fr 0.5fr 0.5fr 0.5fr;
+  grid-template-columns: 0.1fr 1fr 0.5fr 0.5fr 0.5fr;
   align-items: center;
 }
