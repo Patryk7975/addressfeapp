@@ -13,7 +13,7 @@ import type { ConsentConfigurationRow } from '../models/consents/ConsentConfigur
 interface ClientApiResponse {
     client: {
         id: string,
-        legalForm: {
+        legalEntity: {
             fullName: string
         },
         addresses: AddressData[],
@@ -45,7 +45,7 @@ export const CreateClient = async () => {
     const url = baseUrl + "api/clients";
 
     const payload = {
-        "legalForm": {
+        "legalEntity": {
             "_type": "Individual",
             "fullName": "Test bez adresu",
             "fullNameMetadata": {
@@ -271,7 +271,7 @@ const normalizeClientResponse = (data: ClientApiResponse) => {
 
     const newClient: ClientData = {
         id: data.client.id,
-        name: data.client.legalForm.fullName,
+        name: data.client.legalEntity.fullName,
         addresses: data.client.addresses,
         phones: data.client.phones,
         emails: data.client.emails
