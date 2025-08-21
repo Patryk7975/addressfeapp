@@ -10,6 +10,7 @@ import { VerificationStatus } from "../enums/VerificationStatus";
 import { AddressUsageType } from "../enums/AddressUsageType";
 import { NewUsage } from "./NewUsage";
 import { AddAddressToClient, UpdateClientAddress } from "../services/Api";
+import { CheckBox } from "./CheckBox";
 
 
 interface UpdateAddressFormProps {
@@ -34,6 +35,7 @@ export const UpdateAddressForm = ({address, clientId, onCancelAddingNewAddress, 
         type: AddressType.Physical,
         changeSource: ChangeSource.Creditor,
         changeBasis: ChangeBasis.Import,
+        isNormalized: address?.isNormalized ?? false,
         usages: [{ status: VerificationStatus.NotVerified, type: AddressUsageType.Activity, id: null, verificationDate: null }]
     };
     
@@ -133,6 +135,13 @@ export const UpdateAddressForm = ({address, clientId, onCancelAddingNewAddress, 
         setFormData(data);
     }
 
+    const handleCheckBoxChange = (name: string, value: boolean) => {
+        setFormData((prev) => ({
+            ...prev,
+            [name]: value,
+        }));
+    };
+
     return (
         <div className="new-address-form">
             <div className="new-address-form-controls">
@@ -146,6 +155,7 @@ export const UpdateAddressForm = ({address, clientId, onCancelAddingNewAddress, 
                 <Dropdown propertyName={"type"} displayName={"Typ"} value={AddressType[formData.type ?? -1]} options={types} handleChange={handleDropdownChange} />
                 <Dropdown propertyName={"changeSource"} displayName={"Source"} value={ChangeSource[formData.changeSource ?? -1]} options={changeSource} handleChange={handleDropdownChange} />
                 <Dropdown propertyName={"changeBasis"} displayName={"Basis"} value={ChangeBasis[formData.changeBasis ?? -1]} options={changeBasis} handleChange={handleDropdownChange} />
+                <CheckBox propertyName={"isNormalized"} displayName={"Is normalized"} value={formData.isNormalized} handleChange={handleCheckBoxChange} /> 
             </div>
             
             <div className="new-address-form-usages">

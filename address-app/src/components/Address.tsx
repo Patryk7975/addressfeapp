@@ -50,6 +50,7 @@ export const Address = ({clientId, address, onSubmitAddingNewAddress, onStarting
         ${address.type}
         ${address.changeSource}
         ${address.changeBasis}
+        ${address.isNormalized ? 'normalized' : 'not normalized'}
         `
     return <div className="address-data">
         <div className="address-data-header">

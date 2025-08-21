@@ -16,7 +16,8 @@ export interface AddressData {
   type: AddressType | undefined;
   changeSource: ChangeSource | undefined;
   changeBasis: ChangeBasis | undefined;
-  usages: Usage[]
+  usages: Usage[],
+  isNormalized: boolean
 }
 
 export interface Usage {
