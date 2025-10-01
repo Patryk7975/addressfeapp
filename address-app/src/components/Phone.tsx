@@ -2,7 +2,7 @@ import type { PhoneData } from "../models/PhoneData"
 
 interface PhoneProps {
     phone: PhoneData;
-    onStartingUpdatingPhone: (phoneId: number | undefined | null) => void;
+    onStartingUpdatingPhone: (phoneId: string | undefined | null) => void;
 } 
 
 export const Phone = ({phone,  onStartingUpdatingPhone }: PhoneProps) => {

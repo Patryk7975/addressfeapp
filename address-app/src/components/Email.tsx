@@ -2,7 +2,7 @@ import type { EmailData } from "../models/EmailData"
 
 interface EmailProps {
     email: EmailData;
-    onStartingUpdatingEmail: (emailId: number | undefined | null) => void;
+    onStartingUpdatingEmail: (emailId: string | undefined | null) => void;
 }
 
 export const Email = ({ email, onStartingUpdatingEmail }: EmailProps) => {

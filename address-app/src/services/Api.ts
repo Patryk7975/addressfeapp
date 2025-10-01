@@ -7,8 +7,10 @@ import type { PhoneData } from '../models/PhoneData';
 import { PhoneType } from '../enums/PhoneType';
 import type { EmailData } from '../models/EmailData';
 import type { ConsentConfigurationRow } from '../models/consents/ConsentConfigurationRow';
-
-
+import { AddressType } from '../enums/AddressType';
+import type { BlackAddressData } from '../models/blackLists/BlackAddressData';
+import type { BlackPhoneData } from '../models/blackLists/BlackPhoneData';
+import type { BlackEmailData } from '../models/blackLists/BlackEmailData';
 
 interface ClientApiResponse {
     client: {
@@ -24,6 +26,18 @@ interface ClientApiResponse {
 
 interface ConsentApiResponse {
     items: ConsentConfigurationRow[]
+}
+
+interface BlackAddressesApiResponse {
+    items: BlackAddressData[]
+}
+
+interface BlacPhonesApiResponse {
+    items: BlackPhoneData[]
+}
+
+interface BlackEmailsApiResponse {
+    items: BlackEmailData[]
 }
 
 interface ErrorApiResponse {
@@ -132,14 +146,26 @@ export const CreateClient = async () => {
 }
 
 
+export const GetClient = async (clientId: string) => {
+    const url = `${baseUrl}api/clients/${clientId}`;
+    const response = await axios.get<ClientApiResponse>(url);
+    console.log('Odpowiedź:', response.data);
+    return normalizeClientResponse(response.data);
+}
+
 export const AddAddressToClient = async (clientId: string, address: AddressData) => {
     const url = `${baseUrl}api/address/${clientId}/addresses`;
+    
+    if (address.type == AddressType.PlaceOfStay)
+        address.placeOfStay = "PermanentDeparture";
+    else
+        address.placeOfStay = null;
 
     try {
-        const response = await axios.post<ClientApiResponse>(url, address);
+        const response = await axios.post(url, address);
         console.log('Odpowiedź:', response.data);
 
-        return normalizeClientResponse(response.data);
+        return await GetClient(clientId);
     } catch (error) {
         handleError(error)
     }
@@ -148,11 +174,17 @@ export const AddAddressToClient = async (clientId: string, address: AddressData)
 export const UpdateClientAddress = async (clientId: string, addressId: string, address: AddressData) => {
     const url = `${baseUrl}api/address/${clientId}/addresses/${addressId}`;
 
+    if (address.type == AddressType.PlaceOfStay)
+        address.placeOfStay = "PermanentDeparture";
+    else
+        address.placeOfStay = null;
+
+
     try {
-        const response = await axios.put<ClientApiResponse>(url, address);
+        const response = await axios.put(url, address);
         console.log('Odpowiedź:', response.data);
 
-        return normalizeClientResponse(response.data);
+        return await GetClient(clientId);
     } catch (error) {
         handleError(error)
     }
@@ -164,10 +196,10 @@ export const AddPhoneToClient = async (clientId: string, phone: PhoneData) => {
     phone.type = phone.type === PhoneType.Unknown ? undefined : phone.type;
 
     try {
-        const response = await axios.post<ClientApiResponse>(url, phone);
+        const response = await axios.post(url, phone);
         console.log('Odpowiedź:', response.data);
 
-        return normalizeClientResponse(response.data);
+        return await GetClient(clientId);
     } catch (error) {
         handleError(error)
     }
@@ -179,10 +211,10 @@ export const UpdateClientPhone = async (clientId: string, phoneId: string, phone
     phone.type = phone.type === PhoneType.Unknown ? undefined : phone.type;
 
     try {
-        const response = await axios.put<ClientApiResponse>(url, phone);
+        const response = await axios.put(url, phone);
         console.log('Odpowiedź:', response.data);
 
-        return normalizeClientResponse(response.data);
+        return await GetClient(clientId);
     } catch (error) {
         handleError(error)
     }
@@ -192,10 +224,10 @@ export const AddEmailToClient = async (clientId: string, email: EmailData) => {
     const url = `${baseUrl}api/email/${clientId}/emails`;
 
     try {
-        const response = await axios.post<ClientApiResponse>(url, email);
+        const response = await axios.post(url, email);
         console.log('Odpowiedź:', response.data);
 
-        return normalizeClientResponse(response.data);
+        return await GetClient(clientId);
     } catch (error) {
         handleError(error)
     }
@@ -205,10 +237,10 @@ export const UpdateClientEmail = async (clientId: string, emailId: string, email
     const url = `${baseUrl}api/email/${clientId}/emails/${emailId}`;
 
     try {
-        const response = await axios.put<ClientApiResponse>(url, email);
+        const response = await axios.put(url, email);
         console.log('Odpowiedź:', response.data);
 
-        return normalizeClientResponse(response.data);
+        return await GetClient(clientId);
     } catch (error) {
         handleError(error)
     }
@@ -227,10 +259,10 @@ export const ConfirmUsage = async (
             "changeSource": changeSource,
             "changeBasis": changeBasis
         }
-        const response = await axios.put<ClientApiResponse>(url, payload);
+        const response = await axios.put(url, payload);
         console.log('Odpowiedź:', response.data);
 
-        return normalizeClientResponse(response.data);
+        return await GetClient(clientId);
     } catch (error) {
         handleError(error)
     }
@@ -264,6 +296,142 @@ const handleError = (error: unknown) => {
     }
 }
 
+export const GetBlackAddresses = async () => {
+    const url = `${baseUrl}api/forbiddenAddresses`;
+    const response = await axios.get<BlackAddressesApiResponse>(url);
+    console.log('Odpowiedź:', response.data);
+
+    return deepCapitalize(response.data.items);
+}
+
+export const AddBlackAddress = async (address: BlackAddressData) => {
+    const url = `${baseUrl}api/forbiddenAddresses`;
+        try {
+        const response = await axios.post(url, address);
+        console.log('Odpowiedź:', response.data);
+
+        return await GetBlackAddresses();
+    } catch (error) {
+        handleError(error)
+    }
+}
+
+export const UpdateBlackAddress = async (addressId: string, address: BlackAddressData) => {
+    const url = `${baseUrl}api/forbiddenAddresses/${addressId}`;
+        try {
+        const response = await axios.put(url, address);
+        console.log('Odpowiedź:', response.data);
+
+        return await GetBlackAddresses();
+    } catch (error) {
+        handleError(error)
+    }
+}
+
+export const DeleteBlackAddress= async (addressId: string) => {
+    const url = `${baseUrl}api/forbiddenAddresses/${addressId}`;
+        try {
+        const response = await axios.delete(url);
+        console.log('Odpowiedź:', response.data);
+
+        return await GetBlackAddresses();
+    } catch (error) {
+        handleError(error)
+    }
+}
+
+export const GetBlackPhones = async () => {
+    const url = `${baseUrl}api/forbiddenPhones`;
+    const response = await axios.get<BlacPhonesApiResponse>(url);
+    console.log('Odpowiedź:', response.data);
+
+    for(let p of response.data.items) {
+        p.prefix = p.prefix?.replace('_','');
+    }
+    
+    return deepCapitalize(response.data.items);
+}
+
+export const AddBlackPhone = async (phone: BlackPhoneData) => {
+    const url = `${baseUrl}api/forbiddenPhones`;
+        try {
+        const response = await axios.post(url, phone);
+        console.log('Odpowiedź:', response.data);
+
+        return await GetBlackPhones();
+    } catch (error) {
+        handleError(error)
+    }
+}
+
+export const UpdateBlackPhone = async (phoneId: string, phone: BlackPhoneData) => {
+    const url = `${baseUrl}api/forbiddenPhones/${phoneId}`;
+        try {
+        const response = await axios.put(url, phone);
+        console.log('Odpowiedź:', response.data);
+
+        return await GetBlackPhones();
+    } catch (error) {
+        handleError(error)
+    }
+}
+
+export const DeleteBlackPhone= async (phoneId: string) => {
+    const url = `${baseUrl}api/forbiddenPhones/${phoneId}`;
+        try {
+        const response = await axios.delete(url);
+        console.log('Odpowiedź:', response.data);
+
+        return await GetBlackPhones();
+    } catch (error) {
+        handleError(error)
+    }
+}
+
+export const GetBlackEmails = async () => {
+    const url = `${baseUrl}api/forbiddenEmails`;
+    const response = await axios.get<BlackEmailsApiResponse>(url);
+    console.log('Odpowiedź:', response.data);
+
+    return deepCapitalize(response.data.items);
+}
+
+export const AddBlackEmail = async (email: BlackEmailData) => {
+    const url = `${baseUrl}api/forbiddenEmails`;
+        try {
+        const response = await axios.post(url, email);
+        console.log('Odpowiedź:', response.data);
+
+        return await GetBlackEmails();
+    } catch (error) {
+        handleError(error)
+    }
+}
+
+export const UpdateBlackEmail = async (emailId: string, email: BlackEmailData) => {
+    const url = `${baseUrl}api/forbiddenEmails/${emailId}`;
+        try {
+        const response = await axios.put(url, email);
+        console.log('Odpowiedź:', response.data);
+
+        return await GetBlackEmails();
+    } catch (error) {
+        handleError(error)
+    }
+}
+
+export const DeleteBlackEmail = async (emailId: string) => {
+    const url = `${baseUrl}api/forbiddenEmails/${emailId}`;
+        try {
+        const response = await axios.delete(url);
+        console.log('Odpowiedź:', response.data);
+
+        return await GetBlackEmails();
+    } catch (error) {
+        handleError(error)
+    }
+}
+
 const normalizeClientResponse = (data: ClientApiResponse) => {
     data.client.addresses = deepCapitalize(data.client.addresses);
     data.client.phones = deepCapitalize(data.client.phones);
@@ -283,7 +451,6 @@ const normalizeClientResponse = (data: ClientApiResponse) => {
 
     return newClient;
 }
-
 
 function deepCapitalize(obj: any): any {
     if (typeof obj === 'string') {

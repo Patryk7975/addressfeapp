@@ -28,14 +28,14 @@ export const UpdateAddressForm = ({address, clientId, onCancelAddingNewAddress, 
         id: address?.id,
         street: address?.street ?? "Testowa",
         city: address?.city ?? "Warszawa",
-        buildingNumber: address?.buildingNumber ?? "2",
-        apartmentNumber: address?.apartmentNumber ?? "4",
+        buildingNumber: address != null ? address.buildingNumber ?? "" : "2",
+        apartmentNumber: address != null ? address.apartmentNumber ?? "" : "4",
         postalCode: address?.postalCode ?? "23-134",
         country: Country.Poland,
         type: AddressType.Physical,
         changeSource: ChangeSource.Creditor,
         changeBasis: ChangeBasis.Import,
-        isNormalized: address?.isNormalized ?? false,
+        placeOfStay:'a',
         usages: [{ status: VerificationStatus.NotVerified, type: AddressUsageType.Activity, id: null, verificationDate: null }]
     };
     
@@ -113,12 +113,14 @@ export const UpdateAddressForm = ({address, clientId, onCancelAddingNewAddress, 
 
     const handleCreateNewAddress = async () => {
         const client = await AddAddressToClient(clientId, formData);
-        onSubmitAddingNewAddress(client!.addresses);
+        if (client != null)
+            onSubmitAddingNewAddress(client.addresses);
     }
 
     const handleUpdateAddress = async () => {
         const client = await UpdateClientAddress(clientId, (defaultAddress.id ?? -1).toString(), formData);
-        onSubmitAddingNewAddress(client!.addresses);
+        if (client != null)
+            onSubmitAddingNewAddress(client.addresses);
     } 
     
     const changeUsageStatus = (usage: Usage) => {
@@ -155,7 +157,6 @@ export const UpdateAddressForm = ({address, clientId, onCancelAddingNewAddress, 
                 <Dropdown propertyName={"type"} displayName={"Typ"} value={AddressType[formData.type ?? -1]} options={types} handleChange={handleDropdownChange} />
                 <Dropdown propertyName={"changeSource"} displayName={"Source"} value={ChangeSource[formData.changeSource ?? -1]} options={changeSource} handleChange={handleDropdownChange} />
                 <Dropdown propertyName={"changeBasis"} displayName={"Basis"} value={ChangeBasis[formData.changeBasis ?? -1]} options={changeBasis} handleChange={handleDropdownChange} />
-                <CheckBox propertyName={"isNormalized"} displayName={"Is normalized"} value={formData.isNormalized} handleChange={handleCheckBoxChange} /> 
             </div>
             
             <div className="new-address-form-usages">

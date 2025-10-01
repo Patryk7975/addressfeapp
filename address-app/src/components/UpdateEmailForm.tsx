@@ -88,12 +88,14 @@ export const UpdateEmailForm = ({ email, clientId, onCancelAddingNewEmail, onSub
 
     const handleCreateNewEmail = async () => {
         const client = await AddEmailToClient(clientId, formData);
-        onSubmitAddingNewEmail(client!.emails);
+        if (client != null)
+            onSubmitAddingNewEmail(client.emails);
     }
 
     const handleUpdateEmail = async () => {
         const client = await UpdateClientEmail(clientId, (defaultEmail.id ?? -1).toString(), formData);
-        onSubmitAddingNewEmail(client!.emails);
+        if (client != null)
+            onSubmitAddingNewEmail(client.emails);
     }
 
     return (

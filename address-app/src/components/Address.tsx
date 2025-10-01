@@ -25,12 +25,12 @@ interface AddressProps {
     clientId: string,
     address: AddressData;
     onSubmitAddingNewAddress: (addresses: AddressData[]) => void;
-    onStartingUpdatingAddress: (addressId: number | undefined | null) => void;
+    onStartingUpdatingAddress: (addressId: string | undefined | null) => void;
 } 
 
 export const Address = ({clientId, address, onSubmitAddingNewAddress, onStartingUpdatingAddress }: AddressProps) => {
 
-    const confirmUsage = async (usageId: number | null | undefined) => {
+    const confirmUsage = async (usageId: string | null | undefined) => {
         if (typeof(address.id) === 'number' 
         && typeof(usageId) === 'number'
         && address.changeSource
@@ -50,7 +50,6 @@ export const Address = ({clientId, address, onSubmitAddingNewAddress, onStarting
         ${address.type}
         ${address.changeSource}
         ${address.changeBasis}
-        ${address.isNormalized ? 'normalized' : 'not normalized'}
         `
     return <div className="address-data">
         <div className="address-data-header">

@@ -108,12 +108,14 @@ export const UpdatePhoneForm = ({ phone, clientId, onCancelAddingNewPhone, onSub
 
     const handleCreateNewPhone = async () => {
         const client = await AddPhoneToClient(clientId, formData);
-        onSubmitAddingNewPhone(client!.phones);
+        if (client != null)
+            onSubmitAddingNewPhone(client.phones);
     }
 
     const handleUpdatePhone = async () => {
         const client = await UpdateClientPhone(clientId, (defaultPhone.id ?? -1).toString(), formData);
-        onSubmitAddingNewPhone(client!.phones);
+        if (client != null)
+            onSubmitAddingNewPhone(client.phones);
     }
 
     return (

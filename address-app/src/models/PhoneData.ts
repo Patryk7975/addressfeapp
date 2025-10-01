@@ -6,7 +6,7 @@ import type { PhoneUsage } from "../enums/PhoneUsage";
 import type { VerificationStatus } from "../enums/VerificationStatus";
 
 export interface PhoneData {
-  id: number | undefined | null;
+  id: string | undefined | null;
   prefix: string | undefined;
   country: Country | undefined;
   number: string | undefined;

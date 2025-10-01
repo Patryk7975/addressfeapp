@@ -21,7 +21,7 @@ export const Client = ({ client }: { client: ClientData }) => {
   const [updatedPhone, setUpdatedPhone] = useState<PhoneData | null>(null);
   const [updatedEmail, setUpdatedEmail] = useState<EmailData | null>(null);
 
-  const onStartingUpdatingAddress = (addressId: number | undefined | null) => {
+  const onStartingUpdatingAddress = (addressId: string | undefined | null) => {
     setUpdatedAddress(clientData.addresses.filter(e => e.id == addressId)[0]);
     setActionId(NewClientsItemAction.UpdatingAddress);
   }
@@ -33,7 +33,7 @@ export const Client = ({ client }: { client: ClientData }) => {
     setActionId(NewClientsItemAction.Idle);
   }
 
-  const onStartingUpdatingPhone = (phoneId: number | undefined | null) => {
+  const onStartingUpdatingPhone = (phoneId: string | undefined | null) => {
     setUpdatedPhone(clientData.phones.filter(e => e.id == phoneId)[0]);
     setActionId(NewClientsItemAction.UpdatingPhone);
   }
@@ -45,7 +45,7 @@ export const Client = ({ client }: { client: ClientData }) => {
     setActionId(NewClientsItemAction.Idle);
   }
 
-  const onStartingUpdatingEmail = (emailId: number | undefined | null) => {
+  const onStartingUpdatingEmail = (emailId: string | undefined | null) => {
     setUpdatedEmail(clientData.emails.filter(e => e.id == emailId)[0]);
     setActionId(NewClientsItemAction.UpdatingEmail);
   }

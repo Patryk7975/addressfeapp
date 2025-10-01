@@ -6,7 +6,7 @@ import type { Country } from "../enums/Country";
 import type { VerificationStatus } from "../enums/VerificationStatus";
 
 export interface AddressData {
-  id: number | undefined | null;
+  id: string | undefined | null;
   street: string | undefined;
   buildingNumber: string | undefined;
   apartmentNumber: string | undefined;
@@ -17,12 +17,12 @@ export interface AddressData {
   changeSource: ChangeSource | undefined;
   changeBasis: ChangeBasis | undefined;
   usages: Usage[],
-  isNormalized: boolean
+  placeOfStay: string | undefined | null
 }
 
 export interface Usage {
   status: VerificationStatus | undefined;
   type: AddressUsageType | undefined;
-  id: number | undefined | null;
+  id: string | undefined | null;
   verificationDate: Date | undefined | null;
 }

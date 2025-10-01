@@ -5,7 +5,7 @@ import type { EmailUsage } from "../enums/EmailUsage";
 import type { VerificationStatus } from "../enums/VerificationStatus";
 
 export interface EmailData {
-    id: number | undefined | null;
+    id: string | undefined | null;
     emailAddress: string | undefined;
     usage: EmailUsage | undefined;
     status: VerificationStatus | undefined;

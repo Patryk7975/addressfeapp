@@ -1,8 +1,19 @@
-.client-container {
+.main-container {
   position: absolute;
   top: 0;
   left: 0;
+  display: grid;
+  grid-template-columns: 70% 30%;
+  width: 100%;
+  height: 100vh;
+}
+
+.client-container {
   padding: 20px;
+}
+
+.black-lists {
+  margin-right: 20px;
 }
 
 button {
@@ -120,7 +131,7 @@ button {
   margin-right: 5px;
 }
 
-.add-new-item-buttons-container {
+.add-new-item-buttons-container, .add-black-list-buttons {
   display: flex;
   gap: 5px;
   align-items: center;
