@@ -31,11 +31,9 @@ interface AddressProps {
 export const Address = ({clientId, address, onSubmitAddingNewAddress, onStartingUpdatingAddress }: AddressProps) => {
 
     const confirmUsage = async (usageId: string | null | undefined) => {
-        if (typeof(address.id) === 'number' 
-        && typeof(usageId) === 'number'
-        && address.changeSource
+        if (address.changeSource
         && address.changeBasis) {
-            const client = await ConfirmUsage(clientId, address.id, usageId, address.changeSource, address.changeBasis);
+            const client = await ConfirmUsage(clientId, address.id!, usageId!, address.changeSource, address.changeBasis);
             onSubmitAddingNewAddress(client!.addresses);
         }
     }

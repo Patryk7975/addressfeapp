@@ -248,8 +248,8 @@ export const UpdateClientEmail = async (clientId: string, emailId: string, email
 
 export const ConfirmUsage = async (
     clientId: string,
-    addressId: number,
-    usageId: number,
+    addressId: string,
+    usageId: string,
     changeSource: ChangeSource,
     changeBasis: ChangeBasis) => {
     const url = `${baseUrl}api/address/${clientId}/addresses/${addressId}/usage/${usageId}`;
@@ -460,7 +460,11 @@ function deepCapitalize(obj: any): any {
     } else if (typeof obj === 'object' && obj !== null) {
         const result: any = {};
         for (const key in obj) {
-            result[key] = deepCapitalize(obj[key]);
+            if (dictionaryNames.indexOf(key) >= 0) {
+                result[key] = deepCapitalize(obj[key]);
+            } else {
+                result[key] = obj[key];
+            }          
         }
         return result;
     }
@@ -470,3 +474,5 @@ function deepCapitalize(obj: any): any {
 function capitalizeFirstLetter(str: string): string {
     return str.charAt(0).toUpperCase() + str.slice(1);
 }
+
+const dictionaryNames = ['usage','status','type','changeSource','changeBasis','id','instanceId','placeOfStay','country','usages']
