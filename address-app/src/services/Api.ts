@@ -103,7 +103,7 @@ export const CreateClient = async () => {
                 "day": 1
             },
             "birthDateMetadata": {
-                "changeSource": "creditor",
+                "changeSource": "seller",
                 "changeBasis": "directConversation",
                 "verificationStatus": "VerifiedPositive"
             },

@@ -33,7 +33,7 @@ export const UpdateAddressForm = ({address, clientId, onCancelAddingNewAddress, 
         postalCode: address?.postalCode ?? "23-134",
         country: Country.Poland,
         type: AddressType.Physical,
-        changeSource: ChangeSource.Creditor,
+        changeSource: ChangeSource.Seller,
         changeBasis: ChangeBasis.Import,
         placeOfStay:'a',
         usages: [{ status: VerificationStatus.NotVerified, type: AddressUsageType.Activity, id: null, verificationDate: null }]

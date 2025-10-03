@@ -4,5 +4,5 @@ export enum VerificationStatus
     VerifiedPositive = 2,
     VerifiedNegative = 3,
     InVerification = 4,
-    VerifiedByCreditor = 5,
+    VerifiedBySeller = 5,
 }

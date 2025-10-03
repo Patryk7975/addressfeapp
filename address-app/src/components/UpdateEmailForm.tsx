@@ -24,7 +24,7 @@ export const UpdateEmailForm = ({ email, clientId, onCancelAddingNewEmail, onSub
         usage: EmailUsage.Personal,
         status: VerificationStatus.NotVerified,
         type: EmailType.EmailAddress,
-        changeSource: ChangeSource.Creditor,
+        changeSource: ChangeSource.Seller,
         changeBasis: ChangeBasis.Import,
     };
 

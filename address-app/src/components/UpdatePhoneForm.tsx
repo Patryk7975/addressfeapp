@@ -27,7 +27,7 @@ export const UpdatePhoneForm = ({ phone, clientId, onCancelAddingNewPhone, onSub
         skip: phone?.skip ?? false,
         country: Country.Poland,
         type: PhoneType.Unknown,
-        changeSource: ChangeSource.Creditor,
+        changeSource: ChangeSource.Seller,
         changeBasis: ChangeBasis.Import,
         usage: PhoneUsage.Personal,
         status: VerificationStatus.NotVerified,
