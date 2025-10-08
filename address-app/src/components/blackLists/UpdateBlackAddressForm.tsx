@@ -17,29 +17,24 @@ export const UpdateBlackAddressForm = ({address, onCancelAddingNewAddress, onSub
 
     const defaultAddress: BlackAddressData = {
         id: address?.id,
-        street: address?.street ?? "Testowa",
+        streetName: address?.streetName ?? "Testowa",
         city: address?.city ?? "Warszawa",
         buildingNumber: address != null ? address.buildingNumber ?? "" : "2",
         apartmentNumber: address != null ? address.apartmentNumber ?? "" : "4",
         postalCode: address?.postalCode ?? "23-134",
         country: Country.Poland,
-        type: AddressType.Physical,
         description: address?.description ?? "",
     };
     
     if (address != null) {
         if (address.country) {
             defaultAddress.country = Country[address.country.toString() as keyof typeof Country]; 
-        }    
-        if (address.type) {
-            defaultAddress.type = AddressType[address.type.toString() as keyof typeof AddressType]; 
-        }        
+        }           
     }
     
     const [formData, setFormData] = useState(defaultAddress);
 
     const countries = Object.keys(Country).filter((key) => isNaN(Number(key))) as (keyof typeof Country)[];
-    const types = Object.keys(AddressType).filter((key) => isNaN(Number(key))) as (keyof typeof AddressType)[];
 
     const handleTextBoxChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
@@ -57,10 +52,7 @@ export const UpdateBlackAddressForm = ({address, onCancelAddingNewAddress, onSub
         if (name === "country") {
             data.country = Country[value as keyof typeof Country]; 
         }
-        if (name === "type") {
-            data.type = AddressType[value as keyof typeof AddressType]; 
-        }
-
+ 
         setFormData(data);
     };
 
@@ -79,7 +71,7 @@ export const UpdateBlackAddressForm = ({address, onCancelAddingNewAddress, onSub
     return (
         <div className="new-address-form">
             <div className="new-address-form-controls">
-                <TextBox propertyName={"street"} displayName={"Ulica"} value={formData.street} handleChange={handleTextBoxChange} />
+                <TextBox propertyName={"streetName"} displayName={"Ulica"} value={formData.streetName} handleChange={handleTextBoxChange} />
                 <TextBox propertyName={"buildingNumber"} displayName={"Nr budynku"} value={formData.buildingNumber} handleChange={handleTextBoxChange} />
                 <TextBox propertyName={"apartmentNumber"} displayName={"Nr lokalu"} value={formData.apartmentNumber} handleChange={handleTextBoxChange} />
                 <TextBox propertyName={"city"} displayName={"Miasto"} value={formData.city} handleChange={handleTextBoxChange} />
@@ -87,7 +79,6 @@ export const UpdateBlackAddressForm = ({address, onCancelAddingNewAddress, onSub
                 <TextBox propertyName={"description"} displayName={"Opis"} value={formData.description} handleChange={handleTextBoxChange} />
 
                 <Dropdown propertyName={"country"} displayName={"Kraj"} value={Country[formData.country ?? -1]} options={countries} handleChange={handleDropdownChange} />
-                <Dropdown propertyName={"type"} displayName={"Typ"} value={AddressType[formData.type ?? -1]} options={types} handleChange={handleDropdownChange} />
             </div>
                                 
             {address === null && <div className="add-new-address-buttons">

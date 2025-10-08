@@ -157,9 +157,14 @@ export const AddAddressToClient = async (clientId: string, address: AddressData)
     const url = `${baseUrl}api/address/${clientId}/addresses`;
     
     if (address.type == AddressType.PlaceOfStay)
-        address.placeOfStay = "PermanentDeparture";
+        address.placeOfStayData = {placeOfStayReason: 'PermanentDeparture'}
     else
-        address.placeOfStay = null;
+        address.placeOfStayData = null;
+
+    if (address.type == AddressType.MeetingPlace)
+        address.notes = "a";
+    else
+        address.notes = null;
 
     try {
         const response = await axios.post(url, address);
@@ -175,10 +180,14 @@ export const UpdateClientAddress = async (clientId: string, addressId: string, a
     const url = `${baseUrl}api/address/${clientId}/addresses/${addressId}`;
 
     if (address.type == AddressType.PlaceOfStay)
-        address.placeOfStay = "PermanentDeparture";
+        address.placeOfStayData = {placeOfStayReason: 'PermanentDeparture'}
     else
-        address.placeOfStay = null;
+        address.placeOfStayData = null;
 
+    if (address.type == AddressType.MeetingPlace)
+        address.notes = "a";
+    else
+        address.notes = null;
 
     try {
         const response = await axios.put(url, address);

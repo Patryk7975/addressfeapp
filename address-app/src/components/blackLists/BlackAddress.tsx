@@ -9,14 +9,13 @@ interface BlackAddressProps {
 
 export const BlackAddress = ({ address, onStartingUpdatingAddress, onDeleteAddress }: BlackAddressProps) => {
 
-    const addressString = `${address.street} 
+    const addressString = `${address.streetName} 
         ${address.buildingNumber}/${address.apartmentNumber}
         ${address.postalCode}
         ${address.city}
         ${address.country}
         `
     const metadataString = `
-        ${address.type}
         ${address.description}
         `
 

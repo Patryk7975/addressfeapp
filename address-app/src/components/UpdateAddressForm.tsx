@@ -26,7 +26,7 @@ export const UpdateAddressForm = ({address, clientId, onCancelAddingNewAddress, 
 
     const defaultAddress: AddressData = {
         id: address?.id,
-        street: address?.street ?? "Testowa",
+        streetName: address?.streetName ?? "Testowa",
         city: address?.city ?? "Warszawa",
         buildingNumber: address != null ? address.buildingNumber ?? "" : "2",
         apartmentNumber: address != null ? address.apartmentNumber ?? "" : "4",
@@ -35,7 +35,8 @@ export const UpdateAddressForm = ({address, clientId, onCancelAddingNewAddress, 
         type: AddressType.Physical,
         changeSource: ChangeSource.Seller,
         changeBasis: ChangeBasis.Import,
-        placeOfStay:'a',
+        placeOfStayData: {placeOfStayReason: 'a'},
+        notes: '',
         usages: [{ status: VerificationStatus.NotVerified, type: AddressUsageType.Activity, id: null, verificationDate: null }]
     };
     
@@ -147,7 +148,7 @@ export const UpdateAddressForm = ({address, clientId, onCancelAddingNewAddress, 
     return (
         <div className="new-address-form">
             <div className="new-address-form-controls">
-                <TextBox propertyName={"street"} displayName={"Ulica"} value={formData.street} handleChange={handleTextBoxChange} />
+                <TextBox propertyName={"streetName"} displayName={"Ulica"} value={formData.streetName} handleChange={handleTextBoxChange} />
                 <TextBox propertyName={"buildingNumber"} displayName={"Nr budynku"} value={formData.buildingNumber} handleChange={handleTextBoxChange} />
                 <TextBox propertyName={"apartmentNumber"} displayName={"Nr lokalu"} value={formData.apartmentNumber} handleChange={handleTextBoxChange} />
                 <TextBox propertyName={"city"} displayName={"Miasto"} value={formData.city} handleChange={handleTextBoxChange} />
