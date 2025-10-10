@@ -353,10 +353,6 @@ export const GetBlackPhones = async () => {
     const url = `${baseUrl}api/forbiddenPhones`;
     const response = await axios.get<BlacPhonesApiResponse>(url);
     console.log('Odpowiedź:', response.data);
-
-    for(let p of response.data.items) {
-        p.prefix = p.prefix?.replace('_','');
-    }
     
     return deepCapitalize(response.data.items);
 }
@@ -453,10 +449,6 @@ const normalizeClientResponse = (data: ClientApiResponse) => {
         phones: data.client.phones,
         emails: data.client.emails
     };
-
-    for(let p of newClient.phones) {
-        p.prefix = p.prefix?.replace('_','');
-    }
 
     return newClient;
 }
