@@ -67,13 +67,13 @@ export const CreateClient = async () => {
                 "changeBasis": "OutgoingCall",
                 "verificationStatus": "VerifiedPositive"
             },
-            "firstName": "Ind",
+            "firstName": "Jan",
             "firstNameMetadata": {
                 "changeSource": "Client",
                 "changeBasis": "OutgoingCall",
                 "verificationStatus": "VerifiedPositive"
             },
-            "lastName": "Vidual",
+            "lastName": "Jeden",
             "lastNameMetadata": {
                 "changeSource": "Client",
                 "changeBasis": "OutgoingCall",
@@ -132,6 +132,7 @@ export const CreateClient = async () => {
             "isDeceased": false
         },
         "identificationNumbers": [
+
         ]
     }
 
@@ -309,6 +310,7 @@ export const GetBlackAddresses = async () => {
     const url = `${baseUrl}api/forbiddenAddresses`;
     const response = await axios.get<BlackAddressesApiResponse>(url);
     console.log('Odpowiedź:', response.data);
+    response.data.items = response.data.items.filter(e => !e.isDeleted);
 
     return deepCapitalize(response.data.items);
 }
@@ -353,7 +355,8 @@ export const GetBlackPhones = async () => {
     const url = `${baseUrl}api/forbiddenPhones`;
     const response = await axios.get<BlacPhonesApiResponse>(url);
     console.log('Odpowiedź:', response.data);
-    
+    response.data.items = response.data.items.filter(e => !e.isDeleted);
+
     return deepCapitalize(response.data.items);
 }
 
@@ -397,7 +400,7 @@ export const GetBlackEmails = async () => {
     const url = `${baseUrl}api/forbiddenEmails`;
     const response = await axios.get<BlackEmailsApiResponse>(url);
     console.log('Odpowiedź:', response.data);
-
+    response.data.items = response.data.items.filter(e => !e.isDeleted);
     return deepCapitalize(response.data.items);
 }
 

@@ -1,7 +1,6 @@
 import { useState } from "react";
 import type { BlackAddressData } from "../../models/blackLists/BlackAddressData";
 import { Country } from "../../enums/Country";
-import { AddressType } from "../../enums/AddressType";
 import { TextBox } from "../TextBox";
 import { Dropdown } from "../Dropdown";
 import { AddBlackAddress, UpdateBlackAddress } from "../../services/Api";
@@ -24,6 +23,7 @@ export const UpdateBlackAddressForm = ({address, onCancelAddingNewAddress, onSub
         postalCode: address?.postalCode ?? "23-134",
         country: Country.Poland,
         description: address?.description ?? "",
+        isDeleted: false,
     };
     
     if (address != null) {

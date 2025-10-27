@@ -19,6 +19,7 @@ export const UpdateBlackPhoneForm = ({ phone, onCancelAddingNewPhone, onSubmitAd
         number: phone?.number ?? "123456789",
         country: Country.Poland,
         description: phone?.description ?? "",
+        isDeleted: false
     };
 
     if (phone != null) {

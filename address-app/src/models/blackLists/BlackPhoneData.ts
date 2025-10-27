@@ -6,4 +6,5 @@ export interface BlackPhoneData {
   country: Country | undefined;
   number: string | undefined;
   description: string | undefined;
+  isDeleted: boolean
 }

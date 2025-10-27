@@ -9,4 +9,5 @@ export interface BlackAddressData {
   apartmentNumber: string | undefined;
   city: string | undefined;
   description: string | undefined;
+  isDeleted: boolean;
 }

@@ -15,6 +15,7 @@ export const UpdateBlackEmailForm = ({ email, onCancelAddingNewEmail, onSubmitAd
         id: email?.id,
         emailAddress: email?.emailAddress ?? "test@gmail.com",
         description: email?.description ?? "",
+        isDeleted: false
     };
 
     const [formData, setFormData] = useState(defaultEmail);
