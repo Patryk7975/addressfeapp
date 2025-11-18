@@ -4,6 +4,7 @@ import { Country } from "../../enums/Country";
 import { TextBox } from "../TextBox";
 import { Dropdown } from "../Dropdown";
 import { AddBlackAddress, UpdateBlackAddress } from "../../services/Api";
+import { StreetPrefix } from "../../enums/StreetPrefix";
 
 
 interface UpdateBlackAddressFormProps {
@@ -24,17 +25,22 @@ export const UpdateBlackAddressForm = ({address, onCancelAddingNewAddress, onSub
         country: Country.Poland,
         description: address?.description ?? "",
         isDeleted: false,
+        streetPrefix: StreetPrefix.ul
     };
     
     if (address != null) {
         if (address.country) {
             defaultAddress.country = Country[address.country.toString() as keyof typeof Country]; 
-        }           
+        }        
+        if (address.streetPrefix) {
+            defaultAddress.streetPrefix = StreetPrefix[address.streetPrefix.toString() as keyof typeof StreetPrefix]; 
+        }      
     }
     
     const [formData, setFormData] = useState(defaultAddress);
 
     const countries = Object.keys(Country).filter((key) => isNaN(Number(key))) as (keyof typeof Country)[];
+    const streetPrefixes = Object.keys(StreetPrefix).filter((key) => isNaN(Number(key))) as (keyof typeof StreetPrefix)[];
 
     const handleTextBoxChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
@@ -52,7 +58,9 @@ export const UpdateBlackAddressForm = ({address, onCancelAddingNewAddress, onSub
         if (name === "country") {
             data.country = Country[value as keyof typeof Country]; 
         }
- 
+        if (name === "streetPrefix") {
+            data.streetPrefix = StreetPrefix[value as keyof typeof StreetPrefix]; 
+        }
         setFormData(data);
     };
 
@@ -71,6 +79,8 @@ export const UpdateBlackAddressForm = ({address, onCancelAddingNewAddress, onSub
     return (
         <div className="new-address-form">
             <div className="new-address-form-controls">
+                <Dropdown propertyName={"streetPrefix"} displayName={"Prefix"} value={StreetPrefix[formData.streetPrefix ?? -1]} options={streetPrefixes} handleChange={handleDropdownChange} />
+
                 <TextBox propertyName={"streetName"} displayName={"Ulica"} value={formData.streetName} handleChange={handleTextBoxChange} />
                 <TextBox propertyName={"buildingNumber"} displayName={"Nr budynku"} value={formData.buildingNumber} handleChange={handleTextBoxChange} />
                 <TextBox propertyName={"apartmentNumber"} displayName={"Nr lokalu"} value={formData.apartmentNumber} handleChange={handleTextBoxChange} />

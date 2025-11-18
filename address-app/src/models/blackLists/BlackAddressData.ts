@@ -1,4 +1,5 @@
 import type { Country } from "../../enums/Country";
+import type { StreetPrefix } from "../../enums/StreetPrefix";
 
 export interface BlackAddressData {
   id: string | undefined | null;
@@ -10,4 +11,5 @@ export interface BlackAddressData {
   city: string | undefined;
   description: string | undefined;
   isDeleted: boolean;
+  streetPrefix: StreetPrefix | undefined | null;
 }

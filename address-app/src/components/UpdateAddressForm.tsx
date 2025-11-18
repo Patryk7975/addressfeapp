@@ -11,6 +11,7 @@ import { AddressUsageType } from "../enums/AddressUsageType";
 import { NewUsage } from "./NewUsage";
 import { AddAddressToClient, UpdateClientAddress } from "../services/Api";
 import { CheckBox } from "./CheckBox";
+import { StreetPrefix } from "../enums/StreetPrefix";
 
 
 interface UpdateAddressFormProps {
@@ -37,7 +38,8 @@ export const UpdateAddressForm = ({address, clientId, onCancelAddingNewAddress, 
         changeBasis: ChangeBasis.Import,
         placeOfStayData: {placeOfStayReason: 'a'},
         notes: '',
-        usages: [{ status: VerificationStatus.NotVerified, type: AddressUsageType.Activity, id: null, verificationDate: null }]
+        usages: [{ status: VerificationStatus.NotVerified, type: AddressUsageType.Activity, id: null, verificationDate: null }],
+        streetPrefix: StreetPrefix.ul
     };
     
     if (address != null) {
@@ -50,9 +52,12 @@ export const UpdateAddressForm = ({address, clientId, onCancelAddingNewAddress, 
         if (address.changeSource) {
             defaultAddress.changeSource = ChangeSource[address.changeSource.toString() as keyof typeof ChangeSource]; 
         }  
-         if (address.changeBasis) {
+        if (address.changeBasis) {
             defaultAddress.changeBasis = ChangeBasis[address.changeBasis.toString() as keyof typeof ChangeBasis]; 
         }    
+        if (address.streetPrefix) {
+            defaultAddress.streetPrefix = StreetPrefix[address.streetPrefix.toString() as keyof typeof StreetPrefix]; 
+        }         
         defaultAddress.usages.length = 0;
         for (let u of address.usages) {
             if (u.status && u.type) {
@@ -69,6 +74,7 @@ export const UpdateAddressForm = ({address, clientId, onCancelAddingNewAddress, 
     const types = Object.keys(AddressType).filter((key) => isNaN(Number(key))) as (keyof typeof AddressType)[];
     const changeBasis = Object.keys(ChangeBasis).filter((key) => isNaN(Number(key))) as (keyof typeof ChangeBasis)[];
     const changeSource = Object.keys(ChangeSource).filter((key) => isNaN(Number(key))) as (keyof typeof ChangeSource)[];
+    const streetPrefixes = Object.keys(StreetPrefix).filter((key) => isNaN(Number(key))) as (keyof typeof StreetPrefix)[];
 
     const handleRemoveUsage = (idx: number) => {
         let data = {...formData};
@@ -108,7 +114,9 @@ export const UpdateAddressForm = ({address, clientId, onCancelAddingNewAddress, 
         if (name === "changeBasis") {
             data.changeBasis = ChangeBasis[value as keyof typeof ChangeBasis]; 
         }
-
+        if (name === "streetPrefix") {
+            data.streetPrefix = StreetPrefix[value as keyof typeof StreetPrefix]; 
+        }
         setFormData(data);
     };
 
@@ -148,6 +156,8 @@ export const UpdateAddressForm = ({address, clientId, onCancelAddingNewAddress, 
     return (
         <div className="new-address-form">
             <div className="new-address-form-controls">
+                <Dropdown propertyName={"streetPrefix"} displayName={"Prefix"} value={StreetPrefix[formData.streetPrefix ?? -1]} options={streetPrefixes} handleChange={handleDropdownChange} />
+
                 <TextBox propertyName={"streetName"} displayName={"Ulica"} value={formData.streetName} handleChange={handleTextBoxChange} />
                 <TextBox propertyName={"buildingNumber"} displayName={"Nr budynku"} value={formData.buildingNumber} handleChange={handleTextBoxChange} />
                 <TextBox propertyName={"apartmentNumber"} displayName={"Nr lokalu"} value={formData.apartmentNumber} handleChange={handleTextBoxChange} />

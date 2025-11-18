@@ -3,6 +3,7 @@ import type { AddressUsageType } from "../enums/AddressUsageType";
 import type { ChangeBasis } from "../enums/ChangeBasis";
 import type { ChangeSource } from "../enums/ChangeSource";
 import type { Country } from "../enums/Country";
+import type { StreetPrefix } from "../enums/StreetPrefix";
 import type { VerificationStatus } from "../enums/VerificationStatus";
 
 export interface AddressData {
@@ -19,6 +20,7 @@ export interface AddressData {
   usages: Usage[];
   placeOfStayData: PlaceOfStayData | undefined | null;
   notes: string | undefined | null;
+  streetPrefix: StreetPrefix | undefined | null;
 }
 
 export interface Usage {

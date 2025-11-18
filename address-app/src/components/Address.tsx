@@ -38,7 +38,7 @@ export const Address = ({clientId, address, onSubmitAddingNewAddress, onStarting
         }
     }
 
-    const addressString = `${address.streetName} 
+    const addressString = `${address.streetPrefix} ${address.streetName} 
         ${address.buildingNumber}/${address.apartmentNumber}
         ${address.postalCode}
         ${address.city}

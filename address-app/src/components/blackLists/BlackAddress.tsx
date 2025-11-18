@@ -9,7 +9,7 @@ interface BlackAddressProps {
 
 export const BlackAddress = ({ address, onStartingUpdatingAddress, onDeleteAddress }: BlackAddressProps) => {
 
-    const addressString = `${address.streetName} 
+    const addressString = `${address.streetPrefix} ${address.streetName} 
         ${address.buildingNumber}/${address.apartmentNumber}
         ${address.postalCode}
         ${address.city}

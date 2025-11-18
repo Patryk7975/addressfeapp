@@ -466,6 +466,8 @@ function deepCapitalize(obj: any): any {
         for (const key in obj) {
             if (dictionaryNames.indexOf(key) >= 0) {
                 result[key] = deepCapitalize(obj[key]);
+            } else if (lowercaseDictionaryNames.indexOf(key) >= 0) {
+                result[key] = obj[key].toLowerCase();
             } else {
                 result[key] = obj[key];
             }          
@@ -479,4 +481,6 @@ function capitalizeFirstLetter(str: string): string {
     return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
-const dictionaryNames = ['usage','status','type','changeSource','changeBasis','id','instanceId','placeOfStay','country','usages']
+const dictionaryNames = ['usage','status','type','changeSource','changeBasis','id','instanceId','placeOfStay','country','usages'];
+
+const lowercaseDictionaryNames = ['streetPrefix'];
