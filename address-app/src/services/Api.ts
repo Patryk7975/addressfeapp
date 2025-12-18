@@ -61,7 +61,7 @@ export const CreateClient = async () => {
     const payload = {
         "legalEntity": {
             "_type": "Individual",
-            "fullName": "Test bez adresu",
+            "fullName": "Jan Kowalski",
             "fullNameMetadata": {
                 "changeSource": "Client",
                 "changeBasis": "OutgoingCall",
@@ -73,7 +73,7 @@ export const CreateClient = async () => {
                 "changeBasis": "OutgoingCall",
                 "verificationStatus": "VerifiedPositive"
             },
-            "lastName": "Jeden",
+            "lastName": "Kowalski",
             "lastNameMetadata": {
                 "changeSource": "Client",
                 "changeBasis": "OutgoingCall",
@@ -85,13 +85,13 @@ export const CreateClient = async () => {
                 "changeBasis": "OutgoingCall",
                 "verificationStatus": "VerifiedPositive"
             },
-            "fathersName": "Test1",
+            "fathersName": "Karol",
             "fathersNameMetadata": {
                 "changeSource": "Client",
                 "changeBasis": "OutgoingCall",
                 "verificationStatus": "VerifiedPositive"
             },
-            "mothersName": "Test2",
+            "mothersName": "Agata",
             "mothersNameMetadata": {
                 "changeSource": "Client",
                 "changeBasis": "OutgoingCall",
@@ -157,6 +157,9 @@ export const GetClient = async (clientId: string) => {
 export const AddAddressToClient = async (clientId: string, address: AddressData) => {
     const url = `${baseUrl}api/address/${clientId}/addresses`;
     
+    if (address.type == AddressType.PostOfficeBox)
+        address.streetPrefix=null;
+
     if (address.type == AddressType.PlaceOfStay)
         address.placeOfStayData = {placeOfStayReason: 'PermanentDeparture'}
     else
@@ -307,7 +310,7 @@ const handleError = (error: unknown) => {
 }
 
 export const GetBlackAddresses = async () => {
-    const url = `${baseUrl}api/forbiddenAddresses`;
+    const url = `${baseUrl}api/forbidden-addresses`;
     const response = await axios.get<BlackAddressesApiResponse>(url);
     console.log('Odpowiedź:', response.data);
     response.data.items = response.data.items.filter(e => !e.isDeleted);
@@ -316,7 +319,7 @@ export const GetBlackAddresses = async () => {
 }
 
 export const AddBlackAddress = async (address: BlackAddressData) => {
-    const url = `${baseUrl}api/forbiddenAddresses`;
+    const url = `${baseUrl}api/forbidden-addresses`;
         try {
         const response = await axios.post(url, address);
         console.log('Odpowiedź:', response.data);
@@ -328,7 +331,7 @@ export const AddBlackAddress = async (address: BlackAddressData) => {
 }
 
 export const UpdateBlackAddress = async (addressId: string, address: BlackAddressData) => {
-    const url = `${baseUrl}api/forbiddenAddresses/${addressId}`;
+    const url = `${baseUrl}api/forbidden-addresses/${addressId}`;
         try {
         const response = await axios.put(url, address);
         console.log('Odpowiedź:', response.data);
@@ -340,7 +343,7 @@ export const UpdateBlackAddress = async (addressId: string, address: BlackAddres
 }
 
 export const DeleteBlackAddress= async (addressId: string) => {
-    const url = `${baseUrl}api/forbiddenAddresses/${addressId}`;
+    const url = `${baseUrl}api/forbidden-addresses/${addressId}`;
         try {
         const response = await axios.delete(url);
         console.log('Odpowiedź:', response.data);
@@ -352,7 +355,7 @@ export const DeleteBlackAddress= async (addressId: string) => {
 }
 
 export const GetBlackPhones = async () => {
-    const url = `${baseUrl}api/forbiddenPhones`;
+    const url = `${baseUrl}api/forbidden-phones`;
     const response = await axios.get<BlacPhonesApiResponse>(url);
     console.log('Odpowiedź:', response.data);
     response.data.items = response.data.items.filter(e => !e.isDeleted);
@@ -361,7 +364,7 @@ export const GetBlackPhones = async () => {
 }
 
 export const AddBlackPhone = async (phone: BlackPhoneData) => {
-    const url = `${baseUrl}api/forbiddenPhones`;
+    const url = `${baseUrl}api/forbidden-phones`;
         try {
         const response = await axios.post(url, phone);
         console.log('Odpowiedź:', response.data);
@@ -373,7 +376,7 @@ export const AddBlackPhone = async (phone: BlackPhoneData) => {
 }
 
 export const UpdateBlackPhone = async (phoneId: string, phone: BlackPhoneData) => {
-    const url = `${baseUrl}api/forbiddenPhones/${phoneId}`;
+    const url = `${baseUrl}api/forbidden-phones/${phoneId}`;
         try {
         const response = await axios.put(url, phone);
         console.log('Odpowiedź:', response.data);
@@ -385,7 +388,7 @@ export const UpdateBlackPhone = async (phoneId: string, phone: BlackPhoneData) =
 }
 
 export const DeleteBlackPhone= async (phoneId: string) => {
-    const url = `${baseUrl}api/forbiddenPhones/${phoneId}`;
+    const url = `${baseUrl}api/forbidden-phones/${phoneId}`;
         try {
         const response = await axios.delete(url);
         console.log('Odpowiedź:', response.data);
@@ -397,7 +400,7 @@ export const DeleteBlackPhone= async (phoneId: string) => {
 }
 
 export const GetBlackEmails = async () => {
-    const url = `${baseUrl}api/forbiddenEmails`;
+    const url = `${baseUrl}api/forbidden-emails`;
     const response = await axios.get<BlackEmailsApiResponse>(url);
     console.log('Odpowiedź:', response.data);
     response.data.items = response.data.items.filter(e => !e.isDeleted);
@@ -405,7 +408,7 @@ export const GetBlackEmails = async () => {
 }
 
 export const AddBlackEmail = async (email: BlackEmailData) => {
-    const url = `${baseUrl}api/forbiddenEmails`;
+    const url = `${baseUrl}api/forbidden-emails`;
         try {
         const response = await axios.post(url, email);
         console.log('Odpowiedź:', response.data);
@@ -417,7 +420,7 @@ export const AddBlackEmail = async (email: BlackEmailData) => {
 }
 
 export const UpdateBlackEmail = async (emailId: string, email: BlackEmailData) => {
-    const url = `${baseUrl}api/forbiddenEmails/${emailId}`;
+    const url = `${baseUrl}api/forbidden-emails/${emailId}`;
         try {
         const response = await axios.put(url, email);
         console.log('Odpowiedź:', response.data);
@@ -429,7 +432,7 @@ export const UpdateBlackEmail = async (emailId: string, email: BlackEmailData) =
 }
 
 export const DeleteBlackEmail = async (emailId: string) => {
-    const url = `${baseUrl}api/forbiddenEmails/${emailId}`;
+    const url = `${baseUrl}api/forbidden-emails/${emailId}`;
         try {
         const response = await axios.delete(url);
         console.log('Odpowiedź:', response.data);
@@ -467,7 +470,7 @@ function deepCapitalize(obj: any): any {
             if (dictionaryNames.indexOf(key) >= 0) {
                 result[key] = deepCapitalize(obj[key]);
             } else if (lowercaseDictionaryNames.indexOf(key) >= 0) {
-                result[key] = obj[key].toLowerCase();
+                result[key] = obj[key]?.toLowerCase();
             } else {
                 result[key] = obj[key];
             }          

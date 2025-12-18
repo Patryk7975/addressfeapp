@@ -1,6 +1,6 @@
 export enum AddressUsageType
 {
-    Correspondence = 0,
+    Correspondence = 7,
     Residence = 1,
     IndividualRegistration = 2,
     ClientsProperty = 3,

@@ -5,6 +5,7 @@ import type { ClientData } from './models/ClientData';
 import { Client } from './components/Client';
 import { BlackLists } from './components/blackLists/BlackLists';
 import { GetClient } from './services/Api';
+import { AutoComplete } from './components/autocomplete/AutoComplete';
 
 function App() {
   const [clients, setClients] = useState<ClientData[]>([]);
@@ -68,7 +69,10 @@ function App() {
         </div>
         <div className='black-lists'>
           <BlackLists refreshClients={refreshClients} />
-        </div>
+        </div>    
+      </div>
+      <div className='auto-complete-container'>
+        {1>2 && <AutoComplete/>}
       </div>
     </>
   )

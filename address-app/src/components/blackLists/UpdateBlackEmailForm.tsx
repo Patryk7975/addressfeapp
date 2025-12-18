@@ -2,6 +2,8 @@ import { useState } from "react";
 import type { BlackEmailData } from "../../models/blackLists/BlackEmailData";
 import { AddBlackEmail, UpdateBlackEmail } from "../../services/Api";
 import { TextBox } from "../TextBox";
+import { ChangeBasis } from "../../enums/ChangeBasis";
+import { ChangeSource } from "../../enums/ChangeSource";
 
 interface UpdateBlackEmailFormProps {
     email: BlackEmailData | null,
@@ -15,7 +17,9 @@ export const UpdateBlackEmailForm = ({ email, onCancelAddingNewEmail, onSubmitAd
         id: email?.id,
         emailAddress: email?.emailAddress ?? "test@gmail.com",
         description: email?.description ?? "",
-        isDeleted: false
+        isDeleted: false,
+        changeBasis: ChangeBasis.DirectConversation,
+        changeSource: ChangeSource.Client
     };
 
     const [formData, setFormData] = useState(defaultEmail);

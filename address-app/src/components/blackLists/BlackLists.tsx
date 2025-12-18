@@ -33,7 +33,6 @@ export const BlackLists = ({refreshClients} : BlackListsProps) => {
             phones = await GetBlackPhones();
             emails = await GetBlackEmails();
 
-            emails = emails;
             setBlackLists({ addresses: addresses, phones: phones, emails: emails });
         };
 
