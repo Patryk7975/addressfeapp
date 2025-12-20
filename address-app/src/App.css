@@ -66,7 +66,8 @@ h6 {
 /* Layout */
 .main-container {
   display: grid;
-  grid-template-columns: 1fr 350px;
+  grid-template-columns: 1fr 400px;
+  /* Widened sidebar from 350px to 400px */
   gap: var(--space-xl);
   max-width: 1800px;
   /* Widened from 1400px */
@@ -267,7 +268,64 @@ input[type="checkbox"] {
 
 /* Helpers */
 .add-new-item-buttons-container {
-  margin-top: var(--space-md);
+  display: flex;
+  gap: var(--space-md);
+  align-items: center;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+
+.add-black-list-buttons {
+  display: flex;
+  gap: var(--space-xs);
+  /* Reduced gap */
+  align-items: center;
+  margin-bottom: 10px;
+  flex-wrap: nowrap;
+  /* Force single row */
+}
+
+/* Specific overrides for sidebar buttons to fit */
+.add-black-list-buttons button {
+  padding: var(--space-sm) var(--space-sm) !important;
+  /* Smaller padding */
+  font-size: 0.85rem !important;
+  /* Slightly smaller font */
+  white-space: nowrap;
+  flex: 1;
+  /* Distribute space */
+  justify-content: center;
+}
+
+.add-new-address-button,
+.add-new-phone-button,
+.add-new-email-button,
+.client-basic-data-header button,
+.add-new-black-address-button,
+.add-new-black--phone-button,
+.add-new-black-email-button {
+  background-color: var(--secondary);
+  /* Change background */
+  color: white;
+  border: none;
+  padding: var(--space-sm) var(--space-md);
+  border-radius: 999px;
+  /* Fully rounded buttons (pill shape) or use var(--radius-md) */
+  font-size: 0.9rem;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.2s ease;
+}
+
+.add-new-address-button:hover,
+.add-new-phone-button:hover,
+.add-new-email-button:hover,
+.client-basic-data-header button:hover,
+.add-new-black-address-button:hover,
+.add-new-black--phone-button:hover,
+.add-new-black-email-button:hover {
+  background-color: var(--text-main);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
 }
 
 .auto-complete-container {
@@ -343,6 +401,70 @@ input[type="checkbox"] {
 }
 
 /* Basis */
+
+/* Blacklist Address Form Specific Grid */
+.black-address-form-controls {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: var(--space-md);
+  align-items: end;
+}
+
+.black-address-form-controls .textbox {
+  width: 100%;
+}
+
+/* Row 1: Prefix(2), Street(6), Building(2), Apartment(2) */
+.black-address-form-controls .dropdown:nth-child(1) {
+  grid-column: span 2;
+}
+
+/* Prefix */
+.black-address-form-controls .dropdown:nth-child(1) select {
+  padding-left: var(--space-xs);
+  padding-right: var(--space-xs);
+}
+
+.black-address-form-controls .textbox:nth-child(2) {
+  grid-column: span 6;
+}
+
+/* Street */
+.black-address-form-controls .textbox:nth-child(3) {
+  grid-column: span 2;
+}
+
+/* Building */
+.black-address-form-controls .textbox:nth-child(4) {
+  grid-column: span 2;
+}
+
+/* Apartment */
+
+/* Row 2: Postal(4), City(4), Country(4) */
+.black-address-form-controls .textbox:nth-child(5) {
+  grid-column: span 4;
+}
+
+/* Postal */
+.black-address-form-controls .textbox:nth-child(6) {
+  grid-column: span 4;
+}
+
+/* City */
+.black-address-form-controls .dropdown:nth-child(7) {
+  grid-column: span 4;
+}
+
+/* Country */
+
+/* Row 3: Description(12) */
+.black-address-form-controls .textbox:nth-child(8) {
+  grid-column: span 12;
+}
+
+/* Description */
+
 
 /* Keep other forms simple 2-column */
 .new-phone-form-controls,

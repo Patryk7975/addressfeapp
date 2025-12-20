@@ -5,15 +5,17 @@ import { TextBox } from "../TextBox";
 import { Dropdown } from "../Dropdown";
 import { AddBlackAddress, UpdateBlackAddress } from "../../services/Api";
 import { StreetPrefix } from "../../enums/StreetPrefix";
+import { ChangeSource } from "../../enums/ChangeSource";
+import { ChangeBasis } from "../../enums/ChangeBasis";
 
 
 interface UpdateBlackAddressFormProps {
-    address: BlackAddressData | null, 
+    address: BlackAddressData | null,
     onCancelAddingNewAddress: () => void;
     onSubmitAddingNewAddress: (addresses: BlackAddressData[]) => void;
-} 
+}
 
-export const UpdateBlackAddressForm = ({address, onCancelAddingNewAddress, onSubmitAddingNewAddress} : UpdateBlackAddressFormProps) => {
+export const UpdateBlackAddressForm = ({ address, onCancelAddingNewAddress, onSubmitAddingNewAddress }: UpdateBlackAddressFormProps) => {
 
     const defaultAddress: BlackAddressData = {
         id: address?.id,
@@ -25,18 +27,20 @@ export const UpdateBlackAddressForm = ({address, onCancelAddingNewAddress, onSub
         country: Country.Poland,
         description: address?.description ?? "",
         isDeleted: false,
-        streetPrefix: StreetPrefix.ul
+        streetPrefix: StreetPrefix.ul,
+        changeSource: ChangeSource.Client,
+        changeBasis: ChangeBasis.DirectConversation
     };
-    
+
     if (address != null) {
         if (address.country) {
-            defaultAddress.country = Country[address.country.toString() as keyof typeof Country]; 
-        }        
+            defaultAddress.country = Country[address.country.toString() as keyof typeof Country];
+        }
         if (address.streetPrefix) {
-            defaultAddress.streetPrefix = StreetPrefix[address.streetPrefix.toString() as keyof typeof StreetPrefix]; 
-        }      
+            defaultAddress.streetPrefix = StreetPrefix[address.streetPrefix.toString() as keyof typeof StreetPrefix];
+        }
     }
-    
+
     const [formData, setFormData] = useState(defaultAddress);
 
     const countries = Object.keys(Country).filter((key) => isNaN(Number(key))) as (keyof typeof Country)[];
@@ -53,13 +57,13 @@ export const UpdateBlackAddressForm = ({address, onCancelAddingNewAddress, onSub
     const handleDropdownChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
 
-        let data = {...formData};
+        let data = { ...formData };
 
         if (name === "country") {
-            data.country = Country[value as keyof typeof Country]; 
+            data.country = Country[value as keyof typeof Country];
         }
         if (name === "streetPrefix") {
-            data.streetPrefix = StreetPrefix[value as keyof typeof StreetPrefix]; 
+            data.streetPrefix = StreetPrefix[value as keyof typeof StreetPrefix];
         }
         setFormData(data);
     };
@@ -74,23 +78,24 @@ export const UpdateBlackAddressForm = ({address, onCancelAddingNewAddress, onSub
         const addresses = await UpdateBlackAddress((defaultAddress.id ?? -1).toString(), formData);
         if (addresses != null)
             onSubmitAddingNewAddress(addresses);
-    } 
-   
+    }
+
     return (
         <div className="new-address-form">
-            <div className="new-address-form-controls">
+            <div className="black-address-form-controls">
                 <Dropdown propertyName={"streetPrefix"} displayName={"Prefix"} value={StreetPrefix[formData.streetPrefix ?? -1]} options={streetPrefixes} handleChange={handleDropdownChange} />
 
                 <TextBox propertyName={"streetName"} displayName={"Ulica"} value={formData.streetName} handleChange={handleTextBoxChange} />
                 <TextBox propertyName={"buildingNumber"} displayName={"Nr budynku"} value={formData.buildingNumber} handleChange={handleTextBoxChange} />
                 <TextBox propertyName={"apartmentNumber"} displayName={"Nr lokalu"} value={formData.apartmentNumber} handleChange={handleTextBoxChange} />
-                <TextBox propertyName={"city"} displayName={"Miasto"} value={formData.city} handleChange={handleTextBoxChange} />
-                <TextBox propertyName={"postalCode"} displayName={"Kod pocztowy"} value={formData.postalCode} handleChange={handleTextBoxChange} />
-                <TextBox propertyName={"description"} displayName={"Opis"} value={formData.description} handleChange={handleTextBoxChange} />
 
+                <TextBox propertyName={"postalCode"} displayName={"Kod pocztowy"} value={formData.postalCode} handleChange={handleTextBoxChange} />
+                <TextBox propertyName={"city"} displayName={"Miasto"} value={formData.city} handleChange={handleTextBoxChange} />
                 <Dropdown propertyName={"country"} displayName={"Kraj"} value={Country[formData.country ?? -1]} options={countries} handleChange={handleDropdownChange} />
+
+                <TextBox propertyName={"description"} displayName={"Opis"} value={formData.description} handleChange={handleTextBoxChange} />
             </div>
-                                
+
             {address === null && <div className="add-new-address-buttons">
                 <button onClick={onCancelAddingNewAddress} className="cancel-adding-new-address-button">
                     Anuluj dodawanie
