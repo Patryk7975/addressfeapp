@@ -10,18 +10,17 @@ import { VerificationStatus } from "../enums/VerificationStatus";
 import { AddressUsageType } from "../enums/AddressUsageType";
 import { NewUsage } from "./NewUsage";
 import { AddAddressToClient, UpdateClientAddress } from "../services/Api";
-import { CheckBox } from "./CheckBox";
 import { StreetPrefix } from "../enums/StreetPrefix";
 
 
 interface UpdateAddressFormProps {
-    address: AddressData | null, 
+    address: AddressData | null,
     clientId: string,
     onCancelAddingNewAddress: () => void;
     onSubmitAddingNewAddress: (addresses: AddressData[]) => void;
-} 
+}
 
-export const UpdateAddressForm = ({address, clientId, onCancelAddingNewAddress, onSubmitAddingNewAddress} : UpdateAddressFormProps) => {
+export const UpdateAddressForm = ({ address, clientId, onCancelAddingNewAddress, onSubmitAddingNewAddress }: UpdateAddressFormProps) => {
 
     const [addingUsage, setAddingUsage] = useState(false);
 
@@ -36,28 +35,28 @@ export const UpdateAddressForm = ({address, clientId, onCancelAddingNewAddress, 
         type: AddressType.Physical,
         changeSource: ChangeSource.Seller,
         changeBasis: ChangeBasis.Import,
-        placeOfStayData: {placeOfStayReason: 'a'},
+        placeOfStayData: { placeOfStayReason: 'a' },
         notes: '',
         usages: [{ status: VerificationStatus.NotVerified, type: AddressUsageType.Activity, id: null, verificationDate: null }],
         streetPrefix: StreetPrefix.ul
     };
-    
+
     if (address != null) {
         if (address.country) {
-            defaultAddress.country = Country[address.country.toString() as keyof typeof Country]; 
-        }    
+            defaultAddress.country = Country[address.country.toString() as keyof typeof Country];
+        }
         if (address.type) {
-            defaultAddress.type = AddressType[address.type.toString() as keyof typeof AddressType]; 
-        }  
+            defaultAddress.type = AddressType[address.type.toString() as keyof typeof AddressType];
+        }
         if (address.changeSource) {
-            defaultAddress.changeSource = ChangeSource[address.changeSource.toString() as keyof typeof ChangeSource]; 
-        }  
+            defaultAddress.changeSource = ChangeSource[address.changeSource.toString() as keyof typeof ChangeSource];
+        }
         if (address.changeBasis) {
-            defaultAddress.changeBasis = ChangeBasis[address.changeBasis.toString() as keyof typeof ChangeBasis]; 
-        }    
+            defaultAddress.changeBasis = ChangeBasis[address.changeBasis.toString() as keyof typeof ChangeBasis];
+        }
         if (address.streetPrefix) {
-            defaultAddress.streetPrefix = StreetPrefix[address.streetPrefix.toString() as keyof typeof StreetPrefix]; 
-        }         
+            defaultAddress.streetPrefix = StreetPrefix[address.streetPrefix.toString() as keyof typeof StreetPrefix];
+        }
         defaultAddress.usages.length = 0;
         for (let u of address.usages) {
             if (u.status && u.type) {
@@ -65,9 +64,9 @@ export const UpdateAddressForm = ({address, clientId, onCancelAddingNewAddress, 
                 const usageType = AddressUsageType[u.type.toString() as keyof typeof AddressUsageType]
                 defaultAddress.usages.push({ status: usageStatus, type: usageType, id: null, verificationDate: null })
             }
-        }     
+        }
     }
-    
+
     const [formData, setFormData] = useState(defaultAddress);
 
     const countries = Object.keys(Country).filter((key) => isNaN(Number(key))) as (keyof typeof Country)[];
@@ -77,13 +76,13 @@ export const UpdateAddressForm = ({address, clientId, onCancelAddingNewAddress, 
     const streetPrefixes = Object.keys(StreetPrefix).filter((key) => isNaN(Number(key))) as (keyof typeof StreetPrefix)[];
 
     const handleRemoveUsage = (idx: number) => {
-        let data = {...formData};
+        let data = { ...formData };
         data.usages.splice(idx, 1);
         setFormData(data);
     }
 
     const handleAddUsage = (usage: Usage) => {
-        let data = {...formData};
+        let data = { ...formData };
         data.usages = [...data.usages, usage];
         setFormData(data);
         setAddingUsage(false);
@@ -100,22 +99,22 @@ export const UpdateAddressForm = ({address, clientId, onCancelAddingNewAddress, 
     const handleDropdownChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
 
-        let data = {...formData};
+        let data = { ...formData };
 
         if (name === "country") {
-            data.country = Country[value as keyof typeof Country]; 
+            data.country = Country[value as keyof typeof Country];
         }
         if (name === "type") {
-            data.type = AddressType[value as keyof typeof AddressType]; 
+            data.type = AddressType[value as keyof typeof AddressType];
         }
         if (name === "changeSource") {
-            data.changeSource = ChangeSource[value as keyof typeof ChangeSource]; 
+            data.changeSource = ChangeSource[value as keyof typeof ChangeSource];
         }
         if (name === "changeBasis") {
-            data.changeBasis = ChangeBasis[value as keyof typeof ChangeBasis]; 
+            data.changeBasis = ChangeBasis[value as keyof typeof ChangeBasis];
         }
         if (name === "streetPrefix") {
-            data.streetPrefix = StreetPrefix[value as keyof typeof StreetPrefix]; 
+            data.streetPrefix = StreetPrefix[value as keyof typeof StreetPrefix];
         }
         setFormData(data);
     };
@@ -130,28 +129,30 @@ export const UpdateAddressForm = ({address, clientId, onCancelAddingNewAddress, 
         const client = await UpdateClientAddress(clientId, (defaultAddress.id ?? -1).toString(), formData);
         if (client != null)
             onSubmitAddingNewAddress(client.addresses);
-    } 
-    
+    }
+
     const changeUsageStatus = (usage: Usage) => {
-        let data = {...formData};
+        let data = { ...formData };
         const usageToUpdate = data.usages.filter(e => e == usage)[0];
         console.log(usageToUpdate.status);
 
-        usageToUpdate.status = usageToUpdate.status == VerificationStatus.VerifiedNegative 
-        ? VerificationStatus.NotVerified
-        : usageToUpdate.status == VerificationStatus.NotVerified
-            ? VerificationStatus.VerifiedPositive
-            : VerificationStatus.VerifiedNegative; 
+        usageToUpdate.status = usageToUpdate.status == VerificationStatus.VerifiedNegative
+            ? VerificationStatus.NotVerified
+            : usageToUpdate.status == VerificationStatus.NotVerified
+                ? VerificationStatus.VerifiedPositive
+                : VerificationStatus.VerifiedNegative;
 
         setFormData(data);
     }
 
+    /*
     const handleCheckBoxChange = (name: string, value: boolean) => {
         setFormData((prev) => ({
             ...prev,
             [name]: value,
         }));
     };
+    */
 
     return (
         <div className="new-address-form">
@@ -161,22 +162,22 @@ export const UpdateAddressForm = ({address, clientId, onCancelAddingNewAddress, 
                 <TextBox propertyName={"streetName"} displayName={"Ulica"} value={formData.streetName} handleChange={handleTextBoxChange} />
                 <TextBox propertyName={"buildingNumber"} displayName={"Nr budynku"} value={formData.buildingNumber} handleChange={handleTextBoxChange} />
                 <TextBox propertyName={"apartmentNumber"} displayName={"Nr lokalu"} value={formData.apartmentNumber} handleChange={handleTextBoxChange} />
-                <TextBox propertyName={"city"} displayName={"Miasto"} value={formData.city} handleChange={handleTextBoxChange} />
                 <TextBox propertyName={"postalCode"} displayName={"Kod pocztowy"} value={formData.postalCode} handleChange={handleTextBoxChange} />
+                <TextBox propertyName={"city"} displayName={"Miasto"} value={formData.city} handleChange={handleTextBoxChange} />
 
                 <Dropdown propertyName={"country"} displayName={"Kraj"} value={Country[formData.country ?? -1]} options={countries} handleChange={handleDropdownChange} />
                 <Dropdown propertyName={"type"} displayName={"Typ"} value={AddressType[formData.type ?? -1]} options={types} handleChange={handleDropdownChange} />
                 <Dropdown propertyName={"changeSource"} displayName={"Source"} value={ChangeSource[formData.changeSource ?? -1]} options={changeSource} handleChange={handleDropdownChange} />
                 <Dropdown propertyName={"changeBasis"} displayName={"Basis"} value={ChangeBasis[formData.changeBasis ?? -1]} options={changeBasis} handleChange={handleDropdownChange} />
             </div>
-            
+
             <div className="new-address-form-usages">
                 <p>Wykorzystania:</p>
                 <ul className="new-address-form-usages-ul">
                     {formData.usages.map((e, index) => (
                         <li className="new-address-form-usages-li" key={index}>
                             <p className="new-address-form-usages-usage-p">
-                                <span>{AddressUsageType[e.type ?? -1]} </span> 
+                                <span>{AddressUsageType[e.type ?? -1]} </span>
                                 <span className="new-address-form-usages-usage-status" onClick={() => changeUsageStatus(e)}>{VerificationStatus[e.status ?? -1]}</span>
                             </p>
                             <button className="remove-usage-button" onClick={() => handleRemoveUsage(index)}>
@@ -189,9 +190,9 @@ export const UpdateAddressForm = ({address, clientId, onCancelAddingNewAddress, 
 
             <div className="add-new-usage-section">
                 {!addingUsage && <button className="add-usage-button" onClick={() => setAddingUsage(true)}>Dodaj usage</button>}
-                {addingUsage && <NewUsage handleAddUsage={handleAddUsage} handleCancelAddingUsage={() => setAddingUsage(false)}/>}
+                {addingUsage && <NewUsage handleAddUsage={handleAddUsage} handleCancelAddingUsage={() => setAddingUsage(false)} />}
             </div>
-                    
+
             {address === null && <div className="add-new-address-buttons">
                 <button onClick={onCancelAddingNewAddress} className="cancel-adding-new-address-button">
                     Anuluj dodawanie

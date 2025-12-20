@@ -29,8 +29,8 @@ export const ConsentTypeRow = ({ config }: ConsentTypeForInterfaceProps) => {
     return 'Wybierz'
   }
 
-  const onStatusChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const { value } = e.target;
+  const onStatusChange = () => {
+    // const { value } = e.target;
   };
 
   return <div className="consent-type-row">

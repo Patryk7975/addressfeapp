@@ -7,22 +7,24 @@ interface ConsentsFormProps {
   clientId: string,
 }
 
-export const ConsentsForm = ({clientId} : ConsentsFormProps) => {
+export const ConsentsForm = ({ clientId }: ConsentsFormProps) => {
 
   const [formData, setFormData] = useState<null | ConsentConfigurationRow[]>(null);
 
-  const setApproval = (typeId: number, approval : boolean | null) => {
-    if (formData == null)
-      return;
+  /*
+const setApproval = (typeId: number, approval : boolean | null) => {
+  if (formData == null)
+    return;
 
-    const data = {...formData};
-    const row = data.filter(e => e.consentType.id == typeId)[0];
-    if(row.consent == null) {
-      
-    }
-
-
+  const data = {...formData};
+  const row = data.filter(e => e.consentType.id == typeId)[0];
+  if(row.consent == null) {
+    
   }
+
+
+}
+  */
 
   useEffect(() => {
     const setConsents = async () => {
@@ -47,7 +49,7 @@ export const ConsentsForm = ({clientId} : ConsentsFormProps) => {
       </div>
     </div>
     <div className="consent-types-data">
-    {formData?.map(e => <ConsentTypeRow config={e} />)}
+      {formData?.map(e => <ConsentTypeRow config={e} />)}
     </div>
   </div>
 }

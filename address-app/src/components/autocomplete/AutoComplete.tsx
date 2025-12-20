@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { AutoCompleteTextBox } from "./AutoCompleteTextBox";
 import { GetCities, GetPostalCodes, GetStreets } from "../../services/NormalizationApi";
 
