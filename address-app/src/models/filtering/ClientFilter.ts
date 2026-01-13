@@ -24,3 +24,9 @@ export interface AddressFilter {
 export interface PhoneFilter {
     numberWithoutPrefix: string,
 }
+
+import type { ClientData } from "../ClientData";
+
+export interface ClientFilterResponse {
+    items: ClientData[]
+}

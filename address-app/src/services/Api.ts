@@ -11,7 +11,7 @@ import { AddressType } from '../enums/AddressType';
 import type { BlackAddressData } from '../models/blackLists/BlackAddressData';
 import type { BlackPhoneData } from '../models/blackLists/BlackPhoneData';
 import type { BlackEmailData } from '../models/blackLists/BlackEmailData';
-import type { ClientFilter } from '../models/filtering/ClientFilter';
+import type { ClientFilter, ClientFilterResponse } from '../models/filtering/ClientFilter';
 
 interface ClientApiResponse {
     client: {
@@ -167,22 +167,10 @@ export const CreateClient = async () => {
 export const FilterClients = async (clientFilter: ClientFilter) => {
     const url = `${baseUrl}api/clients/filter`;
 
-    // Changing to generic return for now to act as pass-through, but normalizing.
-    const response = await axios.post(url, clientFilter);
+    const response = await axios.post<ClientFilterResponse>(url, clientFilter);
     console.log('Odpowiedź:', response.data);
 
-    // Logic to normalize list if it matches Client structure
-    if (Array.isArray(response.data)) {
-        return response.data.map((item: any) => {
-            // If item matches ClientApiResponse structure (has .client)
-            if (item.client) {
-                return normalizeClientResponse(item);
-            }
-            // If item is already like ClientData (flat)
-            return deepCapitalize(item);
-        });
-    }
-    return [];
+    return deepCapitalize(response.data.items);
 }
 
 export const GetClient = async (clientId: string) => {
