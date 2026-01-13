@@ -4,7 +4,7 @@ import type { ClientData } from '../models/ClientData';
 import { FilterClients } from '../services/Api';
 import { TextBox } from './TextBox';
 import { Dropdown } from './Dropdown'; // Assuming Dropdown exists
-import { Client } from './Client';
+import { FilteringResultRow } from './FilteringResultRow';
 
 export const Filtering = () => {
     const [filter, setFilter] = useState<ClientFilter>({
@@ -153,7 +153,7 @@ export const Filtering = () => {
                 <h3>Wyniki ({results.length})</h3>
                 <div className="filtering-results-list">
                     {results.map(client => (
-                        <Client key={client.id} client={client} />
+                        <FilteringResultRow key={client.id} client={client} />
                     ))}
                 </div>
             </div>
