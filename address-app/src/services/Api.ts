@@ -11,6 +11,7 @@ import { AddressType } from '../enums/AddressType';
 import type { BlackAddressData } from '../models/blackLists/BlackAddressData';
 import type { BlackPhoneData } from '../models/blackLists/BlackPhoneData';
 import type { BlackEmailData } from '../models/blackLists/BlackEmailData';
+import type { ClientFilter } from '../models/filtering/clientFilter';
 
 interface ClientApiResponse {
     client: {
@@ -61,7 +62,7 @@ export const CreateClient = async () => {
     const payload = {
         "legalEntity": {
             "_type": "Individual",
-            "fullName": "Jan Kowalski",
+            "fullName": "Jan Łącki",
             "fullNameMetadata": {
                 "changeSource": "Client",
                 "changeBasis": "OutgoingCall",
@@ -73,7 +74,7 @@ export const CreateClient = async () => {
                 "changeBasis": "OutgoingCall",
                 "verificationStatus": "VerifiedPositive"
             },
-            "lastName": "Kowalski",
+            "lastName": "Łącki",
             "lastNameMetadata": {
                 "changeSource": "Client",
                 "changeBasis": "OutgoingCall",
@@ -103,7 +104,7 @@ export const CreateClient = async () => {
                 "day": 1
             },
             "birthDateMetadata": {
-                "changeSource": "seller",
+                "changeSource": "Client",
                 "changeBasis": "directConversation",
                 "verificationStatus": "VerifiedPositive"
             },
@@ -131,9 +132,26 @@ export const CreateClient = async () => {
             ],
             "isDeceased": false
         },
-        "identificationNumbers": [
-
-        ]
+  "identificationNumbers" : [ 
+   {
+     "_type": "Pesel",
+     "Pesel" : "80090455146",
+     "metadata" : {
+       "changeSource": "Client",
+       "changeBasis": "Import",
+       "verificationStatus": "notVerified"
+     }
+   },
+      {
+     "_type": "Nip",
+     "Nip" : "7123365872",
+     "metadata" : {
+       "changeSource": "Client",
+       "changeBasis": "Import",
+       "verificationStatus": "notVerified"
+     }
+   }
+ ]
     }
 
     try {
@@ -146,6 +164,11 @@ export const CreateClient = async () => {
     }
 }
 
+export const FilterClients = async (clientFilter: ClientFilter) => {
+    const url = `${baseUrl}api/clients/filter`;
+    const response = await axios.post<ClientFilter>(url, clientFilter);
+    console.log('Odpowiedź:', response.data);
+}
 
 export const GetClient = async (clientId: string) => {
     const url = `${baseUrl}api/clients/${clientId}`;
