@@ -58,7 +58,7 @@ function App() {
 
   return (
     <>
-      <div className='main-container'>
+      <div className={`main-container ${activeTab === 'filtering' ? 'single-column' : ''}`}>
         <div className="client-container">
           <div className="main-nav-tabs">
             <button
@@ -90,9 +90,11 @@ function App() {
             <Filtering />
           )}
         </div>
-        <div className='black-lists'>
-          <BlackLists refreshClients={refreshClients} />
-        </div>
+        {activeTab === 'clients' && (
+          <div className='black-lists'>
+            <BlackLists refreshClients={refreshClients} />
+          </div>
+        )}
       </div>
       <div className='auto-complete-container'>
         {1 > 2 && <AutoComplete />}

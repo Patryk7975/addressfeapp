@@ -78,6 +78,12 @@ h6 {
   min-height: 100vh;
 }
 
+.main-container.single-column {
+  grid-template-columns: 1fr;
+  max-width: 1400px;
+  /* Optional: Constrain width for single view if desired, or keep 1800px */
+}
+
 .client-container {
   display: flex;
   flex-direction: column;
