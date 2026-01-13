@@ -11,7 +11,7 @@ import { AddressType } from '../enums/AddressType';
 import type { BlackAddressData } from '../models/blackLists/BlackAddressData';
 import type { BlackPhoneData } from '../models/blackLists/BlackPhoneData';
 import type { BlackEmailData } from '../models/blackLists/BlackEmailData';
-import type { ClientFilter } from '../models/filtering/clientFilter';
+import type { ClientFilter } from '../models/filtering/ClientFilter';
 
 interface ClientApiResponse {
     client: {
@@ -132,26 +132,26 @@ export const CreateClient = async () => {
             ],
             "isDeceased": false
         },
-  "identificationNumbers" : [ 
-   {
-     "_type": "Pesel",
-     "Pesel" : "80090455146",
-     "metadata" : {
-       "changeSource": "Client",
-       "changeBasis": "Import",
-       "verificationStatus": "notVerified"
-     }
-   },
-      {
-     "_type": "Nip",
-     "Nip" : "7123365872",
-     "metadata" : {
-       "changeSource": "Client",
-       "changeBasis": "Import",
-       "verificationStatus": "notVerified"
-     }
-   }
- ]
+        "identificationNumbers": [
+            {
+                "_type": "Pesel",
+                "Pesel": "80090455146",
+                "metadata": {
+                    "changeSource": "Client",
+                    "changeBasis": "Import",
+                    "verificationStatus": "notVerified"
+                }
+            },
+            {
+                "_type": "Nip",
+                "Nip": "7123365872",
+                "metadata": {
+                    "changeSource": "Client",
+                    "changeBasis": "Import",
+                    "verificationStatus": "notVerified"
+                }
+            }
+        ]
     }
 
     try {
@@ -166,8 +166,23 @@ export const CreateClient = async () => {
 
 export const FilterClients = async (clientFilter: ClientFilter) => {
     const url = `${baseUrl}api/clients/filter`;
-    const response = await axios.post<ClientFilter>(url, clientFilter);
+
+    // Changing to generic return for now to act as pass-through, but normalizing.
+    const response = await axios.post(url, clientFilter);
     console.log('Odpowiedź:', response.data);
+
+    // Logic to normalize list if it matches Client structure
+    if (Array.isArray(response.data)) {
+        return response.data.map((item: any) => {
+            // If item matches ClientApiResponse structure (has .client)
+            if (item.client) {
+                return normalizeClientResponse(item);
+            }
+            // If item is already like ClientData (flat)
+            return deepCapitalize(item);
+        });
+    }
+    return [];
 }
 
 export const GetClient = async (clientId: string) => {
@@ -179,12 +194,12 @@ export const GetClient = async (clientId: string) => {
 
 export const AddAddressToClient = async (clientId: string, address: AddressData) => {
     const url = `${baseUrl}api/address/${clientId}/addresses`;
-    
+
     if (address.type == AddressType.PostOfficeBox)
-        address.streetPrefix=null;
+        address.streetPrefix = null;
 
     if (address.type == AddressType.PlaceOfStay)
-        address.placeOfStayData = {placeOfStayReason: 'PermanentDeparture'}
+        address.placeOfStayData = { placeOfStayReason: 'PermanentDeparture' }
     else
         address.placeOfStayData = null;
 
@@ -207,7 +222,7 @@ export const UpdateClientAddress = async (clientId: string, addressId: string, a
     const url = `${baseUrl}api/address/${clientId}/addresses/${addressId}`;
 
     if (address.type == AddressType.PlaceOfStay)
-        address.placeOfStayData = {placeOfStayReason: 'PermanentDeparture'}
+        address.placeOfStayData = { placeOfStayReason: 'PermanentDeparture' }
     else
         address.placeOfStayData = null;
 
@@ -343,7 +358,7 @@ export const GetBlackAddresses = async () => {
 
 export const AddBlackAddress = async (address: BlackAddressData) => {
     const url = `${baseUrl}api/forbidden-addresses`;
-        try {
+    try {
         const response = await axios.post(url, address);
         console.log('Odpowiedź:', response.data);
 
@@ -355,7 +370,7 @@ export const AddBlackAddress = async (address: BlackAddressData) => {
 
 export const UpdateBlackAddress = async (addressId: string, address: BlackAddressData) => {
     const url = `${baseUrl}api/forbidden-addresses/${addressId}`;
-        try {
+    try {
         const response = await axios.put(url, address);
         console.log('Odpowiedź:', response.data);
 
@@ -365,9 +380,9 @@ export const UpdateBlackAddress = async (addressId: string, address: BlackAddres
     }
 }
 
-export const DeleteBlackAddress= async (addressId: string) => {
+export const DeleteBlackAddress = async (addressId: string) => {
     const url = `${baseUrl}api/forbidden-addresses/${addressId}`;
-        try {
+    try {
         const response = await axios.delete(url);
         console.log('Odpowiedź:', response.data);
 
@@ -388,7 +403,7 @@ export const GetBlackPhones = async () => {
 
 export const AddBlackPhone = async (phone: BlackPhoneData) => {
     const url = `${baseUrl}api/forbidden-phones`;
-        try {
+    try {
         const response = await axios.post(url, phone);
         console.log('Odpowiedź:', response.data);
 
@@ -400,7 +415,7 @@ export const AddBlackPhone = async (phone: BlackPhoneData) => {
 
 export const UpdateBlackPhone = async (phoneId: string, phone: BlackPhoneData) => {
     const url = `${baseUrl}api/forbidden-phones/${phoneId}`;
-        try {
+    try {
         const response = await axios.put(url, phone);
         console.log('Odpowiedź:', response.data);
 
@@ -410,9 +425,9 @@ export const UpdateBlackPhone = async (phoneId: string, phone: BlackPhoneData) =
     }
 }
 
-export const DeleteBlackPhone= async (phoneId: string) => {
+export const DeleteBlackPhone = async (phoneId: string) => {
     const url = `${baseUrl}api/forbidden-phones/${phoneId}`;
-        try {
+    try {
         const response = await axios.delete(url);
         console.log('Odpowiedź:', response.data);
 
@@ -432,7 +447,7 @@ export const GetBlackEmails = async () => {
 
 export const AddBlackEmail = async (email: BlackEmailData) => {
     const url = `${baseUrl}api/forbidden-emails`;
-        try {
+    try {
         const response = await axios.post(url, email);
         console.log('Odpowiedź:', response.data);
 
@@ -444,7 +459,7 @@ export const AddBlackEmail = async (email: BlackEmailData) => {
 
 export const UpdateBlackEmail = async (emailId: string, email: BlackEmailData) => {
     const url = `${baseUrl}api/forbidden-emails/${emailId}`;
-        try {
+    try {
         const response = await axios.put(url, email);
         console.log('Odpowiedź:', response.data);
 
@@ -456,7 +471,7 @@ export const UpdateBlackEmail = async (emailId: string, email: BlackEmailData) =
 
 export const DeleteBlackEmail = async (emailId: string) => {
     const url = `${baseUrl}api/forbidden-emails/${emailId}`;
-        try {
+    try {
         const response = await axios.delete(url);
         console.log('Odpowiedź:', response.data);
 
@@ -496,7 +511,7 @@ function deepCapitalize(obj: any): any {
                 result[key] = obj[key]?.toLowerCase();
             } else {
                 result[key] = obj[key];
-            }          
+            }
         }
         return result;
     }
@@ -507,6 +522,6 @@ function capitalizeFirstLetter(str: string): string {
     return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
-const dictionaryNames = ['usage','status','type','changeSource','changeBasis','id','instanceId','placeOfStay','country','usages'];
+const dictionaryNames = ['usage', 'status', 'type', 'changeSource', 'changeBasis', 'id', 'instanceId', 'placeOfStay', 'country', 'usages'];
 
 const lowercaseDictionaryNames = ['streetPrefix'];

@@ -6,9 +6,11 @@ import { Client } from './components/Client';
 import { BlackLists } from './components/blackLists/BlackLists';
 import { GetClient } from './services/Api';
 import { AutoComplete } from './components/autocomplete/AutoComplete';
+import { Filtering } from './components/Filtering';
 
 function App() {
   const [clients, setClients] = useState<ClientData[]>([]);
+  const [activeTab, setActiveTab] = useState<'clients' | 'filtering'>('clients');
 
   const addClientToState = (newClient: ClientData) => {
     newClient.name = `Client ${clients.length + 1}`;
@@ -21,7 +23,7 @@ function App() {
 
     for (let c of clients) {
       const copy = {
-        id: c.id+'1',
+        id: c.id + '1',
         name: c.name,
         addresses: c.addresses.map(e => ({
           ...e,
@@ -58,25 +60,45 @@ function App() {
     <>
       <div className='main-container'>
         <div className="client-container">
-          <div className="add-client-button">
-            <AddClientButton addClientToState={addClientToState} />
+          <div className="main-nav-tabs">
+            <button
+              className={`nav-tab-button ${activeTab === 'clients' ? 'active' : ''}`}
+              onClick={() => setActiveTab('clients')}
+            >
+              Klienci
+            </button>
+            <button
+              className={`nav-tab-button ${activeTab === 'filtering' ? 'active' : ''}`}
+              onClick={() => setActiveTab('filtering')}
+            >
+              Filtrowanie
+            </button>
           </div>
-          <div className="client-list">
-            {clients.map((e) => (
-              <Client key={e.id} client={e} />
-            ))}
-          </div>
+
+          {activeTab === 'clients' ? (
+            <>
+              <div className="add-client-button">
+                <AddClientButton addClientToState={addClientToState} />
+              </div>
+              <div className="client-list">
+                {clients.map((e) => (
+                  <Client key={e.id} client={e} />
+                ))}
+              </div>
+            </>
+          ) : (
+            <Filtering />
+          )}
         </div>
         <div className='black-lists'>
           <BlackLists refreshClients={refreshClients} />
-        </div>    
+        </div>
       </div>
       <div className='auto-complete-container'>
-        {1>2 && <AutoComplete/>}
+        {1 > 2 && <AutoComplete />}
       </div>
     </>
   )
-
 }
 
 export default App
