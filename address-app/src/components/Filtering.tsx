@@ -1,6 +1,5 @@
 import { useState } from 'react';
-import type { ClientFilter } from '../models/filtering/ClientFilter';
-import type { ClientData } from '../models/ClientData';
+import type { ClientFilter, ClientFilterResponseItem } from '../models/filtering/ClientFilter';
 import { FilterClients } from '../services/Api';
 import { TextBox } from './TextBox';
 import { Dropdown } from './Dropdown'; // Assuming Dropdown exists
@@ -14,18 +13,20 @@ export const Filtering = () => {
         identificationNumbers: [],
         emailAddress: '',
         addressFilter: {
+            id: '',
             postalCode: '',
             streetName: '',
             city: '',
-            auildingNumber: '',
+            buildingNumber: '',
             apartmentNumber: ''
         },
         phoneFilter: {
+            id:'',
             numberWithoutPrefix: ''
         }
     });
 
-    const [results, setResults] = useState<ClientData[]>([]);
+    const [results, setResults] = useState<ClientFilterResponseItem[]>([]);
 
     const handleBasicChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
@@ -81,7 +82,7 @@ export const Filtering = () => {
         try {
             const data = await FilterClients(filter);
             if (data) {
-                setResults(data as unknown as ClientData[]);
+                setResults(data);
             }
         } catch (error) {
             console.error("Filter error", error);
@@ -106,7 +107,7 @@ export const Filtering = () => {
                     <div className="filtering-form-group">
                         <h4>Adres</h4>
                         <TextBox propertyName="streetName" displayName="Ulica" value={filter.addressFilter.streetName} handleChange={handleAddressChange} />
-                        <TextBox propertyName="auildingNumber" displayName="Nr budynku" value={filter.addressFilter.auildingNumber} handleChange={handleAddressChange} />
+                        <TextBox propertyName="auildingNumber" displayName="Nr budynku" value={filter.addressFilter.buildingNumber} handleChange={handleAddressChange} />
                         <TextBox propertyName="apartmentNumber" displayName="Nr lokalu" value={filter.addressFilter.apartmentNumber} handleChange={handleAddressChange} />
                         <TextBox propertyName="postalCode" displayName="Kod pocztowy" value={filter.addressFilter.postalCode} handleChange={handleAddressChange} />
                         <TextBox propertyName="city" displayName="Miasto" value={filter.addressFilter.city} handleChange={handleAddressChange} />

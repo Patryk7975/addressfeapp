@@ -1,10 +1,10 @@
-import type { ClientData } from "../models/ClientData";
+import type { ClientFilterResponseItem } from "../models/filtering/ClientFilter";
 
-export const FilteringResultRow = ({ client }: { client: ClientData }) => {
+export const FilteringResultRow = ({ client }: { client: ClientFilterResponseItem }) => {
     return (
         <div className="client-card filtering-result-card">
             <div className="client-basic-data-header">
-                <h3>{client.name}</h3>
+                <h3>{client.fullName}</h3>
                 {/* No buttons here */}
             </div>
 
@@ -15,7 +15,7 @@ export const FilteringResultRow = ({ client }: { client: ClientData }) => {
                         <ul>
                             {client.addresses.map(addr => (
                                 <li key={addr.id}>
-                                    {addr.streetPrefix} {addr.streetName} {addr.buildingNumber}/{addr.apartmentNumber}, {addr.postalCode} {addr.city}
+                                    {addr.streetName} {addr.buildingNumber}/{addr.apartmentNumber}, {addr.postalCode} {addr.city}
                                 </li>
                             ))}
                         </ul>
@@ -30,7 +30,7 @@ export const FilteringResultRow = ({ client }: { client: ClientData }) => {
                         <ul>
                             {client.phones.map(phone => (
                                 <li key={phone.id}>
-                                    {phone.number} ({phone.type})
+                                    {phone.numberWithoutPrefix}
                                 </li>
                             ))}
                         </ul>
@@ -44,7 +44,7 @@ export const FilteringResultRow = ({ client }: { client: ClientData }) => {
                     {client.emails.length > 0 ? (
                         <ul>
                             {client.emails.map(email => (
-                                <li key={email.id}>{email.emailAddress}</li>
+                                <li key={email.id}>{email.email}</li>
                             ))}
                         </ul>
                     ) : (

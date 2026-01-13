@@ -14,19 +14,28 @@ export interface IdentificationNumber {
 }
 
 export interface AddressFilter {
+    id: string | null,
     postalCode: string,
     streetName: string,
     city: string,
-    auildingNumber: string,
+    buildingNumber: string,
     apartmentNumber: string,
 }
 
 export interface PhoneFilter {
+    id: string | null,
     numberWithoutPrefix: string,
 }
 
-import type { ClientData } from "../ClientData";
-
 export interface ClientFilterResponse {
-    items: ClientData[]
+    items: ClientFilterResponseItem[]
+}
+
+export interface ClientFilterResponseItem {
+    id: string,
+    fullName: string,
+    identificationNumbers: IdentificationNumber[],
+    emails: {id:string, email:string}[],
+    addresses: AddressFilter[],
+    phones: PhoneFilter[]
 }
