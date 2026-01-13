@@ -532,7 +532,8 @@ input[type="checkbox"] {
 /* Filtering Layout */
 .filtering-container {
   display: grid;
-  grid-template-columns: 350px 1fr;
+  grid-template-columns: 800px 1fr;
+  /* Widened from 350px to ~2x */
   gap: var(--space-xl);
   align-items: start;
 }
@@ -600,4 +601,31 @@ input[type="checkbox"] {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
   gap: var(--space-lg);
+}
+
+.filtering-top-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-md);
+}
+
+.filtering-id-row {
+  display: flex;
+  gap: var(--space-sm);
+  align-items: flex-end;
+  margin-bottom: var(--space-sm);
+  padding-bottom: var(--space-sm);
+  border-bottom: 1px dashed var(--border);
+}
+
+.filtering-id-row .dropdown,
+.filtering-id-row .textbox {
+  flex: 1;
+  margin-bottom: 0;
+}
+
+.filtering-id-row .remove-usage-button {
+  height: 38px;
+  /* Match input height roughly */
+  margin-bottom: 0px;
 }
