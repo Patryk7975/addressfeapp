@@ -1,9 +1,7 @@
 import { useState } from 'react';
 import type { ClientFilter } from '../models/filtering/ClientFilter';
-import type { ClientData } from '../models/ClientData';
 import { FilterClients } from '../services/Api';
 import { TextBox } from './TextBox';
-import { Client } from './Client';
 
 export const Filtering = () => {
     const [filter, setFilter] = useState<ClientFilter>({
@@ -24,7 +22,7 @@ export const Filtering = () => {
         }
     });
 
-    const [results, setResults] = useState<ClientData[]>([]);
+    const [results, setResults] = useState<ClientFilter[]>([]);
 
     // Generic handler might be tricky with nested objects, doing specific ones
     const handleBasicChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -56,14 +54,9 @@ export const Filtering = () => {
 
     const handleSearch = async () => {
         try {
-            // Logic to filter empty strings if needed, or backend handles it.
-            // Assuming FilterClients returns ClientData[] (normalized)
             const data = await FilterClients(filter);
             if (data) {
-                // The Api.ts update returns normalized data, likely array of ClientData or something close.
-                // We treated it as any in the map logic, so we need to cast or hope it matches ClientData.
-                // Let's assume it matches ClientData structure since we used normalizeClientResponse.
-                setResults(data as unknown as ClientData[]);
+                setResults(data);
             }
         } catch (error) {
             console.error("Filter error", error);
@@ -106,7 +99,7 @@ export const Filtering = () => {
                 <h3>Wyniki ({results.length})</h3>
                 <div className="filtering-results-list">
                     {results.map(client => (
-                        <Client key={client.id} client={client} />
+                        <p>{JSON.stringify(client)}</p>
                     ))}
                 </div>
             </div>
