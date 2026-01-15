@@ -11,6 +11,8 @@ import { AddressUsageType } from "../enums/AddressUsageType";
 import { NewUsage } from "./NewUsage";
 import { AddAddressToClient, UpdateClientAddress } from "../services/Api";
 import { StreetPrefix } from "../enums/StreetPrefix";
+import { GetCities, GetPostalCodes, GetStreets } from "../services/NormalizationApi";
+import { AutocompleteTextBox } from "./AutocompleteTextBox";
 
 
 interface UpdateAddressFormProps {
@@ -159,11 +161,29 @@ export const UpdateAddressForm = ({ address, clientId, onCancelAddingNewAddress,
             <div className="new-address-form-controls">
                 <Dropdown propertyName={"streetPrefix"} displayName={"Prefix"} value={StreetPrefix[formData.streetPrefix ?? -1]} options={streetPrefixes} handleChange={handleDropdownChange} />
 
-                <TextBox propertyName={"streetName"} displayName={"Ulica"} value={formData.streetName} handleChange={handleTextBoxChange} />
+                <AutocompleteTextBox
+                    propertyName={"streetName"}
+                    displayName={"Ulica"}
+                    value={formData.streetName}
+                    handleChange={handleTextBoxChange}
+                    fetchSuggestions={(val) => GetStreets(formData.city ?? "", val, formData.postalCode ?? "")}
+                />
                 <TextBox propertyName={"buildingNumber"} displayName={"Nr budynku"} value={formData.buildingNumber} handleChange={handleTextBoxChange} />
                 <TextBox propertyName={"apartmentNumber"} displayName={"Nr lokalu"} value={formData.apartmentNumber} handleChange={handleTextBoxChange} />
-                <TextBox propertyName={"postalCode"} displayName={"Kod pocztowy"} value={formData.postalCode} handleChange={handleTextBoxChange} />
-                <TextBox propertyName={"city"} displayName={"Miasto"} value={formData.city} handleChange={handleTextBoxChange} />
+                <AutocompleteTextBox
+                    propertyName={"postalCode"}
+                    displayName={"Kod pocztowy"}
+                    value={formData.postalCode}
+                    handleChange={handleTextBoxChange}
+                    fetchSuggestions={(val) => GetPostalCodes(formData.city ?? "", formData.streetName ?? "", val)}
+                />
+                <AutocompleteTextBox
+                    propertyName={"city"}
+                    displayName={"Miasto"}
+                    value={formData.city}
+                    handleChange={handleTextBoxChange}
+                    fetchSuggestions={(val) => GetCities(val, formData.postalCode ?? "")}
+                />
 
                 <Dropdown propertyName={"country"} displayName={"Kraj"} value={Country[formData.country ?? -1]} options={countries} handleChange={handleDropdownChange} />
                 <Dropdown propertyName={"type"} displayName={"Typ"} value={AddressType[formData.type ?? -1]} options={types} handleChange={handleDropdownChange} />
