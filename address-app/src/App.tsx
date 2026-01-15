@@ -5,7 +5,6 @@ import type { ClientData } from './models/ClientData';
 import { Client } from './components/Client';
 import { BlackLists } from './components/blackLists/BlackLists';
 import { GetClient } from './services/Api';
-import { AutoComplete } from './components/autocomplete/AutoComplete';
 import { Filtering } from './components/Filtering';
 
 function App() {
@@ -95,9 +94,6 @@ function App() {
             <BlackLists refreshClients={refreshClients} />
           </div>
         )}
-      </div>
-      <div className='auto-complete-container'>
-        {1 > 2 && <AutoComplete />}
       </div>
     </>
   )
