@@ -7,9 +7,10 @@ interface AutocompleteTextBoxProps {
     value: string | undefined;
     handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
     fetchSuggestions: (value: string) => Promise<string[]>;
+    minLength: number
 }
 
-export const AutocompleteTextBox = ({ propertyName, displayName, value, handleChange, fetchSuggestions }: AutocompleteTextBoxProps) => {
+export const AutocompleteTextBox = ({ propertyName, displayName, value, handleChange, fetchSuggestions, minLength }: AutocompleteTextBoxProps) => {
     const [suggestions, setSuggestions] = useState<string[]>([]);
     const [showSuggestions, setShowSuggestions] = useState(false);
     const wrapperRef = useRef<HTMLDivElement>(null);
@@ -29,7 +30,16 @@ export const AutocompleteTextBox = ({ propertyName, displayName, value, handleCh
     const onInputChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         handleChange(e);
         const inputValue = e.target.value;
-        if (inputValue.length >= 3) {
+        await getValues(inputValue);
+    };
+
+    const onInputClick = async (e: React.MouseEvent<HTMLInputElement>) => {
+        const inputValue = e.currentTarget.value;
+        await getValues(inputValue);
+    }
+
+    const getValues = async (inputValue: string) => {
+        if (inputValue.length >= minLength) {
             try {
                 const results = await fetchSuggestions(inputValue);
                 setSuggestions(results);
@@ -42,7 +52,7 @@ export const AutocompleteTextBox = ({ propertyName, displayName, value, handleCh
             setSuggestions([]);
             setShowSuggestions(false);
         }
-    };
+    }
 
     const handleSuggestionClick = (suggestion: string) => {
         const event = {
@@ -64,6 +74,7 @@ export const AutocompleteTextBox = ({ propertyName, displayName, value, handleCh
                 name={propertyName}
                 value={value}
                 onChange={onInputChange}
+                onClick={onInputClick}
                 autoComplete="off"
             />
             {showSuggestions && suggestions.length > 0 && (

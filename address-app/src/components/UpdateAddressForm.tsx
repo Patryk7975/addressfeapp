@@ -167,6 +167,7 @@ export const UpdateAddressForm = ({ address, clientId, onCancelAddingNewAddress,
                     value={formData.streetName}
                     handleChange={handleTextBoxChange}
                     fetchSuggestions={(val) => GetStreets(formData.city ?? "", val, formData.postalCode ?? "")}
+                    minLength={(formData.city ?? "").length > 0 || (formData.postalCode ?? "").length > 0 ? 0 : 3}
                 />
                 <TextBox propertyName={"buildingNumber"} displayName={"Nr budynku"} value={formData.buildingNumber} handleChange={handleTextBoxChange} />
                 <TextBox propertyName={"apartmentNumber"} displayName={"Nr lokalu"} value={formData.apartmentNumber} handleChange={handleTextBoxChange} />
@@ -176,6 +177,7 @@ export const UpdateAddressForm = ({ address, clientId, onCancelAddingNewAddress,
                     value={formData.postalCode}
                     handleChange={handleTextBoxChange}
                     fetchSuggestions={(val) => GetPostalCodes(formData.city ?? "", formData.streetName ?? "", val)}
+                    minLength={(formData.city ?? "").length > 0 || (formData.streetName ?? "").length > 0 ? 0 : 2}
                 />
                 <AutocompleteTextBox
                     propertyName={"city"}
@@ -183,6 +185,7 @@ export const UpdateAddressForm = ({ address, clientId, onCancelAddingNewAddress,
                     value={formData.city}
                     handleChange={handleTextBoxChange}
                     fetchSuggestions={(val) => GetCities(val, formData.postalCode ?? "")}
+                    minLength={(formData.postalCode ?? "").length > 0 ? 0 : 3}
                 />
 
                 <Dropdown propertyName={"country"} displayName={"Kraj"} value={Country[formData.country ?? -1]} options={countries} handleChange={handleDropdownChange} />
