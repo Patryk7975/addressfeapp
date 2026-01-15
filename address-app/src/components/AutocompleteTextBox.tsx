@@ -14,6 +14,7 @@ export const AutocompleteTextBox = ({ propertyName, displayName, value, handleCh
     const [suggestions, setSuggestions] = useState<string[]>([]);
     const [showSuggestions, setShowSuggestions] = useState(false);
     const wrapperRef = useRef<HTMLDivElement>(null);
+    const debounceRef = useRef<number | null>(null);
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
@@ -30,12 +31,26 @@ export const AutocompleteTextBox = ({ propertyName, displayName, value, handleCh
     const onInputChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         handleChange(e);
         const inputValue = e.target.value;
-        await getValues(inputValue);
+
+        if (debounceRef.current) {
+            clearTimeout(debounceRef.current);
+        }
+
+        debounceRef.current = setTimeout(() => {
+            getValues(inputValue);
+        }, 300);
     };
 
     const onInputClick = async (e: React.MouseEvent<HTMLInputElement>) => {
         const inputValue = e.currentTarget.value;
-        await getValues(inputValue);
+        
+        if (debounceRef.current) {
+            clearTimeout(debounceRef.current);
+        }
+
+        debounceRef.current = setTimeout(() => {
+            getValues(inputValue);
+        }, 300);
     }
 
     const getValues = async (inputValue: string) => {
