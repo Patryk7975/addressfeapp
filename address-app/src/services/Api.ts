@@ -211,6 +211,10 @@ export const UpdateClientAddress = async (clientId: string, addressId: string, a
 
     if (address.type == AddressType.PlaceOfStay)
         address.placeOfStayData = { placeOfStayReason: 'PermanentDeparture' }
+    else if (address.type == AddressType.PostOfficeBox) {
+        address.streetPrefix=null;
+        address.placeOfStayData = null;
+        }
     else
         address.placeOfStayData = null;
 

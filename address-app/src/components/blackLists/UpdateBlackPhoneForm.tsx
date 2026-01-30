@@ -4,6 +4,8 @@ import type { BlackPhoneData } from "../../models/blackLists/BlackPhoneData";
 import { Dropdown } from "../Dropdown";
 import { TextBox } from "../TextBox";
 import { AddBlackPhone, UpdateBlackPhone } from "../../services/Api";
+import { ChangeSource } from "../../enums/ChangeSource";
+import { ChangeBasis } from "../../enums/ChangeBasis";
 
 interface UpdateBlackPhoneFormProps {
     phone: BlackPhoneData | null,
@@ -19,7 +21,9 @@ export const UpdateBlackPhoneForm = ({ phone, onCancelAddingNewPhone, onSubmitAd
         number: phone?.number ?? "123456789",
         country: Country.Poland,
         description: phone?.description ?? "",
-        isDeleted: false
+        isDeleted: false,
+        changeSource: ChangeSource.Client,
+        changeBasis: ChangeBasis.DirectConversation 
     };
 
     if (phone != null) {
