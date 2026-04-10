@@ -23,6 +23,7 @@ export interface AddressData {
   streetPrefix: StreetPrefix | undefined | null;
   investorId: string | null,
   sellerId: string | null,
+  firstLevelOfDivision: LevelOfDivision | null,
   secondLevelOfDivision: LevelOfDivision | null,
   thirdLevelOfDivision: LevelOfDivision | null,
 }

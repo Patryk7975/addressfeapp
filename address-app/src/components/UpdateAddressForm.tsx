@@ -15,6 +15,8 @@ import { GetCities, GetPostalCodes, GetStreets } from "../services/Normalization
 import { AutocompleteTextBox } from "./AutocompleteTextBox";
 import { ProvinceItaly } from "../enums/ProvinceItaly";
 import { DistrictItaly } from "../enums/DistrictItaly";
+import { DistrictRomania } from "../enums/DistrictRomania";
+import { RegionRomania } from "../enums/RegionRomania";
 
 
 interface UpdateAddressFormProps {
@@ -45,6 +47,7 @@ export const UpdateAddressForm = ({ address, clientId, onCancelAddingNewAddress,
         streetPrefix: StreetPrefix.ul,
         investorId: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
         sellerId: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+        firstLevelOfDivision: null,
         secondLevelOfDivision: null,
         thirdLevelOfDivision: null
     };
@@ -68,6 +71,9 @@ export const UpdateAddressForm = ({ address, clientId, onCancelAddingNewAddress,
         if (address.streetPrefix) {
             defaultAddress.streetPrefix = StreetPrefix[address.streetPrefix.toString() as keyof typeof StreetPrefix];
         }
+        if (address.firstLevelOfDivision) {
+            defaultAddress.firstLevelOfDivision = { ...address.firstLevelOfDivision };
+        }
         if (address.secondLevelOfDivision) {
             defaultAddress.secondLevelOfDivision = { ...address.secondLevelOfDivision };
         }
@@ -88,7 +94,10 @@ export const UpdateAddressForm = ({ address, clientId, onCancelAddingNewAddress,
         defaultAddress.streetPrefix = null;
     }
 
-    if (defaultAddress.country !== Country.Italy) {
+    if (defaultAddress.country === Country.Italy) {
+        defaultAddress.firstLevelOfDivision = null;
+    } else if (defaultAddress.country !== Country.Romania) {
+        defaultAddress.firstLevelOfDivision = null;
         defaultAddress.secondLevelOfDivision = null;
         defaultAddress.thirdLevelOfDivision = null;
     }
@@ -102,6 +111,9 @@ export const UpdateAddressForm = ({ address, clientId, onCancelAddingNewAddress,
     const streetPrefixes = Object.keys(StreetPrefix).filter((key) => isNaN(Number(key))) as (keyof typeof StreetPrefix)[];
     const provincesItaly = Object.keys(ProvinceItaly).filter((key) => isNaN(Number(key))) as (keyof typeof ProvinceItaly)[];
     const districtsItaly = Object.keys(DistrictItaly).filter((key) => isNaN(Number(key))) as (keyof typeof DistrictItaly)[];
+    const regionRomania = Object.keys(RegionRomania).filter((key) => isNaN(Number(key))) as (keyof typeof RegionRomania)[];
+    const districtRomania = Object.keys(DistrictRomania).filter((key) => isNaN(Number(key))) as (keyof typeof DistrictRomania)[];
+    const sectors = ["1", "2", "3", "4", "5", "6"];
 
     const handleRemoveUsage = (idx: number) => {
         let data = { ...formData };
@@ -135,7 +147,16 @@ export const UpdateAddressForm = ({ address, clientId, onCancelAddingNewAddress,
             if (country !== Country.Poland) {
                 data.streetPrefix = null;
             }
-            if (country !== Country.Italy) {
+            if (country === Country.Italy) {
+                data.firstLevelOfDivision = null;
+                data.secondLevelOfDivision = { value: provincesItaly[0], meaning: "Province" };
+                data.thirdLevelOfDivision = { value: districtsItaly[0], meaning: "Municipality" };
+            } else if (country === Country.Romania) {
+                data.firstLevelOfDivision = { value: regionRomania[0], meaning: "County " };
+                data.secondLevelOfDivision = { value: districtRomania[0], meaning: "Commune " };
+                data.thirdLevelOfDivision = { value: sectors[0], meaning: "Sector " };
+            } else {
+                data.firstLevelOfDivision = null;
                 data.secondLevelOfDivision = null;
                 data.thirdLevelOfDivision = null;
             }
@@ -157,6 +178,15 @@ export const UpdateAddressForm = ({ address, clientId, onCancelAddingNewAddress,
         }
         if (name === "municipality") {
             data.thirdLevelOfDivision = { value: value, meaning: "Municipality" };
+        }
+        if (name === "county") {
+            data.firstLevelOfDivision = { value: value, meaning: "County " };
+        }
+        if (name === "commune") {
+            data.secondLevelOfDivision = { value: value, meaning: "Commune " };
+        }
+        if (name === "sector") {
+            data.thirdLevelOfDivision = { value: value, meaning: "Sector " };
         }
         setFormData(data);
     };
@@ -199,7 +229,7 @@ export const UpdateAddressForm = ({ address, clientId, onCancelAddingNewAddress,
     return (
         <div className="new-address-form">
             <div className="new-address-form-controls">
-                
+
                 {formData.country === Country.Poland && (
                     <Dropdown className="prefix-col" propertyName={"streetPrefix"} displayName={"Prefix"} value={StreetPrefix[formData.streetPrefix ?? -1]} options={streetPrefixes} handleChange={handleDropdownChange} />
                 )}
@@ -242,6 +272,13 @@ export const UpdateAddressForm = ({ address, clientId, onCancelAddingNewAddress,
                     <>
                         <Dropdown className="province-col" propertyName={"province"} displayName={"Province"} value={formData.secondLevelOfDivision?.value ?? ""} options={provincesItaly} handleChange={handleDropdownChange} />
                         <Dropdown className="municipality-col" propertyName={"municipality"} displayName={"Municipality"} value={formData.thirdLevelOfDivision?.value ?? ""} options={districtsItaly} handleChange={handleDropdownChange} />
+                    </>
+                )}
+                {formData.country === Country.Romania && (
+                    <>
+                        <Dropdown className="county-col" propertyName={"county"} displayName={"County"} value={formData.firstLevelOfDivision?.value ?? ""} options={regionRomania} handleChange={handleDropdownChange} />
+                        <Dropdown className="commune-col" propertyName={"commune"} displayName={"Commune"} value={formData.secondLevelOfDivision?.value ?? ""} options={districtRomania} handleChange={handleDropdownChange} />
+                        <Dropdown className="sector-col" propertyName={"sector"} displayName={"Sector"} value={formData.thirdLevelOfDivision?.value ?? ""} options={sectors} handleChange={handleDropdownChange} />
                     </>
                 )}
             </div>

@@ -403,6 +403,18 @@ input[type="checkbox"] {
   grid-column: span 4;
 }
 
+.new-address-form-controls .county-col {
+  grid-column: span 4;
+}
+
+.new-address-form-controls .commune-col {
+  grid-column: span 4;
+}
+
+.new-address-form-controls .sector-col {
+  grid-column: span 4;
+}
+
 /* Blacklist Address Form Specific Grid */
 .black-address-form-controls {
   display: grid;
