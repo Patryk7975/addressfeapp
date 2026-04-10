@@ -43,6 +43,8 @@ export const UpdateAddressForm = ({ address, clientId, onCancelAddingNewAddress,
         streetPrefix: StreetPrefix.ul,
         investorId: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
         sellerId: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+        secondLevelOfDivision: null,
+        thirdLevelOfDivision: null
     };
 
     if (address != null) {

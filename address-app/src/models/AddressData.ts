@@ -23,6 +23,8 @@ export interface AddressData {
   streetPrefix: StreetPrefix | undefined | null;
   investorId: string | null,
   sellerId: string | null,
+  secondLevelOfDivision: LevelOfDivision | null,
+  thirdLevelOfDivision: LevelOfDivision | null,
 }
 
 export interface Usage {
@@ -34,4 +36,9 @@ export interface Usage {
 
 export interface PlaceOfStayData {
   placeOfStayReason: string | undefined | null;
+}
+
+export interface LevelOfDivision {
+  value: string | null;
+  meaning: string | null;
 }
