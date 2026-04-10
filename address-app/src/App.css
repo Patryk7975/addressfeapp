@@ -348,65 +348,60 @@ input[type="checkbox"] {
 }
 
 /* Row 1: Prefix(2), Street(6), Building(2), Apartment(2) */
-.new-address-form-controls .dropdown:nth-child(1) {
+.new-address-form-controls .prefix-col {
   grid-column: span 2;
 }
 
-.new-address-form-controls .dropdown:nth-child(1) select {
+.new-address-form-controls .prefix-col select {
   padding-left: var(--space-xs);
   padding-right: var(--space-xs);
 }
 
-/* Prefix */
-.new-address-form-controls .textbox:nth-child(2) {
+.new-address-form-controls .street-col {
   grid-column: span 6;
 }
 
-/* Street */
-.new-address-form-controls .textbox:nth-child(3) {
+.new-address-form-controls .building-col {
   grid-column: span 2;
 }
 
-/* Building */
-.new-address-form-controls .textbox:nth-child(4) {
+.new-address-form-controls .apartment-col {
   grid-column: span 2;
 }
-
-/* Apartment */
 
 /* Row 2: Postal(4), City(4), Country(4) */
-.new-address-form-controls .textbox:nth-child(5) {
+.new-address-form-controls .postal-col {
   grid-column: span 4;
 }
 
-/* Postal */
-.new-address-form-controls .textbox:nth-child(6) {
+.new-address-form-controls .city-col {
   grid-column: span 4;
 }
 
-/* City */
-.new-address-form-controls .dropdown:nth-child(7) {
+.new-address-form-controls .country-col {
   grid-column: span 4;
 }
-
-/* Country */
 
 /* Row 3: Type(4), Source(4), Basis(4) */
-.new-address-form-controls .dropdown:nth-child(8) {
+.new-address-form-controls .type-col {
   grid-column: span 4;
 }
 
-/* Type */
-.new-address-form-controls .dropdown:nth-child(9) {
+.new-address-form-controls .source-col {
   grid-column: span 4;
 }
 
-/* Source */
-.new-address-form-controls .dropdown:nth-child(10) {
+.new-address-form-controls .basis-col {
   grid-column: span 4;
 }
 
-/* Basis */
+.new-address-form-controls .province-col {
+  grid-column: span 4;
+}
+
+.new-address-form-controls .municipality-col {
+  grid-column: span 4;
+}
 
 /* Blacklist Address Form Specific Grid */
 .black-address-form-controls {
@@ -421,51 +416,42 @@ input[type="checkbox"] {
 }
 
 /* Row 1: Prefix(2), Street(6), Building(2), Apartment(2) */
-.black-address-form-controls .dropdown:nth-child(1) {
+.black-address-form-controls .prefix-col {
   grid-column: span 2;
 }
 
-/* Prefix */
-.black-address-form-controls .dropdown:nth-child(1) select {
+.black-address-form-controls .prefix-col select {
   padding-left: var(--space-xs);
   padding-right: var(--space-xs);
 }
 
-.black-address-form-controls .textbox:nth-child(2) {
+.black-address-form-controls .street-col {
   grid-column: span 6;
 }
 
-/* Street */
-.black-address-form-controls .textbox:nth-child(3) {
+.black-address-form-controls .building-col {
   grid-column: span 2;
 }
 
-/* Building */
-.black-address-form-controls .textbox:nth-child(4) {
+.black-address-form-controls .apartment-col {
   grid-column: span 2;
 }
-
-/* Apartment */
 
 /* Row 2: Postal(4), City(4), Country(4) */
-.black-address-form-controls .textbox:nth-child(5) {
+.black-address-form-controls .postal-col {
   grid-column: span 4;
 }
 
-/* Postal */
-.black-address-form-controls .textbox:nth-child(6) {
+.black-address-form-controls .city-col {
   grid-column: span 4;
 }
 
-/* City */
-.black-address-form-controls .dropdown:nth-child(7) {
+.black-address-form-controls .country-col {
   grid-column: span 4;
 }
-
-/* Country */
 
 /* Row 3: Description(12) */
-.black-address-form-controls .textbox:nth-child(8) {
+.black-address-form-controls .description-col {
   grid-column: span 12;
 }
 
