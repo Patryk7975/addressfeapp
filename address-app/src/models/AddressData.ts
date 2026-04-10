@@ -21,6 +21,8 @@ export interface AddressData {
   placeOfStayData: PlaceOfStayData | undefined | null;
   notes: string | undefined | null;
   streetPrefix: StreetPrefix | undefined | null;
+  investorId: string | null,
+  sellerId: string | null,
 }
 
 export interface Usage {

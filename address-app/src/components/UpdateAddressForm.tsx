@@ -40,10 +40,15 @@ export const UpdateAddressForm = ({ address, clientId, onCancelAddingNewAddress,
         placeOfStayData: { placeOfStayReason: 'a' },
         notes: '',
         usages: [{ status: VerificationStatus.NotVerified, type: AddressUsageType.Activity, id: null, verificationDate: null }],
-        streetPrefix: StreetPrefix.ul
+        streetPrefix: StreetPrefix.ul,
+        investorId: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+        sellerId: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
     };
 
     if (address != null) {
+        address.investorId = "3fa85f64-5717-4562-b3fc-2c963f66afa6";
+        address.sellerId = "3fa85f64-5717-4562-b3fc-2c963f66afa6";
+
         if (address.country) {
             defaultAddress.country = Country[address.country.toString() as keyof typeof Country];
         }
@@ -159,6 +164,7 @@ export const UpdateAddressForm = ({ address, clientId, onCancelAddingNewAddress,
     return (
         <div className="new-address-form">
             <div className="new-address-form-controls">
+                
                 <Dropdown propertyName={"streetPrefix"} displayName={"Prefix"} value={StreetPrefix[formData.streetPrefix ?? -1]} options={streetPrefixes} handleChange={handleDropdownChange} />
 
                 <AutocompleteTextBox
