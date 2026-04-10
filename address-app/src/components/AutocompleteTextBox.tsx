@@ -7,10 +7,11 @@ interface AutocompleteTextBoxProps {
     value: string | undefined;
     handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
     fetchSuggestions: (value: string) => Promise<string[]>;
-    minLength: number
+    minLength: number;
+    className?: string;
 }
 
-export const AutocompleteTextBox = ({ propertyName, displayName, value, handleChange, fetchSuggestions, minLength }: AutocompleteTextBoxProps) => {
+export const AutocompleteTextBox = ({ propertyName, displayName, value, handleChange, fetchSuggestions, minLength, className }: AutocompleteTextBoxProps) => {
     const [suggestions, setSuggestions] = useState<string[]>([]);
     const [showSuggestions, setShowSuggestions] = useState(false);
     const wrapperRef = useRef<HTMLDivElement>(null);
@@ -81,7 +82,7 @@ export const AutocompleteTextBox = ({ propertyName, displayName, value, handleCh
     };
 
     return (
-        <div className="textbox autocomplete-container" ref={wrapperRef}>
+        <div className={`textbox autocomplete-container ${className ?? ""}`} ref={wrapperRef}>
             <label htmlFor={propertyName}>{displayName}</label>
             <input
                 type="text"

@@ -41,6 +41,10 @@ export const UpdateBlackAddressForm = ({ address, onCancelAddingNewAddress, onSu
         }
     }
 
+    if (defaultAddress.country !== Country.Poland) {
+        defaultAddress.streetPrefix = null;
+    }
+
     const [formData, setFormData] = useState(defaultAddress);
 
     const countries = Object.keys(Country).filter((key) => isNaN(Number(key))) as (keyof typeof Country)[];
@@ -60,7 +64,11 @@ export const UpdateBlackAddressForm = ({ address, onCancelAddingNewAddress, onSu
         let data = { ...formData };
 
         if (name === "country") {
-            data.country = Country[value as keyof typeof Country];
+            const country = Country[value as keyof typeof Country];
+            data.country = country;
+            if (country !== Country.Poland) {
+                data.streetPrefix = null;
+            }
         }
         if (name === "streetPrefix") {
             data.streetPrefix = StreetPrefix[value as keyof typeof StreetPrefix];
@@ -83,17 +91,19 @@ export const UpdateBlackAddressForm = ({ address, onCancelAddingNewAddress, onSu
     return (
         <div className="new-address-form">
             <div className="black-address-form-controls">
-                <Dropdown propertyName={"streetPrefix"} displayName={"Prefix"} value={StreetPrefix[formData.streetPrefix ?? -1]} options={streetPrefixes} handleChange={handleDropdownChange} />
+                {formData.country === Country.Poland && (
+                    <Dropdown className="prefix-col" propertyName={"streetPrefix"} displayName={"Prefix"} value={StreetPrefix[formData.streetPrefix ?? -1]} options={streetPrefixes} handleChange={handleDropdownChange} />
+                )}
 
-                <TextBox propertyName={"streetName"} displayName={"Ulica"} value={formData.streetName} handleChange={handleTextBoxChange} />
-                <TextBox propertyName={"buildingNumber"} displayName={"Nr budynku"} value={formData.buildingNumber} handleChange={handleTextBoxChange} />
-                <TextBox propertyName={"apartmentNumber"} displayName={"Nr lokalu"} value={formData.apartmentNumber} handleChange={handleTextBoxChange} />
+                <TextBox className="street-col" propertyName={"streetName"} displayName={"Ulica"} value={formData.streetName} handleChange={handleTextBoxChange} />
+                <TextBox className="building-col" propertyName={"buildingNumber"} displayName={"Nr budynku"} value={formData.buildingNumber} handleChange={handleTextBoxChange} />
+                <TextBox className="apartment-col" propertyName={"apartmentNumber"} displayName={"Nr lokalu"} value={formData.apartmentNumber} handleChange={handleTextBoxChange} />
 
-                <TextBox propertyName={"postalCode"} displayName={"Kod pocztowy"} value={formData.postalCode} handleChange={handleTextBoxChange} />
-                <TextBox propertyName={"city"} displayName={"Miasto"} value={formData.city} handleChange={handleTextBoxChange} />
-                <Dropdown propertyName={"country"} displayName={"Kraj"} value={Country[formData.country ?? -1]} options={countries} handleChange={handleDropdownChange} />
+                <TextBox className="postal-col" propertyName={"postalCode"} displayName={"Kod pocztowy"} value={formData.postalCode} handleChange={handleTextBoxChange} />
+                <TextBox className="city-col" propertyName={"city"} displayName={"Miasto"} value={formData.city} handleChange={handleTextBoxChange} />
+                <Dropdown className="country-col" propertyName={"country"} displayName={"Kraj"} value={Country[formData.country ?? -1]} options={countries} handleChange={handleDropdownChange} />
 
-                <TextBox propertyName={"description"} displayName={"Opis"} value={formData.description} handleChange={handleTextBoxChange} />
+                <TextBox className="description-col" propertyName={"description"} displayName={"Opis"} value={formData.description} handleChange={handleTextBoxChange} />
             </div>
 
             {address === null && <div className="add-new-address-buttons">

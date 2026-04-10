@@ -13,6 +13,8 @@ import { AddAddressToClient, UpdateClientAddress } from "../services/Api";
 import { StreetPrefix } from "../enums/StreetPrefix";
 import { GetCities, GetPostalCodes, GetStreets } from "../services/NormalizationApi";
 import { AutocompleteTextBox } from "./AutocompleteTextBox";
+import { ProvinceItaly } from "../enums/ProvinceItaly";
+import { DistrictItaly } from "../enums/DistrictItaly";
 
 
 interface UpdateAddressFormProps {
@@ -66,6 +68,12 @@ export const UpdateAddressForm = ({ address, clientId, onCancelAddingNewAddress,
         if (address.streetPrefix) {
             defaultAddress.streetPrefix = StreetPrefix[address.streetPrefix.toString() as keyof typeof StreetPrefix];
         }
+        if (address.secondLevelOfDivision) {
+            defaultAddress.secondLevelOfDivision = { ...address.secondLevelOfDivision };
+        }
+        if (address.thirdLevelOfDivision) {
+            defaultAddress.thirdLevelOfDivision = { ...address.thirdLevelOfDivision };
+        }
         defaultAddress.usages.length = 0;
         for (let u of address.usages) {
             if (u.status && u.type) {
@@ -76,6 +84,15 @@ export const UpdateAddressForm = ({ address, clientId, onCancelAddingNewAddress,
         }
     }
 
+    if (defaultAddress.country !== Country.Poland) {
+        defaultAddress.streetPrefix = null;
+    }
+
+    if (defaultAddress.country !== Country.Italy) {
+        defaultAddress.secondLevelOfDivision = null;
+        defaultAddress.thirdLevelOfDivision = null;
+    }
+
     const [formData, setFormData] = useState(defaultAddress);
 
     const countries = Object.keys(Country).filter((key) => isNaN(Number(key))) as (keyof typeof Country)[];
@@ -83,6 +100,8 @@ export const UpdateAddressForm = ({ address, clientId, onCancelAddingNewAddress,
     const changeBasis = Object.keys(ChangeBasis).filter((key) => isNaN(Number(key))) as (keyof typeof ChangeBasis)[];
     const changeSource = Object.keys(ChangeSource).filter((key) => isNaN(Number(key))) as (keyof typeof ChangeSource)[];
     const streetPrefixes = Object.keys(StreetPrefix).filter((key) => isNaN(Number(key))) as (keyof typeof StreetPrefix)[];
+    const provincesItaly = Object.keys(ProvinceItaly).filter((key) => isNaN(Number(key))) as (keyof typeof ProvinceItaly)[];
+    const districtsItaly = Object.keys(DistrictItaly).filter((key) => isNaN(Number(key))) as (keyof typeof DistrictItaly)[];
 
     const handleRemoveUsage = (idx: number) => {
         let data = { ...formData };
@@ -111,7 +130,15 @@ export const UpdateAddressForm = ({ address, clientId, onCancelAddingNewAddress,
         let data = { ...formData };
 
         if (name === "country") {
-            data.country = Country[value as keyof typeof Country];
+            const country = Country[value as keyof typeof Country];
+            data.country = country;
+            if (country !== Country.Poland) {
+                data.streetPrefix = null;
+            }
+            if (country !== Country.Italy) {
+                data.secondLevelOfDivision = null;
+                data.thirdLevelOfDivision = null;
+            }
         }
         if (name === "type") {
             data.type = AddressType[value as keyof typeof AddressType];
@@ -125,6 +152,12 @@ export const UpdateAddressForm = ({ address, clientId, onCancelAddingNewAddress,
         if (name === "streetPrefix") {
             data.streetPrefix = StreetPrefix[value as keyof typeof StreetPrefix];
         }
+        if (name === "province") {
+            data.secondLevelOfDivision = { value: value, meaning: "Province" };
+        }
+        if (name === "municipality") {
+            data.thirdLevelOfDivision = { value: value, meaning: "Municipality" };
+        }
         setFormData(data);
     };
 
@@ -135,7 +168,7 @@ export const UpdateAddressForm = ({ address, clientId, onCancelAddingNewAddress,
     }
 
     const handleUpdateAddress = async () => {
-        const client = await UpdateClientAddress(clientId, (defaultAddress.id ?? -1).toString(), formData);
+        const client = await UpdateClientAddress(clientId, (formData.id ?? -1).toString(), formData);
         if (client != null)
             onSubmitAddingNewAddress(client.addresses);
     }
@@ -167,9 +200,12 @@ export const UpdateAddressForm = ({ address, clientId, onCancelAddingNewAddress,
         <div className="new-address-form">
             <div className="new-address-form-controls">
                 
-                <Dropdown propertyName={"streetPrefix"} displayName={"Prefix"} value={StreetPrefix[formData.streetPrefix ?? -1]} options={streetPrefixes} handleChange={handleDropdownChange} />
+                {formData.country === Country.Poland && (
+                    <Dropdown className="prefix-col" propertyName={"streetPrefix"} displayName={"Prefix"} value={StreetPrefix[formData.streetPrefix ?? -1]} options={streetPrefixes} handleChange={handleDropdownChange} />
+                )}
 
                 <AutocompleteTextBox
+                    className="street-col"
                     propertyName={"streetName"}
                     displayName={"Ulica"}
                     value={formData.streetName}
@@ -177,9 +213,10 @@ export const UpdateAddressForm = ({ address, clientId, onCancelAddingNewAddress,
                     fetchSuggestions={(val) => GetStreets(formData.city ?? "", val, formData.postalCode ?? "")}
                     minLength={(formData.city ?? "").length > 0 || (formData.postalCode ?? "").length > 0 ? 0 : 3}
                 />
-                <TextBox propertyName={"buildingNumber"} displayName={"Nr budynku"} value={formData.buildingNumber} handleChange={handleTextBoxChange} />
-                <TextBox propertyName={"apartmentNumber"} displayName={"Nr lokalu"} value={formData.apartmentNumber} handleChange={handleTextBoxChange} />
+                <TextBox className="building-col" propertyName={"buildingNumber"} displayName={"Nr budynku"} value={formData.buildingNumber} handleChange={handleTextBoxChange} />
+                <TextBox className="apartment-col" propertyName={"apartmentNumber"} displayName={"Nr lokalu"} value={formData.apartmentNumber} handleChange={handleTextBoxChange} />
                 <AutocompleteTextBox
+                    className="postal-col"
                     propertyName={"postalCode"}
                     displayName={"Kod pocztowy"}
                     value={formData.postalCode}
@@ -188,6 +225,7 @@ export const UpdateAddressForm = ({ address, clientId, onCancelAddingNewAddress,
                     minLength={(formData.city ?? "").length > 0 || (formData.streetName ?? "").length > 0 ? 0 : 2}
                 />
                 <AutocompleteTextBox
+                    className="city-col"
                     propertyName={"city"}
                     displayName={"Miasto"}
                     value={formData.city}
@@ -196,10 +234,16 @@ export const UpdateAddressForm = ({ address, clientId, onCancelAddingNewAddress,
                     minLength={(formData.postalCode ?? "").length > 0 ? 0 : 3}
                 />
 
-                <Dropdown propertyName={"country"} displayName={"Kraj"} value={Country[formData.country ?? -1]} options={countries} handleChange={handleDropdownChange} />
-                <Dropdown propertyName={"type"} displayName={"Typ"} value={AddressType[formData.type ?? -1]} options={types} handleChange={handleDropdownChange} />
-                <Dropdown propertyName={"changeSource"} displayName={"Source"} value={ChangeSource[formData.changeSource ?? -1]} options={changeSource} handleChange={handleDropdownChange} />
-                <Dropdown propertyName={"changeBasis"} displayName={"Basis"} value={ChangeBasis[formData.changeBasis ?? -1]} options={changeBasis} handleChange={handleDropdownChange} />
+                <Dropdown className="country-col" propertyName={"country"} displayName={"Kraj"} value={Country[formData.country ?? -1]} options={countries} handleChange={handleDropdownChange} />
+                <Dropdown className="type-col" propertyName={"type"} displayName={"Typ"} value={AddressType[formData.type ?? -1]} options={types} handleChange={handleDropdownChange} />
+                <Dropdown className="source-col" propertyName={"changeSource"} displayName={"Source"} value={ChangeSource[formData.changeSource ?? -1]} options={changeSource} handleChange={handleDropdownChange} />
+                <Dropdown className="basis-col" propertyName={"changeBasis"} displayName={"Basis"} value={ChangeBasis[formData.changeBasis ?? -1]} options={changeBasis} handleChange={handleDropdownChange} />
+                {formData.country === Country.Italy && (
+                    <>
+                        <Dropdown className="province-col" propertyName={"province"} displayName={"Province"} value={formData.secondLevelOfDivision?.value ?? ""} options={provincesItaly} handleChange={handleDropdownChange} />
+                        <Dropdown className="municipality-col" propertyName={"municipality"} displayName={"Municipality"} value={formData.thirdLevelOfDivision?.value ?? ""} options={districtsItaly} handleChange={handleDropdownChange} />
+                    </>
+                )}
             </div>
 
             <div className="new-address-form-usages">
