@@ -3,5 +3,6 @@ export enum Country {
     Poland = 616,
     Germany = 276,
     Romania = 642,
-    Italy = 380
+    Italy = 380,
+    Spain = 724
 }
