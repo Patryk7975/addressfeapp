@@ -237,7 +237,10 @@ export const UpdateClientAddress = async (clientId: string, addressId: string, a
         address.thirdLevelOfDivision = { value: "test3", meaning: "municipality" };
         address.floor = "2";
     }
-    
+
+
+    address.id = null;
+
     try {
         const response = await axios.put(url, address);
         console.log('Odpowiedź:', response.data);
