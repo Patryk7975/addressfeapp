@@ -49,7 +49,8 @@ export const UpdateAddressForm = ({ address, clientId, onCancelAddingNewAddress,
         sellerId: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
         firstLevelOfDivision: null,
         secondLevelOfDivision: null,
-        thirdLevelOfDivision: null
+        thirdLevelOfDivision: null,
+        floor: null
     };
 
     if (address != null) {

@@ -12,6 +12,7 @@ import type { BlackAddressData } from '../models/blackLists/BlackAddressData';
 import type { BlackPhoneData } from '../models/blackLists/BlackPhoneData';
 import type { BlackEmailData } from '../models/blackLists/BlackEmailData';
 import type { ClientFilter, ClientFilterResponse } from '../models/filtering/ClientFilter';
+import { Country } from '../enums/Country';
 
 interface ClientApiResponse {
     client: {
@@ -196,6 +197,13 @@ export const AddAddressToClient = async (clientId: string, address: AddressData)
     else
         address.notes = null;
 
+    if (address.country === Country.Spain) {
+        address.firstLevelOfDivision = { value: "test1", meaning: "autonomousCommunity" };
+        address.secondLevelOfDivision = { value: "test2", meaning: "province" };
+        address.thirdLevelOfDivision = { value: "test3", meaning: "municipality" };
+        address.floor = "2";
+    }
+
     try {
         const response = await axios.post(url, address);
         console.log('Odpowiedź:', response.data);
@@ -223,6 +231,13 @@ export const UpdateClientAddress = async (clientId: string, addressId: string, a
     else
         address.notes = null;
 
+        if (address.country === Country.Spain) {
+        address.firstLevelOfDivision = { value: "test1", meaning: "autonomousCommunity" };
+        address.secondLevelOfDivision = { value: "test2", meaning: "province" };
+        address.thirdLevelOfDivision = { value: "test3", meaning: "municipality" };
+        address.floor = "2";
+    }
+    
     try {
         const response = await axios.put(url, address);
         console.log('Odpowiedź:', response.data);

@@ -26,6 +26,7 @@ export interface AddressData {
   firstLevelOfDivision: LevelOfDivision | null,
   secondLevelOfDivision: LevelOfDivision | null,
   thirdLevelOfDivision: LevelOfDivision | null,
+  floor: string | null
 }
 
 export interface Usage {
