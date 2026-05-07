@@ -122,33 +122,33 @@ export const UpdatePhoneForm = ({ phone, clientId, onCancelAddingNewPhone, onSub
         <div className="new-phone-form">
             <div className="new-phone-form-controls">
                 <TextBox propertyName={"prefix"} displayName={"Prefix"} value={formData.prefix} handleChange={handleTextBoxChange} />
-                <TextBox propertyName={"number"} displayName={"Numer"} value={formData.number} handleChange={handleTextBoxChange} />
+                <TextBox propertyName={"number"} displayName={"Number"} value={formData.number} handleChange={handleTextBoxChange} />
                 <CheckBox propertyName={"skip"} displayName={"Skip"} value={formData.skip} handleChange={handleCheckBoxChange} />
 
-                <Dropdown propertyName={"country"} displayName={"Kraj"} value={Country[formData.country ?? -1]} options={countries} handleChange={handleDropdownChange} />
-                <Dropdown propertyName={"type"} displayName={"Typ"} value={PhoneType[formData.type ?? -1]} options={types} handleChange={handleDropdownChange} />
+                <Dropdown propertyName={"country"} displayName={"Country"} value={Country[formData.country ?? -1]} options={countries} handleChange={handleDropdownChange} />
+                <Dropdown propertyName={"type"} displayName={"Type"} value={PhoneType[formData.type ?? -1]} options={types} handleChange={handleDropdownChange} />
                 <Dropdown propertyName={"changeSource"} displayName={"Source"} value={ChangeSource[formData.changeSource ?? -1]} options={changeSource} handleChange={handleDropdownChange} />
                 <Dropdown propertyName={"changeBasis"} displayName={"Basis"} value={ChangeBasis[formData.changeBasis ?? -1]} options={changeBasis} handleChange={handleDropdownChange} />
                 <Dropdown propertyName={"status"} displayName={"Status"} value={VerificationStatus[formData.status ?? -1]} options={statuses} handleChange={handleDropdownChange} />
-                <Dropdown propertyName={"usage"} displayName={"Rodzaj"} value={PhoneUsage[formData.usage ?? -1]} options={usages} handleChange={handleDropdownChange} />
+                <Dropdown propertyName={"usage"} displayName={"Usage"} value={PhoneUsage[formData.usage ?? -1]} options={usages} handleChange={handleDropdownChange} />
 
             </div>
 
             {phone === null && <div className="add-new-phone-buttons">
                 <button onClick={onCancelAddingNewPhone} className="cancel-adding-new-phone-button">
-                    Anuluj dodawanie
+                    Cancel add
                 </button>
                 <button onClick={handleCreateNewPhone} className="submit-new-phone-button">
-                    Zapisz telefon
+                    Save phone
                 </button>
             </div>}
 
             {phone !== null && <div className="add-new-phone-buttons">
                 <button onClick={onCancelAddingNewPhone} className="cancel-adding-new-phone-button">
-                    Anuluj aktualizowanie
+                    Cancel update
                 </button>
                 <button onClick={handleUpdatePhone} className="submit-new-phone-button">
-                    Zapisz telefon
+                    Save phone
                 </button>
             </div>}
 

@@ -95,32 +95,32 @@ export const UpdateBlackAddressForm = ({ address, onCancelAddingNewAddress, onSu
                     <Dropdown className="prefix-col" propertyName={"streetPrefix"} displayName={"Prefix"} value={StreetPrefix[formData.streetPrefix ?? -1]} options={streetPrefixes} handleChange={handleDropdownChange} />
                 )}
 
-                <TextBox className="street-col" propertyName={"streetName"} displayName={"Ulica"} value={formData.streetName} handleChange={handleTextBoxChange} />
-                <TextBox className="building-col" propertyName={"buildingNumber"} displayName={"Nr budynku"} value={formData.buildingNumber} handleChange={handleTextBoxChange} />
-                <TextBox className="apartment-col" propertyName={"apartmentNumber"} displayName={"Nr lokalu"} value={formData.apartmentNumber} handleChange={handleTextBoxChange} />
+                <TextBox className="street-col" propertyName={"streetName"} displayName={"Street"} value={formData.streetName} handleChange={handleTextBoxChange} />
+                <TextBox className="building-col" propertyName={"buildingNumber"} displayName={"Building number"} value={formData.buildingNumber} handleChange={handleTextBoxChange} />
+                <TextBox className="apartment-col" propertyName={"apartmentNumber"} displayName={"Apartment number"} value={formData.apartmentNumber} handleChange={handleTextBoxChange} />
 
-                <TextBox className="postal-col" propertyName={"postalCode"} displayName={"Kod pocztowy"} value={formData.postalCode} handleChange={handleTextBoxChange} />
-                <TextBox className="city-col" propertyName={"city"} displayName={"Miasto"} value={formData.city} handleChange={handleTextBoxChange} />
-                <Dropdown className="country-col" propertyName={"country"} displayName={"Kraj"} value={Country[formData.country ?? -1]} options={countries} handleChange={handleDropdownChange} />
+                <TextBox className="postal-col" propertyName={"postalCode"} displayName={"Postal code"} value={formData.postalCode} handleChange={handleTextBoxChange} />
+                <TextBox className="city-col" propertyName={"city"} displayName={"City"} value={formData.city} handleChange={handleTextBoxChange} />
+                <Dropdown className="country-col" propertyName={"country"} displayName={"Country"} value={Country[formData.country ?? -1]} options={countries} handleChange={handleDropdownChange} />
 
-                <TextBox className="description-col" propertyName={"description"} displayName={"Opis"} value={formData.description} handleChange={handleTextBoxChange} />
+                <TextBox className="description-col" propertyName={"description"} displayName={"Description"} value={formData.description} handleChange={handleTextBoxChange} />
             </div>
 
             {address === null && <div className="add-new-address-buttons">
                 <button onClick={onCancelAddingNewAddress} className="cancel-adding-new-address-button">
-                    Anuluj dodawanie
+                    Cancel add
                 </button>
                 <button onClick={handleCreateNewAddress} className="submit-new-address-button">
-                    Zapisz adres
+                    Save address
                 </button>
             </div>}
 
             {address !== null && <div className="add-new-address-buttons">
                 <button onClick={onCancelAddingNewAddress} className="cancel-adding-new-address-button">
-                    Anuluj aktualizowanie
+                    Cancel update
                 </button>
                 <button onClick={handleUpdateAddress} className="submit-new-address-button">
-                    Zapisz adres
+                    Save address
                 </button>
             </div>}
 

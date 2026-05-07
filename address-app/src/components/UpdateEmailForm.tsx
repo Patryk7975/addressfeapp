@@ -101,9 +101,9 @@ export const UpdateEmailForm = ({ email, clientId, onCancelAddingNewEmail, onSub
     return (
         <div className="new-email-form">
             <div className="new-email-form-controls">
-                <TextBox propertyName={"emailAddress"} displayName={"email"} value={formData.emailAddress} handleChange={handleTextBoxChange} />
+                <TextBox propertyName={"emailAddress"} displayName={"Email address"} value={formData.emailAddress} handleChange={handleTextBoxChange} />
 
-                <Dropdown propertyName={"usage"} displayName={"Rodzaj"} value={EmailUsage[formData.usage ?? -1]} options={usages} handleChange={handleDropdownChange} />
+                <Dropdown propertyName={"usage"} displayName={"Usage"} value={EmailUsage[formData.usage ?? -1]} options={usages} handleChange={handleDropdownChange} />
                 <Dropdown propertyName={"changeSource"} displayName={"Source"} value={ChangeSource[formData.changeSource ?? -1]} options={changeSource} handleChange={handleDropdownChange} />
                 <Dropdown propertyName={"changeBasis"} displayName={"Basis"} value={ChangeBasis[formData.changeBasis ?? -1]} options={changeBasis} handleChange={handleDropdownChange} />
                 <Dropdown propertyName={"status"} displayName={"Status"} value={VerificationStatus[formData.status ?? -1]} options={statuses} handleChange={handleDropdownChange} />
@@ -112,19 +112,19 @@ export const UpdateEmailForm = ({ email, clientId, onCancelAddingNewEmail, onSub
 
             {email === null && <div className="add-new-email-buttons">
                 <button onClick={onCancelAddingNewEmail} className="cancel-adding-new-email-button">
-                    Anuluj dodawanie
+                    Cancel add
                 </button>
                 <button onClick={handleCreateNewEmail} className="submit-new-email-button">
-                    Zapisz email
+                    Save email
                 </button>
             </div>}
 
             {email !== null && <div className="add-new-email-buttons">
                 <button onClick={onCancelAddingNewEmail} className="cancel-adding-new-email-button">
-                    Anuluj aktualizowanie
+                    Cancel update
                 </button>
                 <button onClick={handleUpdateEmail} className="submit-new-email-button">
-                    Zapisz email
+                    Save email
                 </button>
             </div>}
 

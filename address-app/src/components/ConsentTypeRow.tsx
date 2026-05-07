@@ -11,7 +11,7 @@ export const ConsentTypeRow = ({ config }: ConsentTypeForInterfaceProps) => {
 
   const calculateConsentDisplayValue = () => {
     if (config.consent == null)
-      return 'Wybierz'
+      return 'Select'
     if (config.consent.approved == null)
       return consentStatusArray[1];
 
@@ -20,13 +20,13 @@ export const ConsentTypeRow = ({ config }: ConsentTypeForInterfaceProps) => {
 
   const calculateConsentSourceDisplayValue = () => {
     if (config.consent == null)
-      return 'Wybierz'
+      return 'Select'
 
     const sources = config.consentSources.filter(e => e.id ?? -1 === config.consent?.consentSourceId ?? -2);
     if (sources.length == 1)
       return sources[0].name;
 
-    return 'Wybierz'
+    return 'Select'
   }
 
   const onStatusChange = () => {
@@ -36,8 +36,8 @@ export const ConsentTypeRow = ({ config }: ConsentTypeForInterfaceProps) => {
   return <div className="consent-type-row">
     <div></div>
     <p>{config.consentType.name}</p>
-    <Dropdown propertyName={"status"} displayName={""} value={calculateConsentDisplayValue()} options={['Wybierz', ...consentStatusArray]} handleChange={onStatusChange} />
-    <Dropdown propertyName={"source"} displayName={""} value={calculateConsentSourceDisplayValue()} options={['Wybierz', ...config.consentSources.map(e => e.name)]} handleChange={onStatusChange} />
+    <Dropdown propertyName={"status"} displayName={""} value={calculateConsentDisplayValue()} options={['Select', ...consentStatusArray]} handleChange={onStatusChange} />
+    <Dropdown propertyName={"source"} displayName={""} value={calculateConsentSourceDisplayValue()} options={['Select', ...config.consentSources.map(e => e.name)]} handleChange={onStatusChange} />
     <input type="date" />
   </div>
 }

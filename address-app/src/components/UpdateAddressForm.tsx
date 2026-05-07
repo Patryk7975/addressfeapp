@@ -238,18 +238,18 @@ export const UpdateAddressForm = ({ address, clientId, onCancelAddingNewAddress,
                 <AutocompleteTextBox
                     className="street-col"
                     propertyName={"streetName"}
-                    displayName={"Ulica"}
+                    displayName={"Street"}
                     value={formData.streetName}
                     handleChange={handleTextBoxChange}
                     fetchSuggestions={(val) => GetStreets(formData.city ?? "", val, formData.postalCode ?? "")}
                     minLength={(formData.city ?? "").length > 0 || (formData.postalCode ?? "").length > 0 ? 0 : 3}
                 />
-                <TextBox className="building-col" propertyName={"buildingNumber"} displayName={"Nr budynku"} value={formData.buildingNumber} handleChange={handleTextBoxChange} />
-                <TextBox className="apartment-col" propertyName={"apartmentNumber"} displayName={"Nr lokalu"} value={formData.apartmentNumber} handleChange={handleTextBoxChange} />
+                <TextBox className="building-col" propertyName={"buildingNumber"} displayName={"Building number"} value={formData.buildingNumber} handleChange={handleTextBoxChange} />
+                <TextBox className="apartment-col" propertyName={"apartmentNumber"} displayName={"Apartment number"} value={formData.apartmentNumber} handleChange={handleTextBoxChange} />
                 <AutocompleteTextBox
                     className="postal-col"
                     propertyName={"postalCode"}
-                    displayName={"Kod pocztowy"}
+                    displayName={"Postal code"}
                     value={formData.postalCode}
                     handleChange={handleTextBoxChange}
                     fetchSuggestions={(val) => GetPostalCodes(formData.city ?? "", formData.streetName ?? "", val)}
@@ -258,15 +258,15 @@ export const UpdateAddressForm = ({ address, clientId, onCancelAddingNewAddress,
                 <AutocompleteTextBox
                     className="city-col"
                     propertyName={"city"}
-                    displayName={"Miasto"}
+                    displayName={"City"}
                     value={formData.city}
                     handleChange={handleTextBoxChange}
                     fetchSuggestions={(val) => GetCities(val, formData.postalCode ?? "")}
                     minLength={(formData.postalCode ?? "").length > 0 ? 0 : 3}
                 />
 
-                <Dropdown className="country-col" propertyName={"country"} displayName={"Kraj"} value={Country[formData.country ?? -1]} options={countries} handleChange={handleDropdownChange} />
-                <Dropdown className="type-col" propertyName={"type"} displayName={"Typ"} value={AddressType[formData.type ?? -1]} options={types} handleChange={handleDropdownChange} />
+                <Dropdown className="country-col" propertyName={"country"} displayName={"Country"} value={Country[formData.country ?? -1]} options={countries} handleChange={handleDropdownChange} />
+                <Dropdown className="type-col" propertyName={"type"} displayName={"Type"} value={AddressType[formData.type ?? -1]} options={types} handleChange={handleDropdownChange} />
                 <Dropdown className="source-col" propertyName={"changeSource"} displayName={"Source"} value={ChangeSource[formData.changeSource ?? -1]} options={changeSource} handleChange={handleDropdownChange} />
                 <Dropdown className="basis-col" propertyName={"changeBasis"} displayName={"Basis"} value={ChangeBasis[formData.changeBasis ?? -1]} options={changeBasis} handleChange={handleDropdownChange} />
                 {formData.country === Country.Italy && (
@@ -285,7 +285,7 @@ export const UpdateAddressForm = ({ address, clientId, onCancelAddingNewAddress,
             </div>
 
             <div className="new-address-form-usages">
-                <p>Wykorzystania:</p>
+                <p>Usages:</p>
                 <ul className="new-address-form-usages-ul">
                     {formData.usages.map((e, index) => (
                         <li className="new-address-form-usages-li" key={index}>
@@ -294,7 +294,7 @@ export const UpdateAddressForm = ({ address, clientId, onCancelAddingNewAddress,
                                 <span className="new-address-form-usages-usage-status" onClick={() => changeUsageStatus(e)}>{VerificationStatus[e.status ?? -1]}</span>
                             </p>
                             <button className="remove-usage-button" onClick={() => handleRemoveUsage(index)}>
-                                Usuń
+                                Delete
                             </button>
                         </li>
                     ))}
@@ -302,25 +302,25 @@ export const UpdateAddressForm = ({ address, clientId, onCancelAddingNewAddress,
             </div>
 
             <div className="add-new-usage-section">
-                {!addingUsage && <button className="add-usage-button" onClick={() => setAddingUsage(true)}>Dodaj usage</button>}
+                {!addingUsage && <button className="add-usage-button" onClick={() => setAddingUsage(true)}>Add usage</button>}
                 {addingUsage && <NewUsage handleAddUsage={handleAddUsage} handleCancelAddingUsage={() => setAddingUsage(false)} />}
             </div>
 
             {address === null && <div className="add-new-address-buttons">
                 <button onClick={onCancelAddingNewAddress} className="cancel-adding-new-address-button">
-                    Anuluj dodawanie
+                    Cancel add
                 </button>
                 <button onClick={handleCreateNewAddress} className="submit-new-address-button">
-                    Zapisz adres
+                    Save address
                 </button>
             </div>}
 
             {address !== null && <div className="add-new-address-buttons">
                 <button onClick={onCancelAddingNewAddress} className="cancel-adding-new-address-button">
-                    Anuluj aktualizowanie
+                    Cancel update
                 </button>
                 <button onClick={handleUpdateAddress} className="submit-new-address-button">
-                    Zapisz adres
+                    Save address
                 </button>
             </div>}
 

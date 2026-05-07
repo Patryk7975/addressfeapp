@@ -48,25 +48,25 @@ export const UpdateBlackEmailForm = ({ email, onCancelAddingNewEmail, onSubmitAd
     return (
         <div className="new-email-form">
             <div className="new-email-form-controls">
-                <TextBox propertyName={"emailAddress"} displayName={"email"} value={formData.emailAddress} handleChange={handleTextBoxChange} />
-                <TextBox propertyName={"description"} displayName={"opis"} value={formData.description} handleChange={handleTextBoxChange} />
+                <TextBox propertyName={"emailAddress"} displayName={"Email address"} value={formData.emailAddress} handleChange={handleTextBoxChange} />
+                <TextBox propertyName={"description"} displayName={"Description"} value={formData.description} handleChange={handleTextBoxChange} />
             </div>
 
             {email === null && <div className="add-new-email-buttons">
                 <button onClick={onCancelAddingNewEmail} className="cancel-adding-new-email-button">
-                    Anuluj dodawanie
+                    Cancel add
                 </button>
                 <button onClick={handleCreateNewEmail} className="submit-new-email-button">
-                    Zapisz email
+                    Save email
                 </button>
             </div>}
 
             {email !== null && <div className="add-new-email-buttons">
                 <button onClick={onCancelAddingNewEmail} className="cancel-adding-new-email-button">
-                    Anuluj aktualizowanie
+                    Cancel update
                 </button>
                 <button onClick={handleUpdateEmail} className="submit-new-email-button">
-                    Zapisz email
+                    Save email
                 </button>
             </div>}
 

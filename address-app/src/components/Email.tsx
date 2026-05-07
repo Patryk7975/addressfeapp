@@ -23,7 +23,7 @@ export const Email = ({ email, onStartingUpdatingEmail }: EmailProps) => {
                 <p>{secondRow}</p>
             </div>
             <div>
-                <button onClick={() => onStartingUpdatingEmail(email.id)}>Aktualizuj dane</button>
+                <button onClick={() => onStartingUpdatingEmail(email.id)}>Update details</button>
             </div>
         </div>
     </div>

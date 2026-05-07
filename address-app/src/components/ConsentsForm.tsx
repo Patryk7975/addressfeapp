@@ -42,10 +42,10 @@ const setApproval = (typeId: number, approval : boolean | null) => {
     <div className="consent-types-header">
       <div className="consent-type-row">
         <div></div>
-        <p><b>Typ</b></p>
-        <p><b>Zgoda</b></p>
-        <p><b>Źródło</b></p>
-        <p><b>Data</b></p>
+        <p><b>Type</b></p>
+        <p><b>Consent</b></p>
+        <p><b>Source</b></p>
+        <p><b>Date</b></p>
       </div>
     </div>
     <div className="consent-types-data">

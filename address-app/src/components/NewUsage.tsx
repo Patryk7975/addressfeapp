@@ -40,12 +40,12 @@ export const NewUsage = ({ handleCancelAddingUsage, handleAddUsage }: NewUsagePr
 
   return <>
     <div className="add-new-usage-controls">
-      <Dropdown propertyName={"type"} displayName={"Typ"} value={AddressUsageType[newUsage.type ?? -1]} options={usageTypes} handleChange={handleDropdownChange} />
+      <Dropdown propertyName={"type"} displayName={"Type"} value={AddressUsageType[newUsage.type ?? -1]} options={usageTypes} handleChange={handleDropdownChange} />
       <Dropdown propertyName={"status"} displayName={"Status"} value={VerificationStatus[newUsage.status ?? -1]} options={verificationStatuses} handleChange={handleDropdownChange} />
     </div>
     <div className="add-new-usage-submit-buttons">
-      <button className="cancel-adding-usage-button" onClick={handleCancelAddingUsage}>Anuluj</button>
-      <button className="add-usage-button" onClick={() => handleAddUsage(newUsage)}>Dodaj</button>
+      <button className="cancel-adding-usage-button" onClick={handleCancelAddingUsage}>Cancel</button>
+      <button className="add-usage-button" onClick={() => handleAddUsage(newUsage)}>Add</button>
     </div>
   </>
 }

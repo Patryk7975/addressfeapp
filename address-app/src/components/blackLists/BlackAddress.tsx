@@ -33,9 +33,9 @@ export const BlackAddress = ({ address, onStartingUpdatingAddress, onDeleteAddre
             </div>
             <div>
                 <button style={{ marginBottom: '15px' }} onClick={() => onStartingUpdatingAddress(address.id)}>
-                    Aktualizuj dane
+                    Update details
                 </button>
-                <button onClick={() => handleDeleteAddress(address.id)}>Usuń</button>
+                <button onClick={() => handleDeleteAddress(address.id)}>Delete</button>
             </div>
         </div>
     </div>

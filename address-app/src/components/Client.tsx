@@ -67,13 +67,13 @@ export const Client = ({ client }: { client: ClientData }) => {
       <div className="client-basic-data">
         <div className="client-basic-data-header">
           <h3>{client.name}</h3>
-          <button onClick={onConsentButtonClicked}>{actionId === NewClientsItemAction.Consents ? "Ukryj zgody" : "Pokaż zgody"}</button>
+          <button onClick={onConsentButtonClicked}>{actionId === NewClientsItemAction.Consents ? "Hide consents" : "Show consents"}</button>
         </div>
         <p>ID: {client.id}</p>
         <div className="add-new-item-buttons-container">
-          {(actionId === NewClientsItemAction.Idle || actionId === NewClientsItemAction.Consents) && <button className="add-new-address-button" onClick={() => setActionId(NewClientsItemAction.AddingNewAddress)}>Dodaj adres</button>}
-          {(actionId === NewClientsItemAction.Idle || actionId === NewClientsItemAction.Consents) && <button className="add-new-phone-button" onClick={() => setActionId(NewClientsItemAction.AddingNewPhone)}>Dodaj telefon</button>}
-          {(actionId === NewClientsItemAction.Idle || actionId === NewClientsItemAction.Consents) && <button className="add-new-email-button" onClick={() => setActionId(NewClientsItemAction.AddingNewEmail)}>Dodaj maila</button>}
+          {(actionId === NewClientsItemAction.Idle || actionId === NewClientsItemAction.Consents) && <button className="add-new-address-button" onClick={() => setActionId(NewClientsItemAction.AddingNewAddress)}>Add address</button>}
+          {(actionId === NewClientsItemAction.Idle || actionId === NewClientsItemAction.Consents) && <button className="add-new-phone-button" onClick={() => setActionId(NewClientsItemAction.AddingNewPhone)}>Add phone</button>}
+          {(actionId === NewClientsItemAction.Idle || actionId === NewClientsItemAction.Consents) && <button className="add-new-email-button" onClick={() => setActionId(NewClientsItemAction.AddingNewEmail)}>Add email</button>}
         </div>
         {actionId === NewClientsItemAction.AddingNewAddress && <UpdateAddressForm address={null} clientId={client.id} onSubmitAddingNewAddress={onSubmitAddingNewAddress} onCancelAddingNewAddress={() => setActionId(NewClientsItemAction.Idle)} />}
         {actionId === NewClientsItemAction.UpdatingAddress && <UpdateAddressForm address={updatedAddress} clientId={client.id} onSubmitAddingNewAddress={onSubmitAddingNewAddress} onCancelAddingNewAddress={() => setActionId(NewClientsItemAction.Idle)} />}
@@ -84,11 +84,11 @@ export const Client = ({ client }: { client: ClientData }) => {
       </div>
 
       <div className="client-addresses">
-        {clientData.addresses.length > 0 && <h3>Adresy:</h3>}
+        {clientData.addresses.length > 0 && <h3>Addresses:</h3>}
         {clientData.addresses.map(e => <Address key={e.id} clientId={client.id} address={e} onSubmitAddingNewAddress={onSubmitAddingNewAddress} onStartingUpdatingAddress={onStartingUpdatingAddress} />)}
-        {clientData.phones.length > 0 && <h3>Telefony:</h3>}
+        {clientData.phones.length > 0 && <h3>Phones:</h3>}
         {clientData.phones.map(e => <Phone key={e.id} phone={e} onStartingUpdatingPhone={onStartingUpdatingPhone} />)}
-        {clientData.emails.length > 0 && <h3>Emaile:</h3>}
+        {clientData.emails.length > 0 && <h3>Emails:</h3>}
         {clientData.emails.map(e => <Email key={e.id} email={e} onStartingUpdatingEmail={onStartingUpdatingEmail} />)}
       </div>
 

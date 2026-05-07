@@ -92,11 +92,11 @@ export const BlackLists = ({refreshClients} : BlackListsProps) => {
 
     return <>
         <div className="black-lists-header">
-            <h2>Czarne listy</h2>
+            <h2>Blacklists</h2>
             <div className="add-black-list-buttons">
-                {actionId === BlackListAction.Idle && <button className="add-new-black-address-button" onClick={() => setActionId(BlackListAction.AddingNewAddress)}>Dodaj adres</button>}
-                {actionId === BlackListAction.Idle && <button className="add-new-black--phone-button" onClick={() => setActionId(BlackListAction.AddingNewPhone)}>Dodaj telefon</button>}
-                {actionId === BlackListAction.Idle && <button className="add-new-black-email-button" onClick={() => setActionId(BlackListAction.AddingNewEmail)}>Dodaj maila</button>}
+                {actionId === BlackListAction.Idle && <button className="add-new-black-address-button" onClick={() => setActionId(BlackListAction.AddingNewAddress)}>Add address</button>}
+                {actionId === BlackListAction.Idle && <button className="add-new-black--phone-button" onClick={() => setActionId(BlackListAction.AddingNewPhone)}>Add phone</button>}
+                {actionId === BlackListAction.Idle && <button className="add-new-black-email-button" onClick={() => setActionId(BlackListAction.AddingNewEmail)}>Add email</button>}
             </div>
             {actionId === BlackListAction.AddingNewAddress && <UpdateBlackAddressForm address={null} onSubmitAddingNewAddress={onSubmitAddingNewAddress} onCancelAddingNewAddress={() => setActionId(BlackListAction.Idle)} />}
             {actionId === BlackListAction.UpdatingAddress && <UpdateBlackAddressForm address={updatedAddress} onSubmitAddingNewAddress={onSubmitAddingNewAddress} onCancelAddingNewAddress={() => setActionId(BlackListAction.Idle)} />}
@@ -106,11 +106,11 @@ export const BlackLists = ({refreshClients} : BlackListsProps) => {
             {actionId === BlackListAction.UpdatingEmail && <UpdateBlackEmailForm email={updatedEmail} onSubmitAddingNewEmail={onSubmitAddingNewEmail} onCancelAddingNewEmail={() => setActionId(BlackListAction.Idle)} />}
         </div>
         <div className="black-list-current-data">
-            {blackLists.addresses.length > 0 && <h3>Adresy:</h3>}
+            {blackLists.addresses.length > 0 && <h3>Addresses:</h3>}
             {blackLists.addresses.map(e => <BlackAddress key={e.id} address={e} onStartingUpdatingAddress={onStartingUpdatingAddress} onDeleteAddress={onAddressesChange} />)}
-            {blackLists.phones.length > 0 && <h3>Telefony:</h3>}
+            {blackLists.phones.length > 0 && <h3>Phones:</h3>}
             {blackLists.phones.map(e => <BlackPhone key={e.id} phone={e} onStartingUpdatingPhone={onStartingUpdatingPhone} onDeletePhone={onPhonesChange} />)}
-            {blackLists.emails.length > 0 && <h3>Emaile:</h3>}
+            {blackLists.emails.length > 0 && <h3>Emails:</h3>}
             {blackLists.emails.map(e => <BlackEmail key={e.id} email={e} onStartingUpdatingEmail={onStartingUpdatingEmail} onDeleteEmail={onEmailsChange} />)}
 
         </div>

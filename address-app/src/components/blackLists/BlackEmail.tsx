@@ -28,8 +28,8 @@ export const BlackEmail = ({ email, onStartingUpdatingEmail, onDeleteEmail }: Bl
                 <p>{secondRow}</p>
             </div>
             <div>
-                <button style={{ marginBottom: '15px' }} onClick={() => onStartingUpdatingEmail(email.id)}>Aktualizuj dane</button>
-                <button onClick={() => handleDeleteEmail(email.id)}>Usuń</button>
+                <button style={{ marginBottom: '15px' }} onClick={() => onStartingUpdatingEmail(email.id)}>Update details</button>
+                <button onClick={() => handleDeleteEmail(email.id)}>Delete</button>
             </div>
         </div>
     </div>

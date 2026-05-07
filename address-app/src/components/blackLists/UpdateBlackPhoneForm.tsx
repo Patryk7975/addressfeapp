@@ -73,27 +73,27 @@ export const UpdateBlackPhoneForm = ({ phone, onCancelAddingNewPhone, onSubmitAd
         <div className="new-phone-form">
             <div className="new-phone-form-controls">
                 <TextBox propertyName={"prefix"} displayName={"Prefix"} value={formData.prefix} handleChange={handleTextBoxChange} />
-                <TextBox propertyName={"number"} displayName={"Numer"} value={formData.number} handleChange={handleTextBoxChange} />
+                <TextBox propertyName={"number"} displayName={"Number"} value={formData.number} handleChange={handleTextBoxChange} />
 
-                <Dropdown propertyName={"country"} displayName={"Kraj"} value={Country[formData.country ?? -1]} options={countries} handleChange={handleDropdownChange} />
-                <TextBox propertyName={"description"} displayName={"Opis"} value={formData.description} handleChange={handleTextBoxChange} />
+                <Dropdown propertyName={"country"} displayName={"Country"} value={Country[formData.country ?? -1]} options={countries} handleChange={handleDropdownChange} />
+                <TextBox propertyName={"description"} displayName={"Description"} value={formData.description} handleChange={handleTextBoxChange} />
             </div>
 
             {phone === null && <div className="add-new-phone-buttons">
                 <button onClick={onCancelAddingNewPhone} className="cancel-adding-new-phone-button">
-                    Anuluj dodawanie
+                    Cancel add
                 </button>
                 <button onClick={handleCreateNewPhone} className="submit-new-phone-button">
-                    Zapisz telefon
+                    Save phone
                 </button>
             </div>}
 
             {phone !== null && <div className="add-new-phone-buttons">
                 <button onClick={onCancelAddingNewPhone} className="cancel-adding-new-phone-button">
-                    Anuluj aktualizowanie
+                    Cancel update
                 </button>
                 <button onClick={handleUpdatePhone} className="submit-new-phone-button">
-                    Zapisz telefon
+                    Save phone
                 </button>
             </div>}
 

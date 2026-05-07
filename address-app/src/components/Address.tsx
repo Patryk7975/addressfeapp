@@ -56,7 +56,7 @@ export const Address = ({clientId, address, onSubmitAddingNewAddress, onStarting
                 <p>{metadataString}</p>
             </div>
             <div>
-                <button onClick={() => onStartingUpdatingAddress(address.id)}>Aktualizuj dane</button>
+                <button onClick={() => onStartingUpdatingAddress(address.id)}>Update details</button>
             </div>
         </div>
 
@@ -68,10 +68,10 @@ export const Address = ({clientId, address, onSubmitAddingNewAddress, onStarting
                             {e.type} {e.status} (
                             {e.verificationDate
                                 ? formatDate(new Date(e.verificationDate))
-                                : "brak daty"}
+                                : "no date"}
                             )
                         </p>
-                        <button className="verify-usage-button" onClick={() => confirmUsage(e.id)}>Weryfikuj</button>
+                        <button className="verify-usage-button" onClick={() => confirmUsage(e.id)}>Verify</button>
                     </div>
                 </li>
             ))}

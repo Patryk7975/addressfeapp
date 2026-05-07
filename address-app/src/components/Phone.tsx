@@ -28,7 +28,7 @@ export const Phone = ({phone,  onStartingUpdatingPhone }: PhoneProps) => {
                 <p>{thirdRow}</p>
             </div>
             <div>
-                <button onClick={() => onStartingUpdatingPhone(phone.id)}>Aktualizuj dane</button>
+                <button onClick={() => onStartingUpdatingPhone(phone.id)}>Update details</button>
             </div>
         </div>
     </div>

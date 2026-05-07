@@ -30,8 +30,8 @@ export const BlackPhone = ({phone,  onStartingUpdatingPhone, onDeletePhone }: Bl
                 <p>{secondRow}</p>
             </div>
             <div>
-                <button style={{ marginBottom: '15px' }} onClick={() => onStartingUpdatingPhone(phone.id)}>Aktualizuj dane</button>
-                <button onClick={() => handleDeletePhone(phone.id)}>Usuń</button>
+                <button style={{ marginBottom: '15px' }} onClick={() => onStartingUpdatingPhone(phone.id)}>Update details</button>
+                <button onClick={() => handleDeletePhone(phone.id)}>Delete</button>
             </div>
         </div>
     </div>

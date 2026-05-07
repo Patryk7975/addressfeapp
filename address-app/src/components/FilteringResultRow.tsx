@@ -10,7 +10,7 @@ export const FilteringResultRow = ({ client }: { client: ClientFilterResponseIte
 
             <div className="filtering-result-details">
                 <div className="filtering-result-section">
-                    <h4>Adresy:</h4>
+                    <h4>Addresses:</h4>
                     {client.addresses.length > 0 ? (
                         <ul>
                             {client.addresses.map(addr => (
@@ -20,12 +20,12 @@ export const FilteringResultRow = ({ client }: { client: ClientFilterResponseIte
                             ))}
                         </ul>
                     ) : (
-                        <p className="no-data">Brak adresów</p>
+                        <p className="no-data">No addresses</p>
                     )}
                 </div>
 
                 <div className="filtering-result-section">
-                    <h4>Telefony:</h4>
+                    <h4>Phones:</h4>
                     {client.phones.length > 0 ? (
                         <ul>
                             {client.phones.map(phone => (
@@ -35,12 +35,12 @@ export const FilteringResultRow = ({ client }: { client: ClientFilterResponseIte
                             ))}
                         </ul>
                     ) : (
-                        <p className="no-data">Brak telefonów</p>
+                        <p className="no-data">No phones</p>
                     )}
                 </div>
 
                 <div className="filtering-result-section">
-                    <h4>Emaile:</h4>
+                    <h4>Emails:</h4>
                     {client.emails.length > 0 ? (
                         <ul>
                             {client.emails.map(email => (
@@ -48,7 +48,7 @@ export const FilteringResultRow = ({ client }: { client: ClientFilterResponseIte
                             ))}
                         </ul>
                     ) : (
-                        <p className="no-data">Brak emaili</p>
+                        <p className="no-data">No emails</p>
                     )}
                 </div>
             </div>

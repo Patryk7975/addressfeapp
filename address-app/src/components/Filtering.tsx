@@ -86,63 +86,63 @@ export const Filtering = () => {
             }
         } catch (error) {
             console.error("Filter error", error);
-            alert("Błąd podczas szukania");
+            alert("Error during search");
         }
     };
 
     return (
         <div className="filtering-container">
             <div className="filtering-form-section">
-                <h3>Filtrowanie Klientów</h3>
+                <h3>Client filtering</h3>
 
                 <div className="filtering-top-row">
                     <div className="filtering-form-group">
-                        <h4>Dane podstawowe</h4>
-                        <TextBox propertyName="fullName" displayName="Pełna nazwa" value={filter.fullName} handleChange={handleBasicChange} />
-                        <TextBox propertyName="firstName" displayName="Imię" value={filter.firstName} handleChange={handleBasicChange} />
-                        <TextBox propertyName="lastName" displayName="Nazwisko" value={filter.lastName} handleChange={handleBasicChange} />
+                        <h4>Basic information</h4>
+                        <TextBox propertyName="fullName" displayName="Full name" value={filter.fullName} handleChange={handleBasicChange} />
+                        <TextBox propertyName="firstName" displayName="First name" value={filter.firstName} handleChange={handleBasicChange} />
+                        <TextBox propertyName="lastName" displayName="Last name" value={filter.lastName} handleChange={handleBasicChange} />
                         <TextBox propertyName="emailAddress" displayName="Email" value={filter.emailAddress} handleChange={handleBasicChange} />
                     </div>
 
                     <div className="filtering-form-group">
-                        <h4>Adres</h4>
-                        <TextBox propertyName="streetName" displayName="Ulica" value={filter.addressFilter.streetName} handleChange={handleAddressChange} />
-                        <TextBox propertyName="auildingNumber" displayName="Nr budynku" value={filter.addressFilter.buildingNumber} handleChange={handleAddressChange} />
-                        <TextBox propertyName="apartmentNumber" displayName="Nr lokalu" value={filter.addressFilter.apartmentNumber} handleChange={handleAddressChange} />
-                        <TextBox propertyName="postalCode" displayName="Kod pocztowy" value={filter.addressFilter.postalCode} handleChange={handleAddressChange} />
-                        <TextBox propertyName="city" displayName="Miasto" value={filter.addressFilter.city} handleChange={handleAddressChange} />
+                        <h4>Address</h4>
+                        <TextBox propertyName="streetName" displayName="Street" value={filter.addressFilter.streetName} handleChange={handleAddressChange} />
+                        <TextBox propertyName="auildingNumber" displayName="Building number" value={filter.addressFilter.buildingNumber} handleChange={handleAddressChange} />
+                        <TextBox propertyName="apartmentNumber" displayName="Apartment number" value={filter.addressFilter.apartmentNumber} handleChange={handleAddressChange} />
+                        <TextBox propertyName="postalCode" displayName="Postal code" value={filter.addressFilter.postalCode} handleChange={handleAddressChange} />
+                        <TextBox propertyName="city" displayName="City" value={filter.addressFilter.city} handleChange={handleAddressChange} />
                     </div>
                 </div>
 
                 <div className="filtering-form-group">
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                        <h4>Numery identyfikacyjne</h4>
-                        <button type="button" onClick={handleAddIdNumber} className="small-btn">Dodaj</button>
+                        <h4>Identification numbers</h4>
+                        <button type="button" onClick={handleAddIdNumber} className="small-btn">Add</button>
                     </div>
                     {filter.identificationNumbers.map((id, index) => (
                         <div key={index} className="filtering-id-row">
                             <Dropdown
                                 propertyName="identificationNumberType"
-                                displayName="Typ"
+                                displayName="Type"
                                 value={id.identificationNumberType}
                                 handleChange={(e) => handleIdNumberChange(index, 'identificationNumberType', e.target.value)}
                                 options={['Pesel', 'Nip', 'Regon', 'IdCard', 'Passport']}
                             />
                             <TextBox
                                 propertyName="identificationNumber"
-                                displayName="Numer"
+                                displayName="Number"
                                 value={id.identificationNumber}
                                 handleChange={(e) => handleIdNumberChange(index, 'identificationNumber', e.target.value)}
                             />
-                            <button type="button" onClick={() => handleRemoveIdNumber(index)} className="remove-usage-button">Usuń</button>
+                            <button type="button" onClick={() => handleRemoveIdNumber(index)} className="remove-usage-button">Delete</button>
                         </div>
                     ))}
-                    {filter.identificationNumbers.length === 0 && <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>Brak filtrów numerów</p>}
+                    {filter.identificationNumbers.length === 0 && <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>No number filters</p>}
                 </div>
 
                 <div className="filtering-form-group">
-                    <h4>Telefon</h4>
-                    <TextBox propertyName="numberWithoutPrefix" displayName="Numer telefonu" value={filter.phoneFilter.numberWithoutPrefix} handleChange={handlePhoneChange} />
+                    <h4>Phone</h4>
+                    <TextBox propertyName="numberWithoutPrefix" displayName="Phone number" value={filter.phoneFilter.numberWithoutPrefix} handleChange={handlePhoneChange} />
                 </div>
 
                 <div className="filtering-actions">
