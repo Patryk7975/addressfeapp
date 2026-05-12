@@ -2,8 +2,8 @@ export enum AddressUsageType
 {
     Residence = 1,
     IndividualRegistration = 2,
-    Headquarter = 3,
-    CompanyRegistration = 4,
-    Activity = 5,
-    Correspondence = 6
+    Headquarter = 4,
+    CompanyRegistration = 5,
+    Activity = 6,
+    Correspondence = 7
 }
