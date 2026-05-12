@@ -12,7 +12,7 @@ function App() {
   const [activeTab, setActiveTab] = useState<'clients' | 'filtering'>('clients');
 
   const addClientToState = (newClient: ClientData) => {
-    newClient.name = `Client ${clients.length + 1}`;
+    newClient.name = `Client ${clients.length + 1} (${newClient.name})`;
     setClients(prev => [...prev, newClient]);
   };
 
@@ -64,13 +64,13 @@ function App() {
               className={`nav-tab-button ${activeTab === 'clients' ? 'active' : ''}`}
               onClick={() => setActiveTab('clients')}
             >
-              Klienci
+              Clients
             </button>
             <button
               className={`nav-tab-button ${activeTab === 'filtering' ? 'active' : ''}`}
               onClick={() => setActiveTab('filtering')}
             >
-              Filtrowanie
+              Filtering
             </button>
           </div>
 

@@ -199,6 +199,28 @@ select:focus {
   box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
 }
 
+.add-client-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.add-client-row {
+  display: flex;
+  gap: var(--space-sm);
+}
+
+.add-client-field {
+  flex: 1;
+  min-width: 0;
+  max-width: 200px;
+}
+
+.add-client-actions {
+  display: flex;
+  gap: var(--space-sm);
+}
+
 /* Section Headers inside Card */
 .address-data,
 .phone-data,

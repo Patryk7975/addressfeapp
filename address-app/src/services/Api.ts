@@ -57,25 +57,26 @@ interface ErrorApiResponse {
 
 const baseUrl = "http://localhost:7000/";
 
-export const CreateClient = async () => {
+export const CreateClient = async (firstName: string, lastName: string) => {
     const url = baseUrl + "api/clients";
+    const fullName = `${firstName} ${lastName}`;
 
     const payload = {
         "legalEntity": {
             "_type": "Individual",
-            "fullName": "Jan Łącki",
+            "fullName": fullName,
             "fullNameMetadata": {
                 "changeSource": "Client",
                 "changeBasis": "OutgoingCall",
                 "verificationStatus": "VerifiedPositive"
             },
-            "firstName": "Jan",
+            "firstName": firstName,
             "firstNameMetadata": {
                 "changeSource": "Client",
                 "changeBasis": "OutgoingCall",
                 "verificationStatus": "VerifiedPositive"
             },
-            "lastName": "Łącki",
+            "lastName": lastName,
             "lastNameMetadata": {
                 "changeSource": "Client",
                 "changeBasis": "OutgoingCall",
@@ -134,24 +135,6 @@ export const CreateClient = async () => {
             "isDeceased": false
         },
         "identificationNumbers": [
-            {
-                "_type": "Pesel",
-                "Pesel": "80090455146",
-                "metadata": {
-                    "changeSource": "Client",
-                    "changeBasis": "Import",
-                    "verificationStatus": "notVerified"
-                }
-            },
-            {
-                "_type": "Nip",
-                "Nip": "7123365872",
-                "metadata": {
-                    "changeSource": "Client",
-                    "changeBasis": "Import",
-                    "verificationStatus": "notVerified"
-                }
-            }
         ]
     }
 
