@@ -19,15 +19,15 @@ export const UpdateBlackAddressForm = ({ address, onCancelAddingNewAddress, onSu
 
     const defaultAddress: BlackAddressData = {
         id: address?.id,
-        streetName: address?.streetName ?? "Testowa",
-        city: address?.city ?? "Warszawa",
+        streetName: address?.streetName ?? "Mihai Eminescu",
+        city: address?.city ?? "București",
         buildingNumber: address != null ? address.buildingNumber ?? "" : "2",
         apartmentNumber: address != null ? address.apartmentNumber ?? "" : "4",
-        postalCode: address?.postalCode ?? "23-134",
-        country: Country.Poland,
-        description: address?.description ?? "",
+        postalCode: address?.postalCode ?? "020083",
+        country: Country.Romania,
+        description: address?.description ?? "invalid address",
         isDeleted: false,
-        streetPrefix: StreetPrefix.ul,
+        streetPrefix: null,
         changeSource: ChangeSource.Client,
         changeBasis: ChangeBasis.DirectConversation
     };

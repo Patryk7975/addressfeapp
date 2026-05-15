@@ -16,7 +16,7 @@ export const UpdateBlackEmailForm = ({ email, onCancelAddingNewEmail, onSubmitAd
     const defaultEmail: BlackEmailData = {
         id: email?.id,
         emailAddress: email?.emailAddress ?? "test@gmail.com",
-        description: email?.description ?? "",
+        description: email?.description ?? "invalid email",
         isDeleted: false,
         changeBasis: ChangeBasis.DirectConversation,
         changeSource: ChangeSource.Client
