@@ -437,6 +437,44 @@ input[type="checkbox"] {
   grid-column: span 4;
 }
 
+.new-address-form-controls .division-section {
+  grid-column: span 12;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: var(--space-md);
+  align-items: end;
+  padding: var(--space-sm) 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.new-address-form-controls .division-section h4 {
+  grid-column: span 12;
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.new-address-form-controls .division-meaning-col {
+  grid-column: span 6;
+}
+
+.new-address-form-controls .division-value-col {
+  grid-column: span 6;
+}
+
+/* Row: Stair(4), Floor(4), Street Number(4) - Romania only */
+.new-address-form-controls .stair-col {
+  grid-column: span 4;
+}
+
+.new-address-form-controls .floor-col {
+  grid-column: span 4;
+}
+
+.new-address-form-controls .street-number-col {
+  grid-column: span 4;
+}
+
 /* Blacklist Address Form Specific Grid */
 .black-address-form-controls {
   display: grid;

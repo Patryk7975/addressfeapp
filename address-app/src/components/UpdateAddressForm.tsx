@@ -13,10 +13,7 @@ import { AddAddressToClient, UpdateClientAddress } from "../services/Api";
 import { StreetPrefix } from "../enums/StreetPrefix";
 import { GetCities, GetPostalCodes, GetStreets } from "../services/NormalizationApi";
 import { AutocompleteTextBox } from "./AutocompleteTextBox";
-import { ProvinceItaly } from "../enums/ProvinceItaly";
-import { DistrictItaly } from "../enums/DistrictItaly";
-import { DistrictRomania } from "../enums/DistrictRomania";
-import { RegionRomania } from "../enums/RegionRomania";
+import { LevelofDivisionConfiguration } from "../configuration/LevelsOfDivisionConfiguration";
 
 
 interface UpdateAddressFormProps {
@@ -32,25 +29,27 @@ export const UpdateAddressForm = ({ address, clientId, onCancelAddingNewAddress,
 
     const defaultAddress: AddressData = {
         id: address?.id,
-        streetName: address?.streetName ?? "Testowa",
-        city: address?.city ?? "Leszno",
+        streetName: address?.streetName ?? "Mihai Eminescu",
+        city: address?.city ?? "București ",
         buildingNumber: address != null ? address.buildingNumber ?? "" : "2",
         apartmentNumber: address != null ? address.apartmentNumber ?? "" : "4",
-        postalCode: address?.postalCode ?? "64-100",
-        country: Country.Poland,
+        postalCode: address?.postalCode ?? "020083",
+        country: Country.Romania,
         type: AddressType.Physical,
-        changeSource: ChangeSource.Seller,
-        changeBasis: ChangeBasis.Import,
+        changeSource: ChangeSource.Client,
+        changeBasis: ChangeBasis.DirectConversation,
         placeOfStayData: { placeOfStayReason: 'a' },
         notes: '',
         usages: [{ status: VerificationStatus.NotVerified, type: AddressUsageType.Correspondence, id: null, verificationDate: null }],
-        streetPrefix: StreetPrefix.ul,
+        streetPrefix: null,
         investorId: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
         sellerId: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
         firstLevelOfDivision: null,
         secondLevelOfDivision: null,
         thirdLevelOfDivision: null,
-        floor: null
+        floor: null,
+        stair: null,
+        streetNumber: null
     };
 
     if (address != null) {
@@ -72,15 +71,54 @@ export const UpdateAddressForm = ({ address, clientId, onCancelAddingNewAddress,
         if (address.streetPrefix) {
             defaultAddress.streetPrefix = StreetPrefix[address.streetPrefix.toString() as keyof typeof StreetPrefix];
         }
+        
+        // Normalizuj division levels - dostosuj meaning do konfiguracji
+        const addressCountry = address.country ? Country[address.country.toString() as keyof typeof Country] : Country.Romania;
+        const countryConfig = LevelofDivisionConfiguration.find((c) => c.country === addressCountry);
+        
         if (address.firstLevelOfDivision) {
             defaultAddress.firstLevelOfDivision = { ...address.firstLevelOfDivision };
+            if (countryConfig && defaultAddress.firstLevelOfDivision.meaning) {
+                const section = countryConfig.sections.find((s) => s.level === "firstLevelOfDivision");
+                if (section) {
+                    const normalizedMeaning = section.meaningOptions.find(
+                        (opt) => opt.toLowerCase() === defaultAddress.firstLevelOfDivision!.meaning!.toLowerCase()
+                    );
+                    if (normalizedMeaning) {
+                        defaultAddress.firstLevelOfDivision.meaning = normalizedMeaning;
+                    }
+                }
+            }
         }
         if (address.secondLevelOfDivision) {
             defaultAddress.secondLevelOfDivision = { ...address.secondLevelOfDivision };
+            if (countryConfig && defaultAddress.secondLevelOfDivision.meaning) {
+                const section = countryConfig.sections.find((s) => s.level === "secondLevelOfDivision");
+                if (section) {
+                    const normalizedMeaning = section.meaningOptions.find(
+                        (opt) => opt.toLowerCase() === defaultAddress.secondLevelOfDivision!.meaning!.toLowerCase()
+                    );
+                    if (normalizedMeaning) {
+                        defaultAddress.secondLevelOfDivision.meaning = normalizedMeaning;
+                    }
+                }
+            }
         }
         if (address.thirdLevelOfDivision) {
             defaultAddress.thirdLevelOfDivision = { ...address.thirdLevelOfDivision };
+            if (countryConfig && defaultAddress.thirdLevelOfDivision.meaning) {
+                const section = countryConfig.sections.find((s) => s.level === "thirdLevelOfDivision");
+                if (section) {
+                    const normalizedMeaning = section.meaningOptions.find(
+                        (opt) => opt.toLowerCase() === defaultAddress.thirdLevelOfDivision!.meaning!.toLowerCase()
+                    );
+                    if (normalizedMeaning) {
+                        defaultAddress.thirdLevelOfDivision.meaning = normalizedMeaning;
+                    }
+                }
+            }
         }
+        
         defaultAddress.usages.length = 0;
         for (let u of address.usages) {
             if (u.status && u.type) {
@@ -97,7 +135,22 @@ export const UpdateAddressForm = ({ address, clientId, onCancelAddingNewAddress,
 
     if (defaultAddress.country === Country.Italy) {
         defaultAddress.firstLevelOfDivision = null;
-    } else if (defaultAddress.country !== Country.Romania) {
+    } else if (defaultAddress.country === Country.Romania) {
+        const romaniaConfig = LevelofDivisionConfiguration.find((c) => c.country === Country.Romania);
+        if (romaniaConfig) {
+            romaniaConfig.sections.forEach((section) => {
+                // Jeśli adres nie ma wartości dla tego poziomu, ustaw domyślne
+                if (!defaultAddress[section.level]) {
+                    defaultAddress[section.level] = {
+                        meaning: section.defaultMeaning ?? section.meaningOptions[0] ?? null,
+                        value: section.valueType === "dropdown"
+                            ? section.defaultValue ?? section.valueOptions?.[0] ?? null
+                            : section.defaultValue ?? null,
+                    };
+                }
+            });
+        }
+    } else {
         defaultAddress.firstLevelOfDivision = null;
         defaultAddress.secondLevelOfDivision = null;
         defaultAddress.thirdLevelOfDivision = null;
@@ -110,11 +163,7 @@ export const UpdateAddressForm = ({ address, clientId, onCancelAddingNewAddress,
     const changeBasis = Object.keys(ChangeBasis).filter((key) => isNaN(Number(key))) as (keyof typeof ChangeBasis)[];
     const changeSource = Object.keys(ChangeSource).filter((key) => isNaN(Number(key))) as (keyof typeof ChangeSource)[];
     const streetPrefixes = Object.keys(StreetPrefix).filter((key) => isNaN(Number(key))) as (keyof typeof StreetPrefix)[];
-    const provincesItaly = Object.keys(ProvinceItaly).filter((key) => isNaN(Number(key))) as (keyof typeof ProvinceItaly)[];
-    const districtsItaly = Object.keys(DistrictItaly).filter((key) => isNaN(Number(key))) as (keyof typeof DistrictItaly)[];
-    const regionRomania = Object.keys(RegionRomania).filter((key) => isNaN(Number(key))) as (keyof typeof RegionRomania)[];
-    const districtRomania = Object.keys(DistrictRomania).filter((key) => isNaN(Number(key))) as (keyof typeof DistrictRomania)[];
-    const sectors = ["1", "2", "3", "4", "5", "6"];
+    const levelOfDivisionSections = LevelofDivisionConfiguration.find((c) => c.country === formData.country)?.sections ?? [];
 
     const handleRemoveUsage = (idx: number) => {
         let data = { ...formData };
@@ -129,8 +178,40 @@ export const UpdateAddressForm = ({ address, clientId, onCancelAddingNewAddress,
         setAddingUsage(false);
     }
 
+    const divisionLevels = ["firstLevelOfDivision", "secondLevelOfDivision", "thirdLevelOfDivision"] as const;
+
+    const handleDivisionFieldChange = (name: string, value: string) => {
+        const parts = name.split("_");
+        if (parts.length !== 2) {
+            return false;
+        }
+
+        const [level, field] = parts;
+        if (!divisionLevels.includes(level as typeof divisionLevels[number]) || (field !== "meaning" && field !== "value")) {
+            return false;
+        }
+
+        const levelKey = level as typeof divisionLevels[number];
+        setFormData((prev) => {
+            const current = prev[levelKey] ?? { value: null, meaning: null };
+            return {
+                ...prev,
+                [levelKey]: {
+                    ...current,
+                    [field]: value === "" ? null : value,
+                },
+            } as AddressData;
+        });
+
+        return true;
+    };
+
     const handleTextBoxChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
+        if (handleDivisionFieldChange(name, value)) {
+            return;
+        }
+
         setFormData((prev) => ({
             ...prev,
             [name]: value,
@@ -139,6 +220,9 @@ export const UpdateAddressForm = ({ address, clientId, onCancelAddingNewAddress,
 
     const handleDropdownChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
+        if (handleDivisionFieldChange(name, value)) {
+            return;
+        }
 
         let data = { ...formData };
 
@@ -148,19 +232,26 @@ export const UpdateAddressForm = ({ address, clientId, onCancelAddingNewAddress,
             if (country !== Country.Poland) {
                 data.streetPrefix = null;
             }
-            if (country === Country.Italy) {
-                data.firstLevelOfDivision = null;
-                data.secondLevelOfDivision = { value: provincesItaly[0], meaning: "Province" };
-                data.thirdLevelOfDivision = { value: districtsItaly[0], meaning: "Municipality" };
-            } else if (country === Country.Romania) {
-                data.firstLevelOfDivision = { value: regionRomania[0], meaning: "County " };
-                data.secondLevelOfDivision = { value: districtRomania[0], meaning: "Commune " };
-                data.thirdLevelOfDivision = { value: sectors[0], meaning: "Sector " };
+
+            const nextConfig = LevelofDivisionConfiguration.find((c) => c.country === country);
+            if (nextConfig) {
+                nextConfig.sections.forEach((section) => {
+                    data[section.level] = {
+                        meaning: section.defaultMeaning ?? section.meaningOptions[0] ?? null,
+                        value: section.valueType === "dropdown"
+                            ? section.defaultValue ?? section.valueOptions?.[0] ?? null
+                            : section.defaultValue ?? null,
+                    };
+                });
             } else {
                 data.firstLevelOfDivision = null;
                 data.secondLevelOfDivision = null;
                 data.thirdLevelOfDivision = null;
             }
+
+            data.stair = null;
+            data.floor = null;
+            data.streetNumber = null;
         }
         if (name === "type") {
             data.type = AddressType[value as keyof typeof AddressType];
@@ -173,21 +264,6 @@ export const UpdateAddressForm = ({ address, clientId, onCancelAddingNewAddress,
         }
         if (name === "streetPrefix") {
             data.streetPrefix = StreetPrefix[value as keyof typeof StreetPrefix];
-        }
-        if (name === "province") {
-            data.secondLevelOfDivision = { value: value, meaning: "Province" };
-        }
-        if (name === "municipality") {
-            data.thirdLevelOfDivision = { value: value, meaning: "Municipality" };
-        }
-        if (name === "county") {
-            data.firstLevelOfDivision = { value: value, meaning: "County " };
-        }
-        if (name === "commune") {
-            data.secondLevelOfDivision = { value: value, meaning: "Commune " };
-        }
-        if (name === "sector") {
-            data.thirdLevelOfDivision = { value: value, meaning: "Sector " };
         }
         setFormData(data);
     };
@@ -266,22 +342,47 @@ export const UpdateAddressForm = ({ address, clientId, onCancelAddingNewAddress,
                 />
 
                 <Dropdown className="country-col" propertyName={"country"} displayName={"Country"} value={Country[formData.country ?? -1]} options={countries} handleChange={handleDropdownChange} />
+                {formData.country === Country.Romania && (
+                    <>
+                        <TextBox className="stair-col" propertyName={"stair"} displayName={"Stair"} value={formData.stair ?? ""} handleChange={handleTextBoxChange} />
+                        <TextBox className="floor-col" propertyName={"floor"} displayName={"Floor"} value={formData.floor ?? ""} handleChange={handleTextBoxChange} />
+                        <TextBox className="street-number-col" propertyName={"streetNumber"} displayName={"Street Number"} value={formData.streetNumber ?? ""} handleChange={handleTextBoxChange} />
+                    </>
+                )}
+                {levelOfDivisionSections.map((section) => (
+                    <div className="division-section" key={section.level}>
+                        <h4>{section.sectionName}</h4>
+                        <Dropdown
+                            className="division-meaning-col"
+                            propertyName={`${section.level}_meaning`}
+                            displayName={"Meaning"}
+                            value={formData[section.level]?.meaning ?? section.meaningOptions[0] ?? ""}
+                            options={section.meaningOptions}
+                            handleChange={handleDropdownChange}
+                        />
+                        {section.valueType === "dropdown" ? (
+                            <Dropdown
+                                className="division-value-col"
+                                propertyName={`${section.level}_value`}
+                                displayName={"Value"}
+                                value={formData[section.level]?.value ?? section.valueOptions?.[0] ?? ""}
+                                options={section.valueOptions ?? []}
+                                handleChange={handleDropdownChange}
+                            />
+                        ) : (
+                            <TextBox
+                                className="division-value-col"
+                                propertyName={`${section.level}_value`}
+                                displayName={"Value"}
+                                value={formData[section.level]?.value ?? ""}
+                                handleChange={handleTextBoxChange}
+                            />
+                        )}
+                    </div>
+                ))}
                 <Dropdown className="type-col" propertyName={"type"} displayName={"Type"} value={AddressType[formData.type ?? -1]} options={types} handleChange={handleDropdownChange} />
                 <Dropdown className="source-col" propertyName={"changeSource"} displayName={"Source"} value={ChangeSource[formData.changeSource ?? -1]} options={changeSource} handleChange={handleDropdownChange} />
                 <Dropdown className="basis-col" propertyName={"changeBasis"} displayName={"Basis"} value={ChangeBasis[formData.changeBasis ?? -1]} options={changeBasis} handleChange={handleDropdownChange} />
-                {formData.country === Country.Italy && (
-                    <>
-                        <Dropdown className="province-col" propertyName={"province"} displayName={"Province"} value={formData.secondLevelOfDivision?.value ?? ""} options={provincesItaly} handleChange={handleDropdownChange} />
-                        <Dropdown className="municipality-col" propertyName={"municipality"} displayName={"Municipality"} value={formData.thirdLevelOfDivision?.value ?? ""} options={districtsItaly} handleChange={handleDropdownChange} />
-                    </>
-                )}
-                {formData.country === Country.Romania && (
-                    <>
-                        <Dropdown className="county-col" propertyName={"county"} displayName={"County"} value={formData.firstLevelOfDivision?.value ?? ""} options={regionRomania} handleChange={handleDropdownChange} />
-                        <Dropdown className="commune-col" propertyName={"commune"} displayName={"Commune"} value={formData.secondLevelOfDivision?.value ?? ""} options={districtRomania} handleChange={handleDropdownChange} />
-                        <Dropdown className="sector-col" propertyName={"sector"} displayName={"Sector"} value={formData.thirdLevelOfDivision?.value ?? ""} options={sectors} handleChange={handleDropdownChange} />
-                    </>
-                )}
             </div>
 
             <div className="new-address-form-usages">

@@ -26,7 +26,9 @@ export interface AddressData {
   firstLevelOfDivision: LevelOfDivision | null,
   secondLevelOfDivision: LevelOfDivision | null,
   thirdLevelOfDivision: LevelOfDivision | null,
-  floor: string | null
+  stair: string | null,
+  floor: string | null,
+  streetNumber: string | null
 }
 
 export interface Usage {
