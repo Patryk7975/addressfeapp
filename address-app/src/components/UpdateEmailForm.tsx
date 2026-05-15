@@ -24,11 +24,16 @@ export const UpdateEmailForm = ({ email, clientId, onCancelAddingNewEmail, onSub
         usage: EmailUsage.Personal,
         status: VerificationStatus.NotVerified,
         type: EmailType.EmailAddress,
-        changeSource: ChangeSource.Seller,
-        changeBasis: ChangeBasis.Import,
+        changeSource: ChangeSource.Client,
+        changeBasis: ChangeBasis.DirectConversation,
+        investorId: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+        sellerId: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
     };
 
     if (email != null) {
+        email.investorId = "3fa85f64-5717-4562-b3fc-2c963f66afa6";
+        email.sellerId = "3fa85f64-5717-4562-b3fc-2c963f66afa6";
+
         if (email.usage) {
             defaultEmail.usage = EmailUsage[email.usage.toString() as keyof typeof EmailUsage];
         }

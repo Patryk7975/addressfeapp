@@ -22,18 +22,23 @@ export const UpdatePhoneForm = ({ phone, clientId, onCancelAddingNewPhone, onSub
 
     const defaultPhone: PhoneData = {
         id: phone?.id,
-        prefix: phone?.prefix ?? "48",
-        number: phone?.number ?? "123456789",
+        prefix: phone?.prefix ?? "40",
+        number: phone?.number ?? "0234567899",
         skip: phone?.skip ?? false,
-        country: Country.Poland,
+        country: Country.Romania,
         type: PhoneType.Unknown,
-        changeSource: ChangeSource.Seller,
-        changeBasis: ChangeBasis.Import,
+        changeSource: ChangeSource.Client,
+        changeBasis: ChangeBasis.DirectConversation,
         usage: PhoneUsage.Personal,
         status: VerificationStatus.NotVerified,
+        investorId: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+        sellerId: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
     };
 
     if (phone != null) {
+        phone.investorId = "3fa85f64-5717-4562-b3fc-2c963f66afa6";
+        phone.sellerId = "3fa85f64-5717-4562-b3fc-2c963f66afa6";
+
         if (phone.country) {
             defaultPhone.country = Country[phone.country.toString() as keyof typeof Country];
         }

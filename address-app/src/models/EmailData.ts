@@ -12,4 +12,6 @@ export interface EmailData {
     type: EmailType | undefined;
     changeSource: ChangeSource | undefined;
     changeBasis: ChangeBasis | undefined;
+    investorId: string | null,
+    sellerId: string | null,
 }

@@ -16,4 +16,6 @@ export interface PhoneData {
   status: VerificationStatus | undefined;
   changeSource: ChangeSource | undefined;
   changeBasis: ChangeBasis | undefined;
+  investorId: string | null,
+  sellerId: string | null,
 }
