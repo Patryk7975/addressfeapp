@@ -522,7 +522,45 @@ input[type="checkbox"] {
   grid-column: span 4;
 }
 
-/* Row 3: Description(12) */
+/* Row 3: Stair(4), Floor(4), Street Number(4) - Romania only */
+.black-address-form-controls .stair-col {
+  grid-column: span 4;
+}
+
+.black-address-form-controls .floor-col {
+  grid-column: span 4;
+}
+
+.black-address-form-controls .street-number-col {
+  grid-column: span 4;
+}
+
+.black-address-form-controls .division-section {
+  grid-column: span 12;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: var(--space-md);
+  align-items: end;
+  padding: var(--space-sm) 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.black-address-form-controls .division-section h4 {
+  grid-column: span 12;
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.black-address-form-controls .division-meaning-col {
+  grid-column: span 6;
+}
+
+.black-address-form-controls .division-value-col {
+  grid-column: span 6;
+}
+
+/* Row 4: Description(12) */
 .black-address-form-controls .description-col {
   grid-column: span 12;
 }
