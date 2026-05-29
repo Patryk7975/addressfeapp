@@ -30,6 +30,7 @@ export const LevelofDivisionConfiguration: LevelOfDivisionConfigurationType = [
         meaningOptions: ["Region"],
         valueType: "dropdown",
         valueOptions: Object.keys(DistrictItaly).filter((key) => isNaN(Number(key))),
+        defaultValue: "Lazio",
       },
       {
         level: "secondLevelOfDivision",
@@ -37,6 +38,7 @@ export const LevelofDivisionConfiguration: LevelOfDivisionConfigurationType = [
         meaningOptions: ["Province"],
         valueType: "dropdown",
         valueOptions: Object.keys(ProvinceItaly).filter((key) => isNaN(Number(key))),
+        defaultValue: "RM",
       },
       {
         level: "thirdLevelOfDivision",
@@ -44,7 +46,7 @@ export const LevelofDivisionConfiguration: LevelOfDivisionConfigurationType = [
         meaningOptions: ["Municipality"],
         valueType: "textbox",
         defaultMeaning: "Municipality",
-        defaultValue: "Municipality",
+        defaultValue: "Comune di Roma",
       },
     ],
   },
