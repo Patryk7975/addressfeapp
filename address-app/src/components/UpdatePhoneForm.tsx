@@ -22,10 +22,10 @@ export const UpdatePhoneForm = ({ phone, clientId, onCancelAddingNewPhone, onSub
 
     const defaultPhone: PhoneData = {
         id: phone?.id,
-        prefix: phone?.prefix ?? "40",
-        number: phone?.number ?? "0234567899",
+        prefix: phone?.prefix ?? "39",
+        number: phone?.number ?? "0694563210",
         skip: phone?.skip ?? false,
-        country: Country.Romania,
+        country: Country.Italy,
         type: PhoneType.Unknown,
         changeSource: ChangeSource.Client,
         changeBasis: ChangeBasis.DirectConversation,

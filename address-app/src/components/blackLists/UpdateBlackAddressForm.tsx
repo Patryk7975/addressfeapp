@@ -20,12 +20,12 @@ export const UpdateBlackAddressForm = ({ address, onCancelAddingNewAddress, onSu
 
     const defaultAddress: BlackAddressData = {
         id: address?.id,
-        streetName: address?.streetName ?? "Mihai Eminescu",
-        city: address?.city ?? "București",
+        streetName: address?.streetName ?? "Via dei Fiori",
+        city: address?.city ?? "Roma",
         buildingNumber: address != null ? address.buildingNumber ?? "" : "2",
         apartmentNumber: address != null ? address.apartmentNumber ?? "" : "4",
-        postalCode: address?.postalCode ?? "020083",
-        country: Country.Romania,
+        postalCode: address?.postalCode ?? "00184",
+        country: Country.Italy,
         description: address?.description ?? "invalid address",
         isDeleted: false,
         streetPrefix: null,
@@ -62,8 +62,19 @@ export const UpdateBlackAddressForm = ({ address, onCancelAddingNewAddress, onSu
     }
 
     if (defaultAddress.country === Country.Italy) {
-        defaultAddress.firstLevelOfDivision = null;
-    } else if (defaultAddress.country === Country.Romania) {
+        const italyConfig = LevelofDivisionConfiguration.find((c) => c.country === Country.Italy);
+        if (italyConfig) {
+            italyConfig.sections.forEach((section) => {
+                if (!defaultAddress[section.level]) {
+                    defaultAddress[section.level] = {
+                        meaning: section.defaultMeaning ?? section.meaningOptions[0] ?? null,
+                        value: section.valueType === "dropdown"
+                            ? section.defaultValue ?? section.valueOptions?.[0] ?? null
+                            : section.defaultValue ?? null,
+                    };
+                }
+            });
+        }    } else if (defaultAddress.country === Country.Romania) {
         const romaniaConfig = LevelofDivisionConfiguration.find((c) => c.country === Country.Romania);
         if (romaniaConfig) {
             romaniaConfig.sections.forEach((section) => {

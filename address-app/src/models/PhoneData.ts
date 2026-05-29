@@ -17,5 +17,5 @@ export interface PhoneData {
   changeSource: ChangeSource | undefined;
   changeBasis: ChangeBasis | undefined;
   investorId: string | null,
-  sellerId: string | null,
+  sellerId: string | null
 }

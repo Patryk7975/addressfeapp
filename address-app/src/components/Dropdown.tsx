@@ -8,8 +8,9 @@ interface DropdownProps {
 }
 
 export const Dropdown = ({ propertyName, displayName, value, options, handleChange, className }: DropdownProps) => {
+  const extendedOptions = options.includes("null") ? options : [...options, "null"];
 
-return <div className={`dropdown ${className ?? ""}`}>
+  return <div className={`dropdown ${className ?? ""}`}>
         {displayName.length > 0 && <label htmlFor={propertyName} >{displayName}</label>}
         <select
           id={propertyName}
@@ -18,10 +19,10 @@ return <div className={`dropdown ${className ?? ""}`}>
           onChange={handleChange}
           required
         >
-          {options.filter(e => e == value).map((e) => (
+          {extendedOptions.filter(e => e == value).map((e) => (
             <option key={e} value={e}>{e}</option>
           ))}
-                    {options.filter(e => e != value).map((e) => (
+                    {extendedOptions.filter(e => e != value).map((e) => (
             <option key={e} value={e}>{e}</option>
           ))}
         </select>

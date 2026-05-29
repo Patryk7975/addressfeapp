@@ -47,7 +47,8 @@ interface ErrorApiResponse {
         data: {
             ValidationResult: {
                 brokenRules: {
-                    message: string
+                    message: string,
+                    severity: string
                 }[],
             }
         }
@@ -175,11 +176,6 @@ export const AddAddressToClient = async (clientId: string, address: AddressData)
     else
         address.placeOfStayData = null;
 
-    if (address.type == AddressType.MeetingPlace)
-        address.notes = "a";
-    else
-        address.notes = null;
-
     if (address.country === Country.Spain) {
         address.firstLevelOfDivision = { value: "test1", meaning: "autonomousCommunity" };
         address.secondLevelOfDivision = { value: "test2", meaning: "province" };
@@ -208,11 +204,6 @@ export const UpdateClientAddress = async (clientId: string, addressId: string, a
         }
     else
         address.placeOfStayData = null;
-
-    if (address.type == AddressType.MeetingPlace)
-        address.notes = "a";
-    else
-        address.notes = null;
 
         if (address.country === Country.Spain) {
         address.firstLevelOfDivision = { value: "test1", meaning: "autonomousCommunity" };
@@ -331,7 +322,8 @@ const handleError = (error: unknown) => {
         const rules = parsedError.response.data.ValidationResult.brokenRules;
         let message = "";
         for (let r of rules) {
-            message += r.message + " ";
+            if (r.severity.toLowerCase() == "error")
+                message += r.message + " ";
         }
         alert(message)
     }

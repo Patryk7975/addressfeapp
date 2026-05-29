@@ -29,17 +29,17 @@ export const UpdateAddressForm = ({ address, clientId, onCancelAddingNewAddress,
 
     const defaultAddress: AddressData = {
         id: address?.id,
-        streetName: address?.streetName ?? "Mihai Eminescu",
-        city: address?.city ?? "București ",
+        streetName: address?.streetName ?? "Via dei Fiori",
+        city: address?.city ?? "Roma",
         buildingNumber: address != null ? address.buildingNumber ?? "" : "2",
         apartmentNumber: address != null ? address.apartmentNumber ?? "" : "4",
-        postalCode: address?.postalCode ?? "020083",
-        country: Country.Romania,
+        postalCode: address?.postalCode ?? "00184",
+        country: Country.Italy,
         type: AddressType.Physical,
         changeSource: ChangeSource.Client,
         changeBasis: ChangeBasis.DirectConversation,
         placeOfStayData: { placeOfStayReason: 'a' },
-        notes: '',
+        notes: address?.notes ?? null,
         usages: [{ status: VerificationStatus.NotVerified, type: AddressUsageType.Correspondence, id: null, verificationDate: null }],
         streetPrefix: null,
         investorId: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
@@ -134,7 +134,20 @@ export const UpdateAddressForm = ({ address, clientId, onCancelAddingNewAddress,
     }
 
     if (defaultAddress.country === Country.Italy) {
-        defaultAddress.firstLevelOfDivision = null;
+        const italyConfig = LevelofDivisionConfiguration.find((c) => c.country === Country.Italy);
+        if (italyConfig) {
+            italyConfig.sections.forEach((section) => {
+                // Jeśli adres nie ma wartości dla tego poziomu, ustaw domyślne
+                if (!defaultAddress[section.level]) {
+                    defaultAddress[section.level] = {
+                        meaning: section.defaultMeaning ?? section.meaningOptions[0] ?? null,
+                        value: section.valueType === "dropdown"
+                            ? section.defaultValue ?? section.valueOptions?.[0] ?? null
+                            : section.defaultValue ?? null,
+                    };
+                }
+            });
+        }
     } else if (defaultAddress.country === Country.Romania) {
         const romaniaConfig = LevelofDivisionConfiguration.find((c) => c.country === Country.Romania);
         if (romaniaConfig) {
@@ -349,6 +362,9 @@ export const UpdateAddressForm = ({ address, clientId, onCancelAddingNewAddress,
                         <TextBox className="street-number-col" propertyName={"streetNumber"} displayName={"Street Number"} value={formData.streetNumber ?? ""} handleChange={handleTextBoxChange} />
                     </>
                 )}
+
+                <TextBox className="notes-col" propertyName={"notes"} displayName={"Notes"} value={formData.notes ?? ""} handleChange={handleTextBoxChange} />
+
                 {levelOfDivisionSections.map((section) => (
                     <div className="division-section" key={section.level}>
                         <h4>{section.sectionName}</h4>

@@ -17,9 +17,9 @@ export const UpdateBlackPhoneForm = ({ phone, onCancelAddingNewPhone, onSubmitAd
 
     const defaultPhone: BlackPhoneData = {
         id: phone?.id,
-        prefix: phone?.prefix ?? "40",
-        number: phone?.number ?? "0234567899",
-        country: Country.Romania,
+        prefix: phone?.prefix ?? "39",
+        number: phone?.number ?? "0694563210",
+        country: Country.Italy,
         description: phone?.description ?? "invalid number",
         isDeleted: false,
         changeSource: ChangeSource.Client,

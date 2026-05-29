@@ -417,6 +417,10 @@ input[type="checkbox"] {
   grid-column: span 4;
 }
 
+.new-address-form-controls .notes-col {
+  grid-column: span 12;
+}
+
 .new-address-form-controls .province-col {
   grid-column: span 4;
 }
