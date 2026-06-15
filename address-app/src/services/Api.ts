@@ -341,6 +341,11 @@ export const GetBlackAddresses = async () => {
 
 export const AddBlackAddress = async (address: BlackAddressData) => {
     const url = `${baseUrl}api/forbidden-addresses`;
+
+    if (address.country === Country.Spain) {
+        address.floor = "2";
+    }
+
     try {
         const response = await axios.post(url, address);
         console.log('Odpowiedź:', response.data);
@@ -353,6 +358,11 @@ export const AddBlackAddress = async (address: BlackAddressData) => {
 
 export const UpdateBlackAddress = async (addressId: string, address: BlackAddressData) => {
     const url = `${baseUrl}api/forbidden-addresses/${addressId}`;
+
+    if (address.country === Country.Spain) {
+        address.floor = "2";
+    }
+
     try {
         const response = await axios.put(url, address);
         console.log('Odpowiedź:', response.data);
