@@ -137,7 +137,6 @@ export const UpdateAddressForm = ({ address, clientId, onCancelAddingNewAddress,
         const italyConfig = LevelofDivisionConfiguration.find((c) => c.country === Country.Italy);
         if (italyConfig) {
             italyConfig.sections.forEach((section) => {
-                // Jeśli adres nie ma wartości dla tego poziomu, ustaw domyślne
                 if (!defaultAddress[section.level]) {
                     defaultAddress[section.level] = {
                         meaning: section.defaultMeaning ?? section.meaningOptions[0] ?? null,
@@ -152,7 +151,20 @@ export const UpdateAddressForm = ({ address, clientId, onCancelAddingNewAddress,
         const romaniaConfig = LevelofDivisionConfiguration.find((c) => c.country === Country.Romania);
         if (romaniaConfig) {
             romaniaConfig.sections.forEach((section) => {
-                // Jeśli adres nie ma wartości dla tego poziomu, ustaw domyślne
+                if (!defaultAddress[section.level]) {
+                    defaultAddress[section.level] = {
+                        meaning: section.defaultMeaning ?? section.meaningOptions[0] ?? null,
+                        value: section.valueType === "dropdown"
+                            ? section.defaultValue ?? section.valueOptions?.[0] ?? null
+                            : section.defaultValue ?? null,
+                    };
+                }
+            });
+        }
+    } else if (defaultAddress.country === Country.Spain) {
+        const spainConfig = LevelofDivisionConfiguration.find((c) => c.country === Country.Spain);
+        if (spainConfig) {
+            spainConfig.sections.forEach((section) => {
                 if (!defaultAddress[section.level]) {
                     defaultAddress[section.level] = {
                         meaning: section.defaultMeaning ?? section.meaningOptions[0] ?? null,

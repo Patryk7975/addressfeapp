@@ -74,10 +74,25 @@ export const UpdateBlackAddressForm = ({ address, onCancelAddingNewAddress, onSu
                     };
                 }
             });
-        }    } else if (defaultAddress.country === Country.Romania) {
+        }    
+    } else if (defaultAddress.country === Country.Romania) {
         const romaniaConfig = LevelofDivisionConfiguration.find((c) => c.country === Country.Romania);
         if (romaniaConfig) {
             romaniaConfig.sections.forEach((section) => {
+                if (!defaultAddress[section.level]) {
+                    defaultAddress[section.level] = {
+                        meaning: section.defaultMeaning ?? section.meaningOptions[0] ?? null,
+                        value: section.valueType === "dropdown"
+                            ? section.defaultValue ?? section.valueOptions?.[0] ?? null
+                            : section.defaultValue ?? null,
+                    };
+                }
+            });
+        }
+    } else if (defaultAddress.country === Country.Spain) {
+        const spainConfig = LevelofDivisionConfiguration.find((c) => c.country === Country.Spain);
+        if (spainConfig) {
+            spainConfig.sections.forEach((section) => {
                 if (!defaultAddress[section.level]) {
                     defaultAddress[section.level] = {
                         meaning: section.defaultMeaning ?? section.meaningOptions[0] ?? null,

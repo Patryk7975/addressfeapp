@@ -78,4 +78,33 @@ export const LevelofDivisionConfiguration: LevelOfDivisionConfigurationType = [
       },
     ],
   },
+  {
+    country: Country.Spain,
+    sections: [
+      {
+        level: "firstLevelOfDivision",
+        sectionName: "First level of division",
+        meaningOptions: ["AutonomousCommunity"],
+        valueType: "textbox",
+        defaultMeaning: "AutonomousCommunity",
+        defaultValue: "Test Community",
+      },
+      {
+        level: "secondLevelOfDivision",
+        sectionName: "Second level of division",
+        meaningOptions: ["Province"],
+        valueType: "textbox",
+        defaultMeaning: "Province",
+        defaultValue: "Test Province",
+      },
+      {
+        level: "thirdLevelOfDivision",
+        sectionName: "Third level of division",
+        meaningOptions: ["Municipality"],
+        valueType: "textbox",
+        defaultMeaning: "Municipality",
+        defaultValue: "Test Municipality",
+      },
+    ],
+  },
 ];

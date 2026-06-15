@@ -136,6 +136,7 @@ export const CreateClient = async (firstName: string, lastName: string) => {
             "isDeceased": false
         },
         "identificationNumbers": [
+            
         ]
     }
 
@@ -177,9 +178,6 @@ export const AddAddressToClient = async (clientId: string, address: AddressData)
         address.placeOfStayData = null;
 
     if (address.country === Country.Spain) {
-        address.firstLevelOfDivision = { value: "test1", meaning: "autonomousCommunity" };
-        address.secondLevelOfDivision = { value: "test2", meaning: "province" };
-        address.thirdLevelOfDivision = { value: "test3", meaning: "municipality" };
         address.floor = "2";
     }
 
