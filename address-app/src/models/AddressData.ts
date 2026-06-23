@@ -28,6 +28,8 @@ export interface AddressData {
   thirdLevelOfDivision: LevelOfDivision | null,
   stair: string | null,
   floor: string | null,
+  buildingType: string | null,
+  postOfficeLocation: string | null,
   streetNumber: string | null
 }
 

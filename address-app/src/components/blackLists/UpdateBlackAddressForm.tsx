@@ -20,12 +20,12 @@ export const UpdateBlackAddressForm = ({ address, onCancelAddingNewAddress, onSu
 
     const defaultAddress: BlackAddressData = {
         id: address?.id,
-        streetName: address?.streetName ?? "Via dei Fiori",
-        city: address?.city ?? "Roma",
+        streetName: address?.streetName ?? "Przyjaźni",
+        city: address?.city ?? "Wrocław",
         buildingNumber: address != null ? address.buildingNumber ?? "" : "2",
         apartmentNumber: address != null ? address.apartmentNumber ?? "" : "4",
-        postalCode: address?.postalCode ?? "00184",
-        country: Country.Italy,
+        postalCode: address?.postalCode ?? "53-030",
+        country: Country.Poland,
         description: address?.description ?? "invalid address",
         isDeleted: false,
         streetPrefix: null,
@@ -36,7 +36,7 @@ export const UpdateBlackAddressForm = ({ address, onCancelAddingNewAddress, onSu
         streetNumber: null,
         firstLevelOfDivision: null,
         secondLevelOfDivision: null,
-        thirdLevelOfDivision: null,
+        thirdLevelOfDivision: null,  
     };
 
     if (address != null) {
@@ -61,10 +61,10 @@ export const UpdateBlackAddressForm = ({ address, onCancelAddingNewAddress, onSu
         defaultAddress.streetPrefix = null;
     }
 
-    if (defaultAddress.country === Country.Italy) {
-        const italyConfig = LevelofDivisionConfiguration.find((c) => c.country === Country.Italy);
-        if (italyConfig) {
-            italyConfig.sections.forEach((section) => {
+    if (defaultAddress.country === Country.Italy || defaultAddress.country === Country.Romania || defaultAddress.country === Country.Spain || defaultAddress.country === Country.Poland) {
+        const config = LevelofDivisionConfiguration.find((c) => c.country === defaultAddress.country);
+        if (config) {
+            config.sections.forEach((section) => {
                 if (!defaultAddress[section.level]) {
                     defaultAddress[section.level] = {
                         meaning: section.defaultMeaning ?? section.meaningOptions[0] ?? null,
@@ -75,34 +75,6 @@ export const UpdateBlackAddressForm = ({ address, onCancelAddingNewAddress, onSu
                 }
             });
         }    
-    } else if (defaultAddress.country === Country.Romania) {
-        const romaniaConfig = LevelofDivisionConfiguration.find((c) => c.country === Country.Romania);
-        if (romaniaConfig) {
-            romaniaConfig.sections.forEach((section) => {
-                if (!defaultAddress[section.level]) {
-                    defaultAddress[section.level] = {
-                        meaning: section.defaultMeaning ?? section.meaningOptions[0] ?? null,
-                        value: section.valueType === "dropdown"
-                            ? section.defaultValue ?? section.valueOptions?.[0] ?? null
-                            : section.defaultValue ?? null,
-                    };
-                }
-            });
-        }
-    } else if (defaultAddress.country === Country.Spain) {
-        const spainConfig = LevelofDivisionConfiguration.find((c) => c.country === Country.Spain);
-        if (spainConfig) {
-            spainConfig.sections.forEach((section) => {
-                if (!defaultAddress[section.level]) {
-                    defaultAddress[section.level] = {
-                        meaning: section.defaultMeaning ?? section.meaningOptions[0] ?? null,
-                        value: section.valueType === "dropdown"
-                            ? section.defaultValue ?? section.valueOptions?.[0] ?? null
-                            : section.defaultValue ?? null,
-                    };
-                }
-            });
-        }
     } else {
         defaultAddress.firstLevelOfDivision = null;
         defaultAddress.secondLevelOfDivision = null;

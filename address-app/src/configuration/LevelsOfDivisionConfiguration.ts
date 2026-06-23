@@ -107,4 +107,33 @@ export const LevelofDivisionConfiguration: LevelOfDivisionConfigurationType = [
       },
     ],
   },
+  {
+    country: Country.Poland,
+    sections: [
+      {
+        level: "firstLevelOfDivision",
+        sectionName: "First level of division",
+        meaningOptions: ["Voivodship"],
+        valueType: "textbox",
+        defaultMeaning: "Voivodship",
+        defaultValue: "",
+      },
+      {
+        level: "secondLevelOfDivision",
+        sectionName: "Second level of division",
+        meaningOptions: ["Powiat"],
+        valueType: "textbox",
+        defaultMeaning: "Powiat",
+        defaultValue: "",
+      },
+      {
+        level: "thirdLevelOfDivision",
+        sectionName: "Third level of division",
+        meaningOptions: ["Gmina"],
+        valueType: "textbox",
+        defaultMeaning: "Gmina",
+        defaultValue: "",
+      },
+    ],
+  },
 ];

@@ -342,6 +342,18 @@ export const GetBlackAddresses = async () => {
 export const AddBlackAddress = async (address: BlackAddressData) => {
     const url = `${baseUrl}api/forbidden-addresses`;
 
+    if (address.firstLevelOfDivision != null && (address.firstLevelOfDivision.value === "" || address.firstLevelOfDivision.value === null)) {
+        address.firstLevelOfDivision.meaning = null;
+    }
+
+    if (address.secondLevelOfDivision != null && (address.secondLevelOfDivision.value === "" || address.secondLevelOfDivision.value === null)) {
+        address.secondLevelOfDivision.meaning = null;
+    }
+
+    if (address.thirdLevelOfDivision != null && (address.thirdLevelOfDivision.value === "" || address.thirdLevelOfDivision.value === null)) {
+        address.thirdLevelOfDivision.meaning = null;
+    }
+
     if (address.country === Country.Spain) {
         address.floor = "2";
     }
@@ -358,6 +370,18 @@ export const AddBlackAddress = async (address: BlackAddressData) => {
 
 export const UpdateBlackAddress = async (addressId: string, address: BlackAddressData) => {
     const url = `${baseUrl}api/forbidden-addresses/${addressId}`;
+
+    if (address.firstLevelOfDivision != null && (address.firstLevelOfDivision.value === "" || address.firstLevelOfDivision.value === null)) {
+        address.firstLevelOfDivision.meaning = null;
+    }
+
+    if (address.secondLevelOfDivision != null && (address.secondLevelOfDivision.value === "" || address.secondLevelOfDivision.value === null)) {
+        address.secondLevelOfDivision.meaning = null;
+    }
+
+    if (address.thirdLevelOfDivision != null && (address.thirdLevelOfDivision.value === "" || address.thirdLevelOfDivision.value === null)) {
+        address.thirdLevelOfDivision.meaning = null;
+    }
 
     if (address.country === Country.Spain) {
         address.floor = "2";
