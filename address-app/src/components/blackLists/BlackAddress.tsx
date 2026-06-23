@@ -30,6 +30,7 @@ export const BlackAddress = ({ address, onStartingUpdatingAddress, onDeleteAddre
             <div>
                 <p>{addressString}</p>
                 <p>{metadataString}</p>
+                <p>{address.firstLevelOfDivision?.value} {address.secondLevelOfDivision?.value} {address.thirdLevelOfDivision?.value}</p>
             </div>
             <div>
                 <button style={{ marginBottom: '15px' }} onClick={() => onStartingUpdatingAddress(address.id)}>

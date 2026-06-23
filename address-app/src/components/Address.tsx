@@ -54,6 +54,7 @@ export const Address = ({clientId, address, onSubmitAddingNewAddress, onStarting
             <div>
                 <p>{addressString}</p>
                 <p>{metadataString}</p>
+                <p>{address.firstLevelOfDivision?.value} {address.secondLevelOfDivision?.value} {address.thirdLevelOfDivision?.value}</p>
             </div>
             <div>
                 <button onClick={() => onStartingUpdatingAddress(address.id)}>Update details</button>
