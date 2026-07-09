@@ -224,10 +224,18 @@ h6 {
 }
 
 .consent-table th:nth-child(2),
-.consent-table td:nth-child(2),
+.consent-table td:nth-child(2) {
+  width: 20%;
+}
+
 .consent-table th:nth-child(3),
 .consent-table td:nth-child(3) {
-  width: 30%;
+  width: 25%;
+}
+
+.consent-table th:nth-child(4),
+.consent-table td:nth-child(4) {
+  width: 15%;
 }
 
 .consent-add-panel {
