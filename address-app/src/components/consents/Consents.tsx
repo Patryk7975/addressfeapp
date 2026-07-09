@@ -74,7 +74,7 @@ export const Consents = () => {
             withdrawalReason = MarketingWithdrawalReasons.find(reason => reason.label === withdrawalReason)?.key!;
         }
 
-        const request: ConsentRequestDto = {
+        const newConsent: ConsentRequestDto = {
             consentTypeKey: selectedType.type,
             marketingConsentWithdrawalReason: withdrawalReason,
             changeSource: "Client",
@@ -83,7 +83,18 @@ export const Consents = () => {
             contactConsentWithdrawalReason: null
         };
 
-        const response = await CreateConsents(client.id, [request]);
+        const request: ConsentRequestDto[] = consents.map(consent => ({
+            consentTypeKey: consent.consentTypeKey,
+            marketingConsentWithdrawalReason: consent.marketingConsentWithdrawalReason,
+            changeSource: consent.changeSource,
+            isConsent: consent.isConsent,
+            validityDate: consent.validityDate,
+            contactConsentWithdrawalReason: consent.contactConsentWithdrawalReason
+        }));
+
+        request.push(newConsent);
+
+        const response = await CreateConsents(client.id, request);
 
         if (response) {
             setConsents(response);

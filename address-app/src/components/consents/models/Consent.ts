@@ -13,7 +13,7 @@ export class Consent {
     marketingConsentWithdrawalReason = '';
     changeSource = '';
     isConsent = false;
-    validityDate = '';
+    validityDate = null;
     contactConsentWithdrawalReason = '';
     consentGroup = '';
 }
