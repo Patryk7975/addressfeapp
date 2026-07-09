@@ -1,4 +1,4 @@
-type WithdrawalReason = {
+export type WithdrawalReason = {
   key: string;
   label: string;
 }

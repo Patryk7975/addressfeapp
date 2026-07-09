@@ -8,6 +8,7 @@ export interface ConsentRequestDto {
 }
 
 export class Consent {
+    id = '';
     consentTypeKey = '';
     consentTypeName = '';
     marketingConsentWithdrawalReason = '';

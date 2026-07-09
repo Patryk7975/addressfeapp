@@ -39,7 +39,8 @@ interface ConsentApiResponse {
         marketingConsentWithdrawalReason: string,
         contactConsentWithdrawalReason: string,
         isConsent: boolean,
-        changeSource: string
+        changeSource: string,
+        id: string,
     }[]
 }
 
@@ -359,6 +360,7 @@ export const CreateConsents = async (clientId: string, consents: ConsentRequestD
         return response.data.items.map(e => {
 
             const consent = new Consent();
+            consent.id = e.id;
             consent.changeSource = e.changeSource;
             consent.consentTypeKey = e.consentType.type;
             consent.consentTypeName = e.consentType.consentLocalName;
