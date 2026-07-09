@@ -82,7 +82,7 @@ export const Consents = () => {
             if (consent.contactConsentWithdrawalReason) {
                 consent.contactConsentWithdrawalReason = getContactWithdrawalReason(consent.contactConsentWithdrawalReason)?.label ?? consent.contactConsentWithdrawalReason;
             }
-            }
+        }
 
             setConsents(response);
             return true;
@@ -98,8 +98,9 @@ export const Consents = () => {
         }
 
         updatedConsent.isConsent = editingIsConsent;
-        updatedConsent.marketingConsentWithdrawalReason = getMarketingWithdrawalReason(editingWithdrawalReason)?.key ?? editingWithdrawalReason;
-        updatedConsent.contactConsentWithdrawalReason = getContactWithdrawalReason(editingWithdrawalReason)?.key ?? editingWithdrawalReason;
+
+        updatedConsent.marketingConsentWithdrawalReason = getMarketingWithdrawalReason(editingWithdrawalReason)?.key ?? "null";
+        updatedConsent.contactConsentWithdrawalReason = getContactWithdrawalReason(editingWithdrawalReason)?.key ?? "null";
 
         const request: ConsentRequestDto[] = updated.map(consent => ({
             consentTypeKey: consent.consentTypeKey,
@@ -161,6 +162,15 @@ export const Consents = () => {
                     saveAddingNewConsent={saveAddingNewConsent}
                     saveEditedConsent={saveEditedConsent}
                     consents={consents.filter(item => item.consentGroup === "marketing")}
+                />
+                <br/>
+                <ConsentsTable
+                    title="Zgody na kontakt"
+                    possibleConsentTypes={possibleConsentTypes.filter(type => type.consentGroup === "contact")}
+                    possibleWithdrawalReasons={ContactWithdrawalReasons}
+                    saveAddingNewConsent={saveAddingNewConsent}
+                    saveEditedConsent={saveEditedConsent}
+                    consents={consents.filter(item => item.consentGroup === "contact")}
                 />
             </>
         }

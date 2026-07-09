@@ -157,7 +157,7 @@ export const ConsentsTable = ({ title, possibleConsentTypes, possibleWithdrawalR
                                                             {isEditing ? (
                                                                 <select value={editingWithdrawalReason} onChange={handleEditingWithdrawalReasonChange}>
                                                                     <option value="null">-</option>
-                                                                    {MarketingWithdrawalReasons.map(reason => (
+                                                                    {possibleWithdrawalReasons.map(reason => (
                                                                         <option key={reason.key} value={reason.label}>{reason.label}</option>
                                                                     ))}
                                                                 </select>
