@@ -6,10 +6,11 @@ import { Client } from './components/Client';
 import { BlackLists } from './components/blackLists/BlackLists';
 import { GetClient } from './services/Api';
 import { Filtering } from './components/Filtering';
+import { Consents } from './components/consents/Consents';
 
 function App() {
   const [clients, setClients] = useState<ClientData[]>([]);
-  const [activeTab, setActiveTab] = useState<'clients' | 'filtering'>('clients');
+  const [activeTab, setActiveTab] = useState<'clients' | 'filtering'| 'consents'>('clients');
 
   const addClientToState = (newClient: ClientData) => {
     newClient.name = `Client ${clients.length + 1} (${newClient.name})`;
@@ -72,6 +73,12 @@ function App() {
             >
               Filtering
             </button>
+            <button
+              className={`nav-tab-button ${activeTab === 'consents' ? 'active' : ''}`}
+              onClick={() => setActiveTab('consents')}
+            >
+              Consents
+            </button>
           </div>
 
           {activeTab === 'clients' ? (
@@ -85,8 +92,10 @@ function App() {
                 ))}
               </div>
             </>
-          ) : (
+          ) : activeTab === 'filtering' ? (
             <Filtering />
+          ) : (
+            <Consents />
           )}
         </div>
         {activeTab === 'clients' && (

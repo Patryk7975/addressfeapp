@@ -163,6 +163,87 @@ h6 {
   color: var(--text-main);
 }
 
+.consent-section-header {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: var(--space-md);
+}
+
+.consent-section-header h4 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.consent-section-header button {
+  white-space: nowrap;
+  margin: 0;
+}
+
+.consent-section-body {
+  display: flex;
+  gap: var(--space-lg);
+  flex-wrap: wrap;
+  align-items: flex-start;
+}
+
+.consent-table-wrapper {
+  flex: 1 1 50%;
+  min-width: 320px;
+}
+
+.consent-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.consent-table th,
+.consent-table td {
+  border: 1px solid var(--border);
+  padding: var(--space-sm);
+  text-align: center;
+  vertical-align: middle;
+}
+
+.consent-table th {
+  background-color: var(--background);
+  font-weight: 600;
+}
+
+.consent-table td {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.consent-table th:first-child,
+.consent-table td:first-child {
+  width: 40%;
+}
+
+.consent-table th:nth-child(2),
+.consent-table td:nth-child(2),
+.consent-table th:nth-child(3),
+.consent-table td:nth-child(3) {
+  width: 30%;
+}
+
+.consent-add-panel {
+  flex: 0 0 360px;
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+  box-shadow: var(--shadow-sm);
+}
+
+.consent-add-panel .dropdown,
+.consent-add-panel .textbox {
+  margin-bottom: var(--space-md);
+}
+
 /* Forms & Inputs */
 .textbox,
 .dropdown {

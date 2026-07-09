@@ -10,7 +10,6 @@ import { Phone } from "./Phone";
 import { UpdateEmailForm } from "./UpdateEmailForm";
 import type { EmailData } from "../models/EmailData";
 import { Email } from "./Email";
-import { ConsentsForm } from "./ConsentsForm";
 
 export const Client = ({ client }: { client: ClientData }) => {
 
@@ -57,17 +56,12 @@ export const Client = ({ client }: { client: ClientData }) => {
     setActionId(NewClientsItemAction.Idle);
   }
 
-  const onConsentButtonClicked = () => {
-    setActionId(prev => prev !== NewClientsItemAction.Consents ? NewClientsItemAction.Consents : NewClientsItemAction.Idle);
-  }
-
   return (
     <div key={client.id} className="client-card">
 
       <div className="client-basic-data">
         <div className="client-basic-data-header">
           <h3>{client.name}</h3>
-          <button onClick={onConsentButtonClicked}>{actionId === NewClientsItemAction.Consents ? "Hide consents" : "Show consents"}</button>
         </div>
         <p>ID: {client.id}</p>
         <div className="add-new-item-buttons-container">
@@ -90,10 +84,6 @@ export const Client = ({ client }: { client: ClientData }) => {
         {clientData.phones.map(e => <Phone key={e.id} phone={e} onStartingUpdatingPhone={onStartingUpdatingPhone} />)}
         {clientData.emails.length > 0 && <h3>Emails:</h3>}
         {clientData.emails.map(e => <Email key={e.id} email={e} onStartingUpdatingEmail={onStartingUpdatingEmail} />)}
-      </div>
-
-      <div className="client-consents">
-        {actionId === NewClientsItemAction.Consents && <ConsentsForm clientId={client.id} />}
       </div>
       
     </div>

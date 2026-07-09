@@ -6,13 +6,15 @@ import type { ChangeBasis } from '../enums/ChangeBasis';
 import type { PhoneData } from '../models/PhoneData';
 import { PhoneType } from '../enums/PhoneType';
 import type { EmailData } from '../models/EmailData';
-import type { ConsentConfigurationRow } from '../models/consents/ConsentConfigurationRow';
+
 import { AddressType } from '../enums/AddressType';
 import type { BlackAddressData } from '../models/blackLists/BlackAddressData';
 import type { BlackPhoneData } from '../models/blackLists/BlackPhoneData';
 import type { BlackEmailData } from '../models/blackLists/BlackEmailData';
 import type { ClientFilter, ClientFilterResponse } from '../models/filtering/ClientFilter';
 import { Country } from '../enums/Country';
+import type { ConsentType } from '../components/consents/models/ConsentType';
+import { Consent, type ConsentRequestDto as ConsentRequestDto } from '../components/consents/models/Consent';
 
 interface ClientApiResponse {
     client: {
@@ -27,7 +29,22 @@ interface ClientApiResponse {
 }
 
 interface ConsentApiResponse {
-    items: ConsentConfigurationRow[]
+    items: {
+        consentType: {
+            consentLocalName: string,
+            consentGroup: string,
+            type: string,
+            id: string,
+        },
+        marketingConsentWithdrawalReason: string,
+        contactConsentWithdrawalReason: string,
+        isConsent: boolean,
+        changeSource: string
+    }[]
+}
+
+interface ConsentTypesApiResponse {
+    items: ConsentType[]
 }
 
 interface BlackAddressesApiResponse {
@@ -169,6 +186,18 @@ export const GetClient = async (clientId: string) => {
 export const AddAddressToClient = async (clientId: string, address: AddressData) => {
     const url = `${baseUrl}api/address/${clientId}/addresses`;
 
+    if (address.firstLevelOfDivision != null && (address.firstLevelOfDivision.value === "" || address.firstLevelOfDivision.value === null)) {
+        address.firstLevelOfDivision.meaning = null;
+    }
+
+    if (address.secondLevelOfDivision != null && (address.secondLevelOfDivision.value === "" || address.secondLevelOfDivision.value === null)) {
+        address.secondLevelOfDivision.meaning = null;
+    }
+
+    if (address.thirdLevelOfDivision != null && (address.thirdLevelOfDivision.value === "" || address.thirdLevelOfDivision.value === null)) {
+        address.thirdLevelOfDivision.meaning = null;
+    }
+
     if (address.type == AddressType.PostOfficeBox)
         address.streetPrefix = null;
 
@@ -193,6 +222,18 @@ export const AddAddressToClient = async (clientId: string, address: AddressData)
 
 export const UpdateClientAddress = async (clientId: string, addressId: string, address: AddressData) => {
     const url = `${baseUrl}api/address/${clientId}/addresses/${addressId}`;
+
+    if (address.firstLevelOfDivision != null && (address.firstLevelOfDivision.value === "" || address.firstLevelOfDivision.value === null)) {
+        address.firstLevelOfDivision.meaning = null;
+    }
+
+    if (address.secondLevelOfDivision != null && (address.secondLevelOfDivision.value === "" || address.secondLevelOfDivision.value === null)) {
+        address.secondLevelOfDivision.meaning = null;
+    }
+
+    if (address.thirdLevelOfDivision != null && (address.thirdLevelOfDivision.value === "" || address.thirdLevelOfDivision.value === null)) {
+        address.thirdLevelOfDivision.meaning = null;
+    }
 
     if (address.type == AddressType.PlaceOfStay)
         address.placeOfStayData = { placeOfStayReason: 'PermanentDeparture' }
@@ -301,14 +342,47 @@ export const ConfirmUsage = async (
     }
 }
 
-export const GetConsents = async (clientId: string) => {
-    const url = `${baseUrl}api/consent/${clientId}/consentsInterface`;
+export const CreateConsents = async (clientId: string, consents: ConsentRequestDto[]) => {
+    const url = `${baseUrl}api/consent/${clientId}/consents`;
+
+    for (let consent of consents) {
+        if (consent.contactConsentWithdrawalReason == "")
+            consent.contactConsentWithdrawalReason = null;
+        if (consent.marketingConsentWithdrawalReason == "")
+            consent.marketingConsentWithdrawalReason = null;
+    }
 
     try {
-        const response = await axios.get<ConsentApiResponse>(url);
+        const response = await axios.post<ConsentApiResponse>(url, consents);
         console.log('Odpowiedź:', response.data);
+        response.data.items = deepCapitalize(response.data.items);
+        return response.data.items.map(e => {
 
-        return response.data.items;
+            const consent = new Consent();
+            consent.changeSource = e.changeSource;
+            consent.consentTypeKey = e.consentType.type;
+            consent.consentTypeName = e.consentType.consentLocalName;
+            consent.consentGroup = e.consentType.consentGroup;
+            consent.isConsent = e.isConsent;
+            consent.marketingConsentWithdrawalReason = e.marketingConsentWithdrawalReason;
+            consent.contactConsentWithdrawalReason = e.contactConsentWithdrawalReason;
+
+            return consent;
+        });
+    } catch (error) {
+        handleError(error)
+    }
+
+}
+
+export const GetConsentTypes = async () => {
+    const url = `${baseUrl}api/consent/consent-types`;
+
+    try {
+        const response = await axios.get<ConsentTypesApiResponse>(url);
+        console.log('Odpowiedź:', response.data);
+        response.data.items = response.data.items.filter(e => !e.isDeleted);
+        return deepCapitalize(response.data.items);
     } catch (error) {
         handleError(error)
     }
