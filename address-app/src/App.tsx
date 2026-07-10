@@ -7,10 +7,11 @@ import { BlackLists } from './components/blackLists/BlackLists';
 import { GetClient } from './services/Api';
 import { Filtering } from './components/Filtering';
 import { Consents } from './components/consents/Consents';
+import { Patrimoniale } from './components/patrimoniale/Patrimoniale';
 
 function App() {
   const [clients, setClients] = useState<ClientData[]>([]);
-  const [activeTab, setActiveTab] = useState<'clients' | 'filtering'| 'consents'>('clients');
+  const [activeTab, setActiveTab] = useState<'clients' | 'filtering' | 'consents' | 'patrimoniale'>('clients');
 
   const addClientToState = (newClient: ClientData) => {
     newClient.name = `Client ${clients.length + 1} (${newClient.name})`;
@@ -79,6 +80,12 @@ function App() {
             >
               Consents
             </button>
+            <button
+              className={`nav-tab-button ${activeTab === 'patrimoniale' ? 'active' : ''}`}
+              onClick={() => setActiveTab('patrimoniale')}
+            >
+              Patrimoniale
+            </button>
           </div>
 
           {activeTab === 'clients' ? (
@@ -94,9 +101,12 @@ function App() {
             </>
           ) : activeTab === 'filtering' ? (
             <Filtering />
-          ) : (
+          ) : activeTab === 'consents' ? (
             <Consents />
-          )}
+          ) : (
+            <Patrimoniale/>
+          )     
+        }
         </div>
         {activeTab === 'clients' && (
           <div className='black-lists'>

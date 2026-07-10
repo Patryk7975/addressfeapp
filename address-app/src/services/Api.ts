@@ -15,6 +15,7 @@ import type { ClientFilter, ClientFilterResponse } from '../models/filtering/Cli
 import { Country } from '../enums/Country';
 import type { ConsentType } from '../components/consents/models/ConsentType';
 import { Consent, type ConsentRequestDto as ConsentRequestDto } from '../components/consents/models/Consent';
+import { deepCapitalize, handleError } from './ApiUtils';
 
 interface ClientApiResponse {
     client: {
@@ -59,20 +60,6 @@ interface BlacPhonesApiResponse {
 interface BlackEmailsApiResponse {
     items: BlackEmailData[]
 }
-
-interface ErrorApiResponse {
-    response: {
-        data: {
-            ValidationResult: {
-                brokenRules: {
-                    message: string,
-                    severity: string
-                }[],
-            }
-        }
-    }
-}
-
 
 const baseUrl = "http://localhost:7000/";
 
@@ -390,22 +377,6 @@ export const GetConsentTypes = async () => {
     }
 }
 
-const handleError = (error: unknown) => {
-    const parsedError = error as ErrorApiResponse;
-    if (parsedError) {
-        const rules = parsedError.response.data.ValidationResult.brokenRules;
-        let message = "";
-        for (let r of rules) {
-            if (r.severity.toLowerCase() == "error")
-                message += r.message + " ";
-        }
-        alert(message)
-    }
-    else {
-        alert(error);
-    }
-}
-
 export const GetBlackAddresses = async () => {
     const url = `${baseUrl}api/forbidden-addresses`;
     const response = await axios.get<BlackAddressesApiResponse>(url);
@@ -590,31 +561,4 @@ const normalizeClientResponse = (data: ClientApiResponse) => {
     return newClient;
 }
 
-function deepCapitalize(obj: any): any {
-    if (typeof obj === 'string') {
-        return capitalizeFirstLetter(obj);
-    } else if (Array.isArray(obj)) {
-        return obj.map(deepCapitalize);
-    } else if (typeof obj === 'object' && obj !== null) {
-        const result: any = {};
-        for (const key in obj) {
-            if (dictionaryNames.indexOf(key) >= 0) {
-                result[key] = deepCapitalize(obj[key]);
-            } else if (lowercaseDictionaryNames.indexOf(key) >= 0) {
-                result[key] = obj[key]?.toLowerCase();
-            } else {
-                result[key] = obj[key];
-            }
-        }
-        return result;
-    }
-    return obj;
-}
 
-function capitalizeFirstLetter(str: string): string {
-    return str.charAt(0).toUpperCase() + str.slice(1);
-}
-
-const dictionaryNames = ['usage', 'status', 'type', 'changeSource', 'changeBasis', 'id', 'instanceId', 'placeOfStay', 'country', 'usages'];
-
-const lowercaseDictionaryNames = ['streetPrefix'];
