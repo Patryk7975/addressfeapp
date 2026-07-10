@@ -670,6 +670,63 @@ input[type="checkbox"] {
   align-items: end;
 }
 
+.client-jobs-form-controls {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.client-jobs-form-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 var(--space-sm);
+}
+
+.client-jobs-form-table td {
+  vertical-align: top;
+  padding: 0 var(--space-sm);
+}
+
+.client-jobs-form-controls label {
+  display: block;
+  margin-bottom: var(--space-xs);
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+
+.client-jobs-form-controls .employment-status-col,
+.client-jobs-form-controls .profession-col,
+.client-jobs-form-controls .confirmed-by-employer-col,
+.client-jobs-form-controls .contract-type-col,
+.client-jobs-form-controls .start-date-col,
+.client-jobs-form-controls .end-date-col {
+  width: 33.33%;
+}
+
+.client-jobs-form-controls .check-date-col {
+  width: 100%;
+}
+
+.client-jobs-form-controls .textbox,
+.client-jobs-form-controls select,
+.client-jobs-form-controls input[type="date"] {
+  width: 100%;
+  padding: var(--space-sm);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background-color: var(--surface);
+  box-sizing: border-box;
+}
+
+.client-jobs-form-controls .checkbox-input {
+  margin-top: var(--space-sm);
+  width: auto;
+}
+
+.client-jobs-form-controls .submit-new-address-button {
+  align-self: flex-start;
+}
+
 /* Make certain fields full width if needed usually the textboxes */
 .new-address-form-controls .textbox,
 .new-phone-form-controls .textbox,
