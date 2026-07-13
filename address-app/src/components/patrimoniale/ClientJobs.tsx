@@ -19,7 +19,7 @@ interface ClientJobsProps {
     clientId: string;
 }
 
-export const ClientJobs = ({clientId} : ClientJobsProps) => {
+export const ClientJobs = ({ clientId }: ClientJobsProps) => {
 
     const [jobs, setJobs] = useState<Job[]>([]);
     const [jobsVersion, setJobsVersion] = useState<number>(0);
@@ -52,9 +52,9 @@ export const ClientJobs = ({clientId} : ClientJobsProps) => {
     };
 
     return <div className="client-jobs">
-        <button type="button" onClick={() => setIsFormVisible(prev => !prev)}>
-            {isFormVisible ? "Cancel" : "Add new job"}
-        </button>
+        {!isFormVisible && <button type="button" className="add-new-address-button" onClick={() => setIsFormVisible(true)}>
+            Add new job
+        </button>}
         {isFormVisible &&
             <form onSubmit={handleCreateJob} className="client-jobs-form-controls">
                 <table className="client-jobs-form-table">
@@ -152,21 +152,28 @@ export const ClientJobs = ({clientId} : ClientJobsProps) => {
                         </tr>
                     </tbody>
                 </table>
-                <button type="submit" className="submit-new-address-button">Add job</button>
+                <div style={{ display: "flex", gap: "12px", marginTop: "8px", flexWrap: "wrap" }}>
+                    <button type="button" className="add-new-address-button" onClick={() => setIsFormVisible(false)}>
+                        Cancel
+                    </button>
+                    <button type="submit" className="add-new-address-button">Add job</button>
+                </div>
             </form>
         }
 
-        <h4>Jobs list ({jobs.length})</h4>
-        {jobs.length === 0 && <p>No jobs.</p>}
-        <ul>
-            {jobs.map((job) => (
-                <li key={job.id ?? `${job.clientProfession ?? "job"}-${job.startDate ?? "unknown"}`}>
-                    <strong>{job.clientProfession ?? "No profession"}</strong>
-                    <div>Status: {job.clientEmploymentStatus ?? "-"}</div>
-                    <div>Contract: {job.contractType ?? "-"}</div>
-                    <div>Confirmed: {job.confirmedByEmployer ? "Yes" : "No"}</div>
-                </li>
-            ))}
-        </ul>
+        <div className="patrimoniale-existing-elements-list">
+            <h4>Jobs list ({jobs.length})</h4>
+            {jobs.length === 0 && <p>No jobs.</p>}
+            <ul>
+                {jobs.map((job) => (
+                    <li key={job.id ?? `${job.clientProfession ?? "job"}-${job.startDate ?? "unknown"}`}>
+                        <strong>{job.clientProfession ?? "No profession"}</strong>
+                        <div>Status: {job.clientEmploymentStatus ?? "-"}</div>
+                        <div>Contract: {job.contractType ?? "-"}</div>
+                        <div>Confirmed: {job.confirmedByEmployer ? "Yes" : "No"}</div>
+                    </li>
+                ))}
+            </ul>
+        </div>
     </div>
 }

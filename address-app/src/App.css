@@ -875,3 +875,7 @@ input[type="checkbox"] {
   /* Match input height roughly */
   margin-bottom: 0px;
 }
+
+.patrimoniale-existing-elements-list {
+  margin-top: 20px;
+}

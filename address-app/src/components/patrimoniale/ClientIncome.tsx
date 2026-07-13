@@ -48,12 +48,12 @@ export const ClientIncome = ({ clientId }: ClientIncomeProps) => {
     };
 
     return <div className="client-income">
-        <button type="button" onClick={() => setIsFormVisible(prev => !prev)}>
-            {isFormVisible ? "Cancel" : income != null ? "Update income" : "Add new income"}
-        </button>
+        {!isFormVisible && <button type="button" className="add-new-address-button" onClick={() => setIsFormVisible(true)}>
+            {income != null ? "Update income" : "Add new income"}
+        </button>}
         {isFormVisible &&
-            <form onSubmit={handleCreateIncome} className="client-jobs-form-controls">
-                <table className="client-jobs-form-table">
+            <form onSubmit={handleCreateIncome} className="client-income-form-controls">
+                <table className="client-income-form-table">
                     <tbody>
                         <tr>
                             <td>
@@ -119,19 +119,27 @@ export const ClientIncome = ({ clientId }: ClientIncomeProps) => {
                         </tr>
                     </tbody>
                 </table>
-                <button type="submit" className="submit-new-address-button">{ income != null ? "Update income" : "Add income"}</button>
+                <div style={{ display: "flex", gap: "12px", marginTop: "8px", flexWrap: "wrap" }}>
+                    <button type="button" className="add-new-address-button" onClick={() => setIsFormVisible(false)}>
+                        Cancel
+                    </button>
+                    <button type="submit" className="add-new-address-button">{income != null ? "Update income" : "Add income"}</button>
+                </div>
             </form>
         }
 
-        <h4>Income</h4>
-        {income == null && <p>No income yet.</p>}
-        {income != null &&
-            <div>
-                <div>Amount: {income.amount ?? "-"}</div>
-                <div>Gross amount: {income.grossAmount ?? "-"}</div>
-                <div>Currency: {income.currency ?? "-"}</div>
-                <div>Period: {income.period ?? "-"}</div>
-            </div>
-        }
+        <div className="patrimoniale-existing-elements-list">
+            <h4>Income</h4>
+            {income == null && <p>No income yet.</p>}
+            {income != null &&
+                <div>
+                    <div>Amount: {income.amount ?? "-"}</div>
+                    <div>Gross amount: {income.grossAmount ?? "-"}</div>
+                    <div>Currency: {income.currency ?? "-"}</div>
+                    <div>Period: {income.period ?? "-"}</div>
+                </div>
+            }
+        </div>
     </div>
+
 }

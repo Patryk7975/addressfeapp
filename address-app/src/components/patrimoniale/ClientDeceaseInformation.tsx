@@ -1,7 +1,7 @@
 import { useState, type ChangeEvent, type FormEvent } from "react";
 import { DeceaseStatus } from "./enums/DeceaseStatus";
 import type { DeceaseInformation } from "./models/DeceaseInformation";
-import { CreateDeceaseInformation, UpdateDeceaseInformation } from "./services/DeceaseApi";
+import { CreateDeceaseInformation, UpdateDeceaseInformation } from "./services/OtherInfoApi";
 
 const createInitialDeceaseInfo = (): DeceaseInformation => ({
     id: null,
@@ -32,8 +32,8 @@ export const ClientDeceaseInformation = ({ clientId }: ClientDeceaseInformationP
         event.preventDefault();
 
         const response = deceaseInfo?.id
-        ? await UpdateDeceaseInformation(clientId, deceaseInfo.id, deceaseInfoVersion, newDeceaseInfo)
-        : await CreateDeceaseInformation(clientId, newDeceaseInfo);
+            ? await UpdateDeceaseInformation(clientId, deceaseInfo.id, deceaseInfoVersion, newDeceaseInfo)
+            : await CreateDeceaseInformation(clientId, newDeceaseInfo);
 
         if (response) {
             setDeceaseInfo(response.deceaseInformation);
@@ -43,9 +43,9 @@ export const ClientDeceaseInformation = ({ clientId }: ClientDeceaseInformationP
     };
 
     return <div className="client-deceaseInfo">
-        <button type="button" onClick={() => setIsFormVisible(prev => !prev)}>
-            {isFormVisible ? "Cancel" : deceaseInfo != null ? "Update decease info" : "Add new decease info"}
-        </button>
+        {!isFormVisible && <button type="button" className="add-new-address-button" onClick={() => setIsFormVisible(true)}>
+            {deceaseInfo != null ? "Update decease info" : "Add new decease info"}
+        </button>}
         {isFormVisible &&
             <form onSubmit={handleCreateDeceaseInfo} className="client-jobs-form-controls">
                 <table className="client-jobs-form-table">
@@ -94,18 +94,24 @@ export const ClientDeceaseInformation = ({ clientId }: ClientDeceaseInformationP
                         </tr>
                     </tbody>
                 </table>
-                <button type="submit" className="submit-new-address-button">{deceaseInfo != null ? "Update decease info" : "Add decease info"}</button>
+                <div style={{ display: "flex", gap: "12px", marginTop: "8px", flexWrap: "wrap" }}>
+                    <button type="button" className="add-new-address-button" onClick={() => setIsFormVisible(false)}>
+                        Cancel
+                    </button>
+                    <button type="submit" className="add-new-address-button">{deceaseInfo != null ? "Update decease info" : "Add decease info"}</button>
+                </div>
             </form>
         }
-
-        <h4>Decease info</h4>
-        {deceaseInfo == null && <p>No decease info yet.</p>}
-        {deceaseInfo != null &&
-            <div>
-                <div>Status: {deceaseInfo.deceaseStatus ?? "-"}</div>
-                <div>Decease date: {deceaseInfo.deceaseDate ?? "-"}</div>
-                <div>Information date: {deceaseInfo.deceaseInformationDate ?? "-"}</div>
-            </div>
-        }
-    </div>
+        <div className="patrimoniale-existing-elements-list">
+            <h4>Decease info</h4>
+            {deceaseInfo == null && <p>No decease info yet.</p>}
+            {deceaseInfo != null &&
+                <div>
+                    <div>Status: {deceaseInfo.deceaseStatus ?? "-"}</div>
+                    <div>Decease date: {deceaseInfo.deceaseDate ?? "-"}</div>
+                    <div>Information date: {deceaseInfo.deceaseInformationDate ?? "-"}</div>
+                </div>
+            }
+        </div>
+    </div >
 }
