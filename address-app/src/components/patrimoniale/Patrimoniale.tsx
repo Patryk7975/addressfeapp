@@ -1,7 +1,9 @@
 import { useState } from "react";
 import type { ClientData } from "../../models/ClientData";
 import { AddClientButton } from "../AddClientButton";
+import { ClientIncome } from "./ClientIncome";
 import { ClientJobs } from "./ClientJobs";
+import { ClientDeceaseInformation } from "./ClientDeceaseInformation";
 
 
 export const Patrimoniale = () => {
@@ -27,6 +29,8 @@ export const Patrimoniale = () => {
                     <p>ID: {client.id}</p>
                 </div>
                 <ClientJobs clientId={client.id} />
+                <ClientIncome clientId={client.id} />
+                <ClientDeceaseInformation clientId={client.id} />
             </>
         }
     </>

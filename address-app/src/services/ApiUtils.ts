@@ -55,3 +55,6 @@ export const handleError = (error: unknown) => {
         alert(error);
     }
 }
+
+export const normalizeDateInRequest = (date: string | null) =>
+  date ? `${date}T00:00:00.000Z` : date;

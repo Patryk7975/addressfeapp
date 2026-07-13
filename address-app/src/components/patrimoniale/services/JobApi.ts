@@ -18,7 +18,7 @@ export const UpsertJobs = async (clientId: string, version: number, jobs: Job[])
     const url = `${baseUrl}api/professionalActivity/${clientId}`;
 
     const payload = {
-        clientsJobs: jobs.map(e => ({
+        deceaseInfo: jobs.map(e => ({
             clientEmploymentStatus: e.clientEmploymentStatus,
             clientProfession: e.clientProfession,
             confirmedByEmployer: e.confirmedByEmployer,
