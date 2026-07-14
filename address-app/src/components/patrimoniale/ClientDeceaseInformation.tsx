@@ -2,6 +2,7 @@ import { useState, type ChangeEvent, type FormEvent } from "react";
 import { DeceaseStatus } from "./enums/DeceaseStatus";
 import type { DeceaseInformation } from "./models/DeceaseInformation";
 import { CreateDeceaseInformation, UpdateDeceaseInformation } from "./services/OtherInfoApi";
+import { Button } from "../controls/Button";
 
 const createInitialDeceaseInfo = (): DeceaseInformation => ({
     id: null,
@@ -43,9 +44,9 @@ export const ClientDeceaseInformation = ({ clientId }: ClientDeceaseInformationP
     };
 
     return <div className="client-deceaseInfo">
-        {!isFormVisible && <button type="button" className="add-new-address-button" onClick={() => setIsFormVisible(true)}>
+        {!isFormVisible && <Button size="small" onClick={() => setIsFormVisible(true)}>
             {deceaseInfo != null ? "Update decease info" : "Add new decease info"}
-        </button>}
+        </Button>}
         {isFormVisible &&
             <form onSubmit={handleCreateDeceaseInfo} className="client-jobs-form-controls">
                 <table className="client-jobs-form-table">
@@ -94,11 +95,11 @@ export const ClientDeceaseInformation = ({ clientId }: ClientDeceaseInformationP
                         </tr>
                     </tbody>
                 </table>
-                <div style={{ display: "flex", gap: "12px", marginTop: "8px", flexWrap: "wrap" }}>
-                    <button type="button" className="add-new-address-button" onClick={() => setIsFormVisible(false)}>
+                <div>
+                    <Button size="small" color="secondary" onClick={() => setIsFormVisible(false)}>
                         Cancel
-                    </button>
-                    <button type="submit" className="add-new-address-button">{deceaseInfo != null ? "Update decease info" : "Add decease info"}</button>
+                    </Button>
+                    <Button size="small">Save</Button>
                 </div>
             </form>
         }

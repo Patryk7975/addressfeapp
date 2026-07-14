@@ -11,6 +11,7 @@ import { UpdateBlackPhoneForm } from "./UpdateBlackPhoneForm";
 import { BlackPhone } from "./BlackPhone";
 import { BlackEmail } from "./BlackEmail";
 import { UpdateBlackEmailForm } from "./UpdateBlackEmailForm";
+import { Button } from "../controls/Button";
 
 interface BlackListsProps {
     refreshClients: () => void;
@@ -94,9 +95,9 @@ export const BlackLists = ({refreshClients} : BlackListsProps) => {
         <div className="black-lists-header">
             <h2>Blacklists</h2>
             <div className="add-black-list-buttons">
-                {actionId === BlackListAction.Idle && <button className="add-new-black-address-button" onClick={() => setActionId(BlackListAction.AddingNewAddress)}>Add address</button>}
-                {actionId === BlackListAction.Idle && <button className="add-new-black--phone-button" onClick={() => setActionId(BlackListAction.AddingNewPhone)}>Add phone</button>}
-                {actionId === BlackListAction.Idle && <button className="add-new-black-email-button" onClick={() => setActionId(BlackListAction.AddingNewEmail)}>Add email</button>}
+                {actionId === BlackListAction.Idle && <Button color="secondary" onClick={() => setActionId(BlackListAction.AddingNewAddress)}>Add address</Button>}
+                {actionId === BlackListAction.Idle && <Button color="secondary" onClick={() => setActionId(BlackListAction.AddingNewPhone)}>Add phone</Button>}
+                {actionId === BlackListAction.Idle && <Button color="secondary" onClick={() => setActionId(BlackListAction.AddingNewEmail)}>Add email</Button>}
             </div>
             {actionId === BlackListAction.AddingNewAddress && <UpdateBlackAddressForm address={null} onSubmitAddingNewAddress={onSubmitAddingNewAddress} onCancelAddingNewAddress={() => setActionId(BlackListAction.Idle)} />}
             {actionId === BlackListAction.UpdatingAddress && <UpdateBlackAddressForm address={updatedAddress} onSubmitAddingNewAddress={onSubmitAddingNewAddress} onCancelAddingNewAddress={() => setActionId(BlackListAction.Idle)} />}

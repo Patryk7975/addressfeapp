@@ -14,6 +14,7 @@ import { StreetPrefix } from "../enums/StreetPrefix";
 import { GetCities, GetPostalCodes, GetStreets } from "../services/NormalizationApi";
 import { AutocompleteTextBox } from "./AutocompleteTextBox";
 import { LevelofDivisionConfiguration } from "../configuration/LevelsOfDivisionConfiguration";
+import { Button } from "./controls/Button";
 
 
 interface UpdateAddressFormProps {
@@ -396,35 +397,35 @@ export const UpdateAddressForm = ({ address, clientId, onCancelAddingNewAddress,
                                 <span>{AddressUsageType[e.type ?? -1]} </span>
                                 <span className="new-address-form-usages-usage-status" onClick={() => changeUsageStatus(e)}>{VerificationStatus[e.status ?? -1]}</span>
                             </p>
-                            <button className="remove-usage-button" onClick={() => handleRemoveUsage(index)}>
+                            <Button color="danger" size="small" onClick={() => handleRemoveUsage(index)}>
                                 Delete
-                            </button>
+                            </Button>
                         </li>
                     ))}
                 </ul>
             </div>
 
             <div className="add-new-usage-section">
-                {!addingUsage && <button className="add-usage-button" onClick={() => setAddingUsage(true)}>Add usage</button>}
+                {!addingUsage && <Button size="small" onClick={() => setAddingUsage(true)}>Add usage</Button>}
                 {addingUsage && <NewUsage handleAddUsage={handleAddUsage} handleCancelAddingUsage={() => setAddingUsage(false)} />}
             </div>
 
             {address === null && <div className="add-new-address-buttons">
-                <button onClick={onCancelAddingNewAddress} className="cancel-adding-new-address-button">
+                <Button color="secondary" onClick={onCancelAddingNewAddress} >
                     Cancel add
-                </button>
-                <button onClick={handleCreateNewAddress} className="submit-new-address-button">
+                </Button>
+                <Button onClick={handleCreateNewAddress} >
                     Save address
-                </button>
+                </Button>
             </div>}
 
-            {address !== null && <div className="add-new-address-buttons">
-                <button onClick={onCancelAddingNewAddress} className="cancel-adding-new-address-button">
+            {address !== null && <div className="add-new-address-bussttons">
+                <Button color="secondary" onClick={onCancelAddingNewAddress} >
                     Cancel update
-                </button>
-                <button onClick={handleUpdateAddress} className="submit-new-address-button">
+                </Button>
+                <Button onClick={handleUpdateAddress}>
                     Save address
-                </button>
+                </Button>
             </div>}
 
         </div>

@@ -1,5 +1,6 @@
 import type { AddressData } from "../models/AddressData"
 import { ConfirmUsage } from "../services/Api";
+import { Button } from "./controls/Button";
 
 function padTo2Digits(num: number): string {
     return num.toString().padStart(2, '0');
@@ -57,7 +58,7 @@ export const Address = ({clientId, address, onSubmitAddingNewAddress, onStarting
                 <p>{address.firstLevelOfDivision?.value} {address.secondLevelOfDivision?.value} {address.thirdLevelOfDivision?.value}</p>
             </div>
             <div>
-                <button onClick={() => onStartingUpdatingAddress(address.id)}>Update details</button>
+                <Button size="small" color="secondary" onClick={() => onStartingUpdatingAddress(address.id)}>Update details</Button>
             </div>
         </div>
 
@@ -72,7 +73,7 @@ export const Address = ({clientId, address, onSubmitAddingNewAddress, onStarting
                                 : "no date"}
                             )
                         </p>
-                        <button className="verify-usage-button" onClick={() => confirmUsage(e.id)}>Verify</button>
+                        <Button size="small" color="secondary" onClick={() => confirmUsage(e.id)}>Verify</Button>
                     </div>
                 </li>
             ))}

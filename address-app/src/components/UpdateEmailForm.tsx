@@ -8,6 +8,7 @@ import type { EmailData } from "../models/EmailData";
 import { EmailType } from "../enums/EmailType";
 import { EmailUsage } from "../enums/EmailUsage";
 import { AddEmailToClient, UpdateClientEmail } from "../services/Api";
+import { Button } from "./controls/Button";
 
 interface UpdateEmailFormProps {
     email: EmailData | null,
@@ -116,21 +117,21 @@ export const UpdateEmailForm = ({ email, clientId, onCancelAddingNewEmail, onSub
             </div>
 
             {email === null && <div className="add-new-email-buttons">
-                <button onClick={onCancelAddingNewEmail} className="cancel-adding-new-email-button">
+                <Button color="secondary" onClick={onCancelAddingNewEmail}>
                     Cancel add
-                </button>
-                <button onClick={handleCreateNewEmail} className="submit-new-email-button">
+                </Button>
+                <Button onClick={handleCreateNewEmail}>
                     Save email
-                </button>
+                </Button>
             </div>}
 
             {email !== null && <div className="add-new-email-buttons">
-                <button onClick={onCancelAddingNewEmail} className="cancel-adding-new-email-button">
+                <Button color="secondary" onClick={onCancelAddingNewEmail}>
                     Cancel update
-                </button>
-                <button onClick={handleUpdateEmail} className="submit-new-email-button">
+                </Button>
+                <Button onClick={handleUpdateEmail}>
                     Save email
-                </button>
+                </Button>
             </div>}
 
         </div>

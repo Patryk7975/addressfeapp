@@ -3,6 +3,7 @@ import { CurrencyCode } from "./enums/CurrencyCode";
 import { Period } from "./enums/Period";
 import type { Income } from "./models/Income";
 import { UpsertIncome } from "./services/IncomeApi";
+import { Button } from "../controls/Button";
 
 const createInitialIncome = (): Income => ({
     id: null,
@@ -48,9 +49,9 @@ export const ClientIncome = ({ clientId }: ClientIncomeProps) => {
     };
 
     return <div className="client-income">
-        {!isFormVisible && <button type="button" className="add-new-address-button" onClick={() => setIsFormVisible(true)}>
+        {!isFormVisible && <Button size="small" onClick={() => setIsFormVisible(true)}>
             {income != null ? "Update income" : "Add new income"}
-        </button>}
+        </Button>}
         {isFormVisible &&
             <form onSubmit={handleCreateIncome} className="client-income-form-controls">
                 <table className="client-income-form-table">
@@ -119,11 +120,11 @@ export const ClientIncome = ({ clientId }: ClientIncomeProps) => {
                         </tr>
                     </tbody>
                 </table>
-                <div style={{ display: "flex", gap: "12px", marginTop: "8px", flexWrap: "wrap" }}>
-                    <button type="button" className="add-new-address-button" onClick={() => setIsFormVisible(false)}>
+                <div>
+                    <Button size="small" color="secondary"  onClick={() => setIsFormVisible(false)}>
                         Cancel
-                    </button>
-                    <button type="submit" className="add-new-address-button">{income != null ? "Update income" : "Add income"}</button>
+                    </Button>
+                    <Button size="small">{income != null ? "Save" : "Add income"}</Button>
                 </div>
             </form>
         }

@@ -1,5 +1,6 @@
 import type { BlackAddressData } from "../../models/blackLists/BlackAddressData";
 import { DeleteBlackAddress } from "../../services/Api";
+import { Button } from "../controls/Button";
 
 interface BlackAddressProps {
     address: BlackAddressData;
@@ -33,10 +34,10 @@ export const BlackAddress = ({ address, onStartingUpdatingAddress, onDeleteAddre
                 <p>{address.firstLevelOfDivision?.value} {address.secondLevelOfDivision?.value} {address.thirdLevelOfDivision?.value}</p>
             </div>
             <div>
-                <button style={{ marginBottom: '15px' }} onClick={() => onStartingUpdatingAddress(address.id)}>
+                <Button color="secondary" size="small" onClick={() => onStartingUpdatingAddress(address.id)}>
                     Update details
-                </button>
-                <button onClick={() => handleDeleteAddress(address.id)}>Delete</button>
+                </Button>
+                <Button color="danger" size="small" onClick={() => handleDeleteAddress(address.id)}>Delete</Button>
             </div>
         </div>
     </div>

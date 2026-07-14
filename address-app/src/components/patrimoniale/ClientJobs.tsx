@@ -3,6 +3,7 @@ import { ContractType } from "./enums/ContractType";
 import { EmploymentStatus } from "./enums/EmploymentStatus";
 import type { Job } from "./models/Job";
 import { UpsertJobs } from "./services/JobApi";
+import { Button } from "../controls/Button";
 
 const createInitialJob = (): Job => ({
     id: null,
@@ -52,9 +53,9 @@ export const ClientJobs = ({ clientId }: ClientJobsProps) => {
     };
 
     return <div className="client-jobs">
-        {!isFormVisible && <button type="button" className="add-new-address-button" onClick={() => setIsFormVisible(true)}>
+        {!isFormVisible && <Button size="small" onClick={() => setIsFormVisible(true)}>
             Add new job
-        </button>}
+        </Button>}
         {isFormVisible &&
             <form onSubmit={handleCreateJob} className="client-jobs-form-controls">
                 <table className="client-jobs-form-table">
@@ -152,11 +153,11 @@ export const ClientJobs = ({ clientId }: ClientJobsProps) => {
                         </tr>
                     </tbody>
                 </table>
-                <div style={{ display: "flex", gap: "12px", marginTop: "8px", flexWrap: "wrap" }}>
-                    <button type="button" className="add-new-address-button" onClick={() => setIsFormVisible(false)}>
+                <div>
+                    <Button color="secondary" size="small" onClick={() => setIsFormVisible(false)}>
                         Cancel
-                    </button>
-                    <button type="submit" className="add-new-address-button">Add job</button>
+                    </Button>
+                    <Button size="small">Save</Button>
                 </div>
             </form>
         }

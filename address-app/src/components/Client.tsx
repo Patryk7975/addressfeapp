@@ -10,6 +10,7 @@ import { Phone } from "./Phone";
 import { UpdateEmailForm } from "./UpdateEmailForm";
 import type { EmailData } from "../models/EmailData";
 import { Email } from "./Email";
+import { Button } from "./controls/Button";
 
 export const Client = ({ client }: { client: ClientData }) => {
 
@@ -65,9 +66,9 @@ export const Client = ({ client }: { client: ClientData }) => {
         </div>
         <p>ID: {client.id}</p>
         <div className="add-new-item-buttons-container">
-          {(actionId === NewClientsItemAction.Idle || actionId === NewClientsItemAction.Consents) && <button className="add-new-address-button" onClick={() => setActionId(NewClientsItemAction.AddingNewAddress)}>Add address</button>}
-          {(actionId === NewClientsItemAction.Idle || actionId === NewClientsItemAction.Consents) && <button className="add-new-phone-button" onClick={() => setActionId(NewClientsItemAction.AddingNewPhone)}>Add phone</button>}
-          {(actionId === NewClientsItemAction.Idle || actionId === NewClientsItemAction.Consents) && <button className="add-new-email-button" onClick={() => setActionId(NewClientsItemAction.AddingNewEmail)}>Add email</button>}
+          {(actionId === NewClientsItemAction.Idle || actionId === NewClientsItemAction.Consents) && <Button onClick={() => setActionId(NewClientsItemAction.AddingNewAddress)}>Add address</Button>}
+          {(actionId === NewClientsItemAction.Idle || actionId === NewClientsItemAction.Consents) && <Button onClick={() => setActionId(NewClientsItemAction.AddingNewPhone)}>Add phone</Button>}
+          {(actionId === NewClientsItemAction.Idle || actionId === NewClientsItemAction.Consents) && <Button onClick={() => setActionId(NewClientsItemAction.AddingNewEmail)}>Add email</Button>}
         </div>
         {actionId === NewClientsItemAction.AddingNewAddress && <UpdateAddressForm address={null} clientId={client.id} onSubmitAddingNewAddress={onSubmitAddingNewAddress} onCancelAddingNewAddress={() => setActionId(NewClientsItemAction.Idle)} />}
         {actionId === NewClientsItemAction.UpdatingAddress && <UpdateAddressForm address={updatedAddress} clientId={client.id} onSubmitAddingNewAddress={onSubmitAddingNewAddress} onCancelAddingNewAddress={() => setActionId(NewClientsItemAction.Idle)} />}

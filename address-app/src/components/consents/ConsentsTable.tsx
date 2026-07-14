@@ -4,6 +4,7 @@ import { CheckBox } from "../CheckBox";
 import type { ConsentType } from "./models/ConsentType";
 import { ContactWithdrawalReasons, MarketingWithdrawalReasons, type WithdrawalReason } from "./configuration/WithdrawalReasonConfiguration";
 import type { Consent, ConsentRequestDto } from "./models/Consent";
+import { Button } from "../controls/Button";
 
 interface ConsentsTableProps {
     title: string;
@@ -121,8 +122,8 @@ export const ConsentsTable = ({ title, possibleConsentTypes, possibleWithdrawalR
                 <div className="consent-form">
                     <div className="consent-section">
                         <div className="consent-section-header">
-                            <h4>{title}</h4>
-                            <button type="button" onClick={() => setIsAddingNewConsent(true)}>Dodaj zgodę</button>
+                            <h3>{title}</h3>
+                            <Button size="small" onClick={() => setIsAddingNewConsent(true)}>Dodaj zgodę</Button>
                         </div>
                         <div className="consent-section-body">
                             <div className="consent-table-wrapper">
@@ -172,11 +173,11 @@ export const ConsentsTable = ({ title, possibleConsentTypes, possibleWithdrawalR
                                                         <td>
                                                             {isEditing ? (
                                                                 <>
-                                                                    <button type="button" onClick={() => onSaveEditedConsent(item.id)}>Save</button>
-                                                                    <button type="button" onClick={cancelEditingConsent}>Cancel</button>
+                                                                    <Button size="small" onClick={() => onSaveEditedConsent(item.id)}>Save</Button>
+                                                                    <Button color="secondary" size="small" onClick={cancelEditingConsent}>Cancel</Button>
                                                                 </>
                                                             ) : (
-                                                                <button type="button" onClick={() => startEditingConsent(item.id)}>Edytuj</button>
+                                                                <Button color="secondary" size="small" onClick={() => startEditingConsent(item.id)}>Edytuj</Button>
                                                             )}
                                                         </td>
                                                     </tr>
@@ -213,8 +214,8 @@ export const ConsentsTable = ({ title, possibleConsentTypes, possibleWithdrawalR
                                         handleChange={handleMarketingWithdrawalReasonChange}
                                     />
                                     <div className="consent-form-actions">
-                                        <button type="button" onClick={cancelAddingNewConsent}>Cancel</button>
-                                        <button type="button" onClick={onSaveAddingNewConsent}>Save</button>
+                                        <Button color="secondary" size="small" onClick={cancelAddingNewConsent}>Cancel</Button>
+                                        <Button size="small" onClick={onSaveAddingNewConsent}>Save</Button>
                                     </div>
                                 </div>
                             }

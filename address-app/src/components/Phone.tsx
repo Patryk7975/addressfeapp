@@ -1,4 +1,5 @@
 import type { PhoneData } from "../models/PhoneData"
+import { Button } from "./controls/Button";
 
 interface PhoneProps {
     phone: PhoneData;
@@ -28,7 +29,7 @@ export const Phone = ({phone,  onStartingUpdatingPhone }: PhoneProps) => {
                 <p>{thirdRow}</p>
             </div>
             <div>
-                <button onClick={() => onStartingUpdatingPhone(phone.id)}>Update details</button>
+                <Button color="secondary" size="small" onClick={() => onStartingUpdatingPhone(phone.id)}>Update details</Button>
             </div>
         </div>
     </div>

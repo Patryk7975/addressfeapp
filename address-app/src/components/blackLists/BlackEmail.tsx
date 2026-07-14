@@ -1,5 +1,6 @@
 import type { BlackEmailData } from "../../models/blackLists/BlackEmailData";
 import { DeleteBlackEmail } from "../../services/Api";
+import { Button } from "../controls/Button";
 
 interface BlackEmailProps {
     email: BlackEmailData;
@@ -28,8 +29,8 @@ export const BlackEmail = ({ email, onStartingUpdatingEmail, onDeleteEmail }: Bl
                 <p>{secondRow}</p>
             </div>
             <div>
-                <button style={{ marginBottom: '15px' }} onClick={() => onStartingUpdatingEmail(email.id)}>Update details</button>
-                <button onClick={() => handleDeleteEmail(email.id)}>Delete</button>
+                <Button color="secondary" size="small" onClick={() => onStartingUpdatingEmail(email.id)}>Update details</Button>
+                <Button color="danger" size="small" onClick={() => handleDeleteEmail(email.id)}>Delete</Button>
             </div>
         </div>
     </div>

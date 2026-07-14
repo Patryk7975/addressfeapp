@@ -1,6 +1,7 @@
 import { useState } from "react";
 import type { ClientData } from "../models/ClientData";
 import { CreateClient } from "../services/Api";
+import { Button } from "./controls/Button";
 
 interface AddClientButtonProps {
   addClientToState: (newClient: ClientData) => void;
@@ -63,18 +64,18 @@ export const AddClientButton = ({ addClientToState }: AddClientButtonProps) => {
             </div>
           </div>
           <div className="add-client-actions">
-            <button type="button" onClick={handleSave}>
-              Save
-            </button>
-            <button type="button" onClick={handleCancel}>
+            <Button color="secondary" onClick={handleCancel}>
               Cancel
-            </button>
+            </Button>
+            <Button onClick={handleSave}>
+              Save
+            </Button>
           </div>
         </div>
       ) : (
-        <button type="button" onClick={() => setShowForm(true)}>
+        <Button onClick={() => setShowForm(true)}>
           Add Client
-        </button>
+        </Button>
       )}
     </>
   );

@@ -1,5 +1,6 @@
 import type { BlackPhoneData } from "../../models/blackLists/BlackPhoneData";
 import { DeleteBlackPhone } from "../../services/Api";
+import { Button } from "../controls/Button";
 
 interface BlackPhoneProps {
     phone: BlackPhoneData;
@@ -30,8 +31,8 @@ export const BlackPhone = ({phone,  onStartingUpdatingPhone, onDeletePhone }: Bl
                 <p>{secondRow}</p>
             </div>
             <div>
-                <button style={{ marginBottom: '15px' }} onClick={() => onStartingUpdatingPhone(phone.id)}>Update details</button>
-                <button onClick={() => handleDeletePhone(phone.id)}>Delete</button>
+                <Button color="secondary" size="small" onClick={() => onStartingUpdatingPhone(phone.id)}>Update details</Button>
+                <Button color="danger" size="small" onClick={() => handleDeletePhone(phone.id)}>Delete</Button>
             </div>
         </div>
     </div>

@@ -45,12 +45,7 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-button {
-  cursor: pointer;
-  font-family: var(--font-body);
-  font-weight: 500;
-  transition: all 0.2s ease;
-}
+
 
 h1,
 h2,
@@ -69,7 +64,6 @@ h6 {
   grid-template-columns: 1fr 400px;
   /* Widened sidebar from 350px to 400px */
   gap: var(--space-xl);
-  max-width: 1800px;
   /* Widened from 1400px */
   width: 95%;
   /* Take up most of the screen */
@@ -99,26 +93,6 @@ h6 {
   height: fit-content;
   position: sticky;
   top: var(--space-xl);
-}
-
-/* Buttons */
-.add-client-button button {
-  background-color: var(--primary);
-  color: white;
-  border: none;
-  padding: var(--space-sm) var(--space-lg);
-  border-radius: var(--radius-md);
-  font-size: 0.95rem;
-  box-shadow: var(--shadow-sm);
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-sm);
-}
-
-.add-client-button button:hover {
-  background-color: var(--primary-hover);
-  transform: translateY(-1px);
-  box-shadow: var(--shadow-md);
 }
 
 /* Client List */

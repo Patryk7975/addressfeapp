@@ -4,6 +4,7 @@ import { FilterClients } from '../services/Api';
 import { TextBox } from './TextBox';
 import { Dropdown } from './Dropdown'; // Assuming Dropdown exists
 import { FilteringResultRow } from './FilteringResultRow';
+import { Button } from './controls/Button';
 
 export const Filtering = () => {
     const [filter, setFilter] = useState<ClientFilter>({
@@ -117,7 +118,7 @@ export const Filtering = () => {
                 <div className="filtering-form-group">
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                         <h4>Identification numbers</h4>
-                        <button type="button" onClick={handleAddIdNumber} className="small-btn">Add</button>
+                        <Button size="small" color="secondary" onClick={handleAddIdNumber}>Add</Button>
                     </div>
                     {filter.identificationNumbers.map((id, index) => (
                         <div key={index} className="filtering-id-row">
@@ -134,7 +135,7 @@ export const Filtering = () => {
                                 value={id.identificationNumber}
                                 handleChange={(e) => handleIdNumberChange(index, 'identificationNumber', e.target.value)}
                             />
-                            <button type="button" onClick={() => handleRemoveIdNumber(index)} className="remove-usage-button">Delete</button>
+                            <Button color="danger" size="small" onClick={() => handleRemoveIdNumber(index)}>Delete</Button>
                         </div>
                     ))}
                     {filter.identificationNumbers.length === 0 && <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>No number filters</p>}

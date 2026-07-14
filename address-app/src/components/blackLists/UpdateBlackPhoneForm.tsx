@@ -6,6 +6,7 @@ import { TextBox } from "../TextBox";
 import { AddBlackPhone, UpdateBlackPhone } from "../../services/Api";
 import { ChangeSource } from "../../enums/ChangeSource";
 import { ChangeBasis } from "../../enums/ChangeBasis";
+import { Button } from "../controls/Button";
 
 interface UpdateBlackPhoneFormProps {
     phone: BlackPhoneData | null,
@@ -80,21 +81,21 @@ export const UpdateBlackPhoneForm = ({ phone, onCancelAddingNewPhone, onSubmitAd
             </div>
 
             {phone === null && <div className="add-new-phone-buttons">
-                <button onClick={onCancelAddingNewPhone} className="cancel-adding-new-phone-button">
+                <Button color="secondary" onClick={onCancelAddingNewPhone}>
                     Cancel add
-                </button>
-                <button onClick={handleCreateNewPhone} className="submit-new-phone-button">
+                </Button>
+                <Button onClick={handleCreateNewPhone}>
                     Save phone
-                </button>
+                </Button>
             </div>}
 
             {phone !== null && <div className="add-new-phone-buttons">
-                <button onClick={onCancelAddingNewPhone} className="cancel-adding-new-phone-button">
+                <Button color="secondary" onClick={onCancelAddingNewPhone}>
                     Cancel update
-                </button>
-                <button onClick={handleUpdatePhone} className="submit-new-phone-button">
+                </Button>
+                <Button onClick={handleUpdatePhone}>
                     Save phone
-                </button>
+                </Button>
             </div>}
 
         </div>

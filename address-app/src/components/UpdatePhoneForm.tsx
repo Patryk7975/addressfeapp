@@ -10,6 +10,7 @@ import { PhoneType } from "../enums/PhoneType";
 import { PhoneUsage } from "../enums/PhoneUsage";
 import { AddPhoneToClient, UpdateClientPhone } from "../services/Api";
 import { CheckBox } from "./CheckBox";
+import { Button } from "./controls/Button";
 
 interface UpdatePhoneFormProps {
     phone: PhoneData | null,
@@ -140,21 +141,21 @@ export const UpdatePhoneForm = ({ phone, clientId, onCancelAddingNewPhone, onSub
             </div>
 
             {phone === null && <div className="add-new-phone-buttons">
-                <button onClick={onCancelAddingNewPhone} className="cancel-adding-new-phone-button">
+                <Button color="secondary" onClick={onCancelAddingNewPhone} >
                     Cancel add
-                </button>
-                <button onClick={handleCreateNewPhone} className="submit-new-phone-button">
+                </Button>
+                <Button onClick={handleCreateNewPhone}>
                     Save phone
-                </button>
+                </Button>
             </div>}
 
             {phone !== null && <div className="add-new-phone-buttons">
-                <button onClick={onCancelAddingNewPhone} className="cancel-adding-new-phone-button">
+                <Button color="secondary" onClick={onCancelAddingNewPhone}>
                     Cancel update
-                </button>
-                <button onClick={handleUpdatePhone} className="submit-new-phone-button">
+                </Button>
+                <Button onClick={handleUpdatePhone}>
                     Save phone
-                </button>
+                </Button>
             </div>}
 
         </div>

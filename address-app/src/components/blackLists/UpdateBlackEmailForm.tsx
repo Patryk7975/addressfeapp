@@ -4,6 +4,7 @@ import { AddBlackEmail, UpdateBlackEmail } from "../../services/Api";
 import { TextBox } from "../TextBox";
 import { ChangeBasis } from "../../enums/ChangeBasis";
 import { ChangeSource } from "../../enums/ChangeSource";
+import { Button } from "../controls/Button";
 
 interface UpdateBlackEmailFormProps {
     email: BlackEmailData | null,
@@ -53,21 +54,21 @@ export const UpdateBlackEmailForm = ({ email, onCancelAddingNewEmail, onSubmitAd
             </div>
 
             {email === null && <div className="add-new-email-buttons">
-                <button onClick={onCancelAddingNewEmail} className="cancel-adding-new-email-button">
+                <Button color="secondary" onClick={onCancelAddingNewEmail}>
                     Cancel add
-                </button>
-                <button onClick={handleCreateNewEmail} className="submit-new-email-button">
+                </Button>
+                <Button onClick={handleCreateNewEmail}>
                     Save email
-                </button>
+                </Button>
             </div>}
 
             {email !== null && <div className="add-new-email-buttons">
-                <button onClick={onCancelAddingNewEmail} className="cancel-adding-new-email-button">
+                <Button color="secondary" onClick={onCancelAddingNewEmail}>
                     Cancel update
-                </button>
-                <button onClick={handleUpdateEmail} className="submit-new-email-button">
+                </Button>
+                <Button onClick={handleUpdateEmail}>
                     Save email
-                </button>
+                </Button>
             </div>}
 
         </div>

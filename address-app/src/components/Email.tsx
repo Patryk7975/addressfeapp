@@ -1,4 +1,5 @@
 import type { EmailData } from "../models/EmailData"
+import { Button } from "./controls/Button";
 
 interface EmailProps {
     email: EmailData;
@@ -23,7 +24,7 @@ export const Email = ({ email, onStartingUpdatingEmail }: EmailProps) => {
                 <p>{secondRow}</p>
             </div>
             <div>
-                <button onClick={() => onStartingUpdatingEmail(email.id)}>Update details</button>
+                <Button color="secondary" size="small" onClick={() => onStartingUpdatingEmail(email.id)}>Update details</Button>
             </div>
         </div>
     </div>
