@@ -11,17 +11,40 @@ interface DeceaseInfoApiResponse {
 }
 
 interface LegalEligibilityApiResponse {
-    clientOtherInformation: {
-        clientLegalEligibilityEntry: LegalEligibility,
-        version: number
-    }
+    clientLegalEligibility: LegalEligibility,
+    version: number
 }
 
 const baseUrl = "http://localhost:7000/";
 
 
 export const CreateLegalEligibility = async (clientId: string, version: number, legalEligibility: boolean) => {
-    const url = `${baseUrl}api/other/${clientId}`;
+    const url = `${baseUrl}api/other/${clientId}/clientLegalEligibilities`;
+
+    const payload = {
+        clientLegalEligibilityEntry: {
+            clientLegalEligibility: legalEligibility,
+            metadata: {
+                changeSource: ChangeSource.Seller,
+                changeBasis: ChangeBasis.DirectConversation,
+                investorId: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+                sellerId: "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+            }
+        },
+        version: version
+    }
+
+    try {
+        const response = await axios.post<LegalEligibilityApiResponse>(url, payload);
+        console.log('Odpowiedź:', response.data);
+        return response.data;
+    } catch (error) {
+        handleError(error)
+    }
+}
+
+export const UpdateLegalEligibility = async (clientId: string, legalEligibilityId: string, version: number, legalEligibility: boolean) => {
+    const url = `${baseUrl}api/other/${clientId}/clientLegalEligibilities/${legalEligibilityId}`;
 
     const payload = {
         clientLegalEligibilityEntry: {
@@ -39,7 +62,7 @@ export const CreateLegalEligibility = async (clientId: string, version: number, 
     try {
         const response = await axios.put<LegalEligibilityApiResponse>(url, payload);
         console.log('Odpowiedź:', response.data);
-        return response.data.clientOtherInformation;
+        return response.data;
     } catch (error) {
         handleError(error)
     }

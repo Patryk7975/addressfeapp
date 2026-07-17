@@ -1,5 +1,5 @@
 import { useState, type ChangeEvent, type FormEvent } from "react";
-import { CreateLegalEligibility } from "./services/OtherInfoApi";
+import { CreateLegalEligibility, UpdateLegalEligibility } from "./services/OtherInfoApi";
 import { Button } from "../controls/Button";
 
 interface ClientLegalEligibilityProps {
@@ -10,6 +10,7 @@ export const ClientLegalEligibility = ({ clientId }: ClientLegalEligibilityProps
 
     const [legalEligibility, setLegalEligibility] = useState<boolean | null>(null);
     const [legalEligibilityVersion, setLegalEligibilityVersion] = useState<number>(0);
+    const [legalEligibilityId, setLegalEligibilityId] = useState<string | null>(null);
     const [newLegalEligibility, setNewLegalEligibility] = useState<boolean>(false);
     const [isFormVisible, setIsFormVisible] = useState(false);
 
@@ -20,11 +21,14 @@ export const ClientLegalEligibility = ({ clientId }: ClientLegalEligibilityProps
     const handleCreateLegalEligibility = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
-        const response = await CreateLegalEligibility(clientId, legalEligibilityVersion, newLegalEligibility);
+        const response = legalEligibilityId 
+            ? await UpdateLegalEligibility(clientId, legalEligibilityId, legalEligibilityVersion, newLegalEligibility) 
+            : await CreateLegalEligibility(clientId, legalEligibilityVersion, newLegalEligibility);
 
         if (response) {
-            setLegalEligibility(response.clientLegalEligibilityEntry.clientLegalEligibility);
+            setLegalEligibility(response.clientLegalEligibility.clientLegalEligibility);
             setLegalEligibilityVersion(response.version);
+            setLegalEligibilityId(response.clientLegalEligibility.id);
             setIsFormVisible(false);
         }
     };
