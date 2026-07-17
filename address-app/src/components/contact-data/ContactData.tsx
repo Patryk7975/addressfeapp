@@ -1,6 +1,6 @@
 import { useState } from "react";
 import type { ClientData } from "../../models/ClientData";
-import { Client } from "../Client";
+import { ClientContactDatas } from "./ClientContactDatas";
 import { AddClientButton } from "../AddClientButton";
 import { GetClient } from "../../services/Api";
 import { BlackLists } from "../blackLists/BlackLists";
@@ -73,7 +73,7 @@ export const ContactData = () => {
         <ContactDataWrapper>
             <ClientList>
                 {clients.map((e) => (
-                    <Client key={e.id} client={e} />
+                    <ClientContactDatas key={e.id} client={e} />
                 ))}
             </ClientList>
             <BlackListsWrapper>

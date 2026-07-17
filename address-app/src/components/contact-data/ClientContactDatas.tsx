@@ -1,18 +1,18 @@
 import { useState } from "react";
-import type { ClientData } from "../models/ClientData";
-import type { AddressData } from "../models/AddressData";
-import { Address } from "./Address";
-import { UpdateAddressForm } from "./UpdateAddressForm";
-import { NewClientsItemAction } from "../enums/NewClientsItemAction";
-import { UpdatePhoneForm } from "./UpdatePhoneForm";
-import type { PhoneData } from "../models/PhoneData";
-import { Phone } from "./Phone";
-import { UpdateEmailForm } from "./UpdateEmailForm";
-import type { EmailData } from "../models/EmailData";
-import { Email } from "./Email";
-import { Button } from "./controls/Button";
+import type { ClientData } from "../../models/ClientData";
+import type { AddressData } from "../../models/AddressData";
+import { Address } from "../Address";
+import { UpdateAddressForm } from "../UpdateAddressForm";
+import { NewClientsItemAction } from "../../enums/NewClientsItemAction";
+import { UpdatePhoneForm } from "../UpdatePhoneForm";
+import type { PhoneData } from "../../models/PhoneData";
+import { Phone } from "../Phone";
+import { UpdateEmailForm } from "../UpdateEmailForm";
+import type { EmailData } from "../../models/EmailData";
+import { Email } from "../Email";
+import { Button } from "../controls/Button";
 
-export const Client = ({ client }: { client: ClientData }) => {
+export const ClientContactDatas = ({ client }: { client: ClientData }) => {
 
   const [actionId, setActionId] = useState(NewClientsItemAction.Idle);
 

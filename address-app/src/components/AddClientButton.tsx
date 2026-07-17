@@ -2,6 +2,11 @@ import { useState } from "react";
 import type { ClientData } from "../models/ClientData";
 import { CreateClient } from "../services/Api";
 import { Button } from "./controls/Button";
+import styled from "styled-components";
+
+const AddClientButtonContainer = styled.div`
+  margin-bottom: 10px
+`;
 
 interface AddClientButtonProps {
   addClientToState: (newClient: ClientData) => void;
@@ -38,7 +43,7 @@ export const AddClientButton = ({ addClientToState }: AddClientButtonProps) => {
   };
 
   return (
-    <>
+    <AddClientButtonContainer>
       {showForm ? (
         <div className="add-client-form">
           <div className="add-client-row">
@@ -77,6 +82,6 @@ export const AddClientButton = ({ addClientToState }: AddClientButtonProps) => {
           Add Client
         </Button>
       )}
-    </>
+    </AddClientButtonContainer>
   );
 };

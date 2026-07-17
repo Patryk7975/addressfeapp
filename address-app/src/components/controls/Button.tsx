@@ -21,17 +21,35 @@ const StyledButton = styled.button<ButtonProps>`
                 return "var(--primary)";
         }
     }};  
+font-weight: ${({ size }) => {
+        switch (size) {
+            case "small":
+                return "300";
+            case "large":
+                return "700";
+            default:
+                return "500";
+        }
+    }};
+   font-size: ${({ size }) => {
+        switch (size) {
+            case "small":
+                return "0.85rem";
+            case "large":
+                return "1rem";
+            default:
+                return "0.9rem";
+        }
+    }}; 
   color: white;
   border: none;
   border-radius: var(--radius-md);
-  font-size: 0.95rem;
   box-shadow: var(--shadow-sm);
   display: inline-flex;
   align-items: center;
   gap: var(--space-sm);
   cursor: pointer;
   font-family: var(--font-body);
-  font-weight: 500;
   transition: all 0.2s ease;
   margin: 5px;
     &:hover {

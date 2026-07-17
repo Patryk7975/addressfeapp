@@ -11,20 +11,20 @@ export const Dropdown = ({ propertyName, displayName, value, options, handleChan
   const extendedOptions = options.includes("null") ? options : [...options, "null"];
 
   return <div className={`dropdown ${className ?? ""}`}>
-        {displayName.length > 0 && <label htmlFor={propertyName} >{displayName}</label>}
-        <select
-          id={propertyName}
-          name={propertyName}
-          value={value}
-          onChange={handleChange}
-          required
-        >
-          {extendedOptions.filter(e => e == value).map((e) => (
-            <option key={e} value={e}>{e}</option>
-          ))}
-                    {extendedOptions.filter(e => e != value).map((e) => (
-            <option key={e} value={e}>{e}</option>
-          ))}
-        </select>
-      </div>
+    {displayName.length > 0 && <label htmlFor={propertyName} >{displayName}</label>}
+    <select
+      id={propertyName}
+      name={propertyName}
+      value={value}
+      onChange={handleChange}
+      required
+    >
+      {extendedOptions.filter(e => e == value).map((e) => (
+        <option key={e} value={e}>{e}</option>
+      ))}
+      {extendedOptions.filter(e => e != value).map((e) => (
+        <option key={e} value={e}>{e}</option>
+      ))}
+    </select>
+  </div>
 }

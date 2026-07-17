@@ -1,6 +1,8 @@
 import { useState, type ChangeEvent, type FormEvent } from "react";
-import { ContractType } from "./enums/ContractType";
+import { ContractTypeTerm } from "./enums/ContractTypeTerm";
+import { ContractWorkingTime } from "./enums/ContractWorkingTime";
 import { EmploymentStatus } from "./enums/EmploymentStatus";
+import { EmployerType } from "./enums/EmployerType";
 import type { Job } from "./models/Job";
 import { UpsertJobs } from "./services/JobApi";
 import { Button } from "../controls/Button";
@@ -10,7 +12,9 @@ const createInitialJob = (): Job => ({
     clientEmploymentStatus: null,
     clientProfession: null,
     confirmedByEmployer: null,
-    contractType: null,
+    contractTypeTerm: null,
+    contractWorkingTime: null,
+    employerType: null,
     startDate: null,
     endDate: null,
     checkDate: null,
@@ -101,15 +105,15 @@ export const ClientJobs = ({ clientId }: ClientJobsProps) => {
                         </tr>
                         <tr>
                             <td className="contract-type-col">
-                                <label htmlFor="contract-type">Contract type</label>
+                                <label htmlFor="contract-type">Contract type term</label>
                                 <select
                                     className="textbox"
                                     id="contract-type"
-                                    value={newJob.contractType ?? ""}
-                                    onChange={(event: ChangeEvent<HTMLSelectElement>) => handleFieldChange("contractType", event.target.value === "" ? null : Number(event.target.value) as ContractType)}
+                                    value={newJob.contractTypeTerm ?? ""}
+                                    onChange={(event: ChangeEvent<HTMLSelectElement>) => handleFieldChange("contractTypeTerm", event.target.value === "" ? null : Number(event.target.value) as ContractTypeTerm)}
                                 >
                                     <option value="">Select</option>
-                                    {Object.entries(ContractType)
+                                    {Object.entries(ContractTypeTerm)
                                         .filter(([, value]) => typeof value === "number")
                                         .map(([label, value]) => (
                                             <option key={label} value={value}>
@@ -118,6 +122,44 @@ export const ClientJobs = ({ clientId }: ClientJobsProps) => {
                                         ))}
                                 </select>
                             </td>
+                            <td className="contract-working-time-col">
+                                <label htmlFor="contract-working-time">Working time</label>
+                                <select
+                                    className="textbox"
+                                    id="contract-working-time"
+                                    value={newJob.contractWorkingTime ?? ""}
+                                    onChange={(event: ChangeEvent<HTMLSelectElement>) => handleFieldChange("contractWorkingTime", event.target.value === "" ? null : Number(event.target.value) as ContractWorkingTime)}
+                                >
+                                    <option value="">Select</option>
+                                    {Object.entries(ContractWorkingTime)
+                                        .filter(([, value]) => typeof value === "number")
+                                        .map(([label, value]) => (
+                                            <option key={label} value={value}>
+                                                {label}
+                                            </option>
+                                        ))}
+                                </select>
+                            </td>
+                            <td className="employer-type-col">
+                                <label htmlFor="employer-type">Employer type</label>
+                                <select
+                                    className="textbox"
+                                    id="employer-type"
+                                    value={newJob.employerType ?? ""}
+                                    onChange={(event: ChangeEvent<HTMLSelectElement>) => handleFieldChange("employerType", event.target.value === "" ? null : Number(event.target.value) as EmployerType)}
+                                >
+                                    <option value="">Select</option>
+                                    {Object.entries(EmployerType)
+                                        .filter(([, value]) => typeof value === "number")
+                                        .map(([label, value]) => (
+                                            <option key={label} value={value}>
+                                                {label}
+                                            </option>
+                                        ))}
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
                             <td className="start-date-col">
                                 <label htmlFor="start-date">Start date</label>
                                 <input
@@ -138,9 +180,7 @@ export const ClientJobs = ({ clientId }: ClientJobsProps) => {
                                     onChange={(event: ChangeEvent<HTMLInputElement>) => handleFieldChange("endDate", event.target.value)}
                                 />
                             </td>
-                        </tr>
-                        <tr>
-                            <td colSpan={3} className="check-date-col">
+                            <td colSpan={2} className="check-date-col">
                                 <label htmlFor="check-date">Check date</label>
                                 <input
                                     className="textbox"
@@ -170,7 +210,9 @@ export const ClientJobs = ({ clientId }: ClientJobsProps) => {
                     <li key={job.id ?? `${job.clientProfession ?? "job"}-${job.startDate ?? "unknown"}`}>
                         <strong>{job.clientProfession ?? "No profession"}</strong>
                         <div>Status: {job.clientEmploymentStatus ?? "-"}</div>
-                        <div>Contract: {job.contractType ?? "-"}</div>
+                        <div>Contract: {job.contractTypeTerm ?? "-"}</div>
+                        <div>Working time: {job.contractWorkingTime ?? "-"}</div>
+                        <div>Employer type: {job.employerType ?? "-"}</div>
                         <div>Confirmed: {job.confirmedByEmployer ? "Yes" : "No"}</div>
                     </li>
                 ))}

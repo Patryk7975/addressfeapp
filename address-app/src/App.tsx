@@ -4,14 +4,30 @@ import { Filtering } from './components/Filtering';
 import { Consents } from './components/consents/Consents';
 import { Patrimoniale } from './components/patrimoniale/Patrimoniale';
 import { ContactData } from './components/contact-data/ContactData';
+import styled from 'styled-components';
+
+const MainContainer = styled.div`
+  margin: 0 auto;
+  padding: var(--space-xl);
+`;
+
+const MenuContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+`;
+
+const TabContentContainer = styled.div`
+  margin-left: 10px
+`;
 
 function App() {
   const [activeTab, setActiveTab] = useState<'contactData' | 'filtering' | 'consents' | 'patrimoniale'>('contactData');
 
   return (
     <>
-      <div className={`main-container ${activeTab === 'filtering' ? 'single-column' : ''}`}>
-        <div className="client-container">
+      <MainContainer>
+        <MenuContainer>
           <div className="main-nav-tabs">
             <button
               className={`nav-tab-button ${activeTab === 'contactData' ? 'active' : ''}`}
@@ -38,21 +54,20 @@ function App() {
               Patrimoniale
             </button>
           </div>
-
+        </MenuContainer>
+        <TabContentContainer>
           {activeTab === 'contactData' ? (
-            <>
-              <ContactData/>
-            </>
+            <ContactData />
           ) : activeTab === 'filtering' ? (
             <Filtering />
           ) : activeTab === 'consents' ? (
             <Consents />
           ) : (
-            <Patrimoniale/>
-          )     
-        }
-        </div>
-      </div>
+            <Patrimoniale />
+          )
+          }
+        </TabContentContainer>
+      </MainContainer>
     </>
   )
 }

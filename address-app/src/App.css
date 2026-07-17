@@ -58,32 +58,6 @@ h6 {
   margin-top: 0;
 }
 
-/* Layout */
-.main-container {
-  display: grid;
-  grid-template-columns: 1fr 400px;
-  /* Widened sidebar from 350px to 400px */
-  gap: var(--space-xl);
-  /* Widened from 1400px */
-  width: 95%;
-  /* Take up most of the screen */
-  margin: 0 auto;
-  padding: var(--space-xl);
-  min-height: 100vh;
-}
-
-.main-container.single-column {
-  grid-template-columns: 1fr;
-  max-width: 1400px;
-  /* Optional: Constrain width for single view if desired, or keep 1800px */
-}
-
-.client-container {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-lg);
-}
-
 .black-lists {
   background-color: var(--surface);
   padding: var(--space-lg);
@@ -391,7 +365,6 @@ input[type="checkbox"] {
 .add-new-address-button,
 .add-new-phone-button,
 .add-new-email-button,
-.client-basic-data-header button,
 .add-new-black-address-button,
 .add-new-black--phone-button,
 .add-new-black-email-button {
@@ -410,7 +383,6 @@ input[type="checkbox"] {
 .add-new-address-button:hover,
 .add-new-phone-button:hover,
 .add-new-email-button:hover,
-.client-basic-data-header button:hover,
 .add-new-black-address-button:hover,
 .add-new-black--phone-button:hover,
 .add-new-black-email-button:hover {
