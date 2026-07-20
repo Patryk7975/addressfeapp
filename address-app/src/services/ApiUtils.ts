@@ -56,5 +56,11 @@ export const handleError = (error: unknown) => {
     }
 }
 
-export const normalizeDateInRequest = (date: string | null) =>
-    date ? `${date}T00:00:00.000Z` : date == "" ? null : date;
+export const normalizeDateInRequest = (date: string | null, withTime = true) =>
+    date
+        ? withTime
+            ? `${date}T00:00:00.000Z`
+            : date
+        : date == ""
+            ? null
+            : date;

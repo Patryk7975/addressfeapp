@@ -25,9 +25,9 @@ export const UpsertJobs = async (clientId: string, version: number, jobs: Job[])
             contractTypeTerm: e.contractTypeTerm,
             employerType: e.employerType,
             contractWorkingTime: e.contractWorkingTime,
-            startDate: normalizeDateInRequest(e.startDate),
-            endDate: normalizeDateInRequest(e.endDate),
-            checkDate: normalizeDateInRequest(e.checkDate),
+            startDate: normalizeDateInRequest(e.startDate, false),
+            endDate: normalizeDateInRequest(e.endDate, false),
+            checkDate: normalizeDateInRequest(e.checkDate, false),
             metaData: {
                 changeSource: ChangeSource.Seller,
                 changeBasis: ChangeBasis.DirectConversation,

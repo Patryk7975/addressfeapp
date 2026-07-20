@@ -64,12 +64,31 @@ export const Dropdown = ({
     onChange,
     placeholder = "Select",
 }: DropdownProps) => {
+    const getSelectedValue = () => {
+        if (value === null || value === undefined || value === "") {
+            return "";
+        }
+        
+        const stringVal = String(value);
+        if (options.some(opt => String(opt.value) === stringVal)) {
+            return stringVal;
+        }
+        
+        const lowerVal = stringVal.toLowerCase();
+        const matchedOption = options.find(opt => opt.label.toLowerCase() === lowerVal);
+        if (matchedOption) {
+            return String(matchedOption.value);
+        }
+        
+        return "";
+    };
+
     return (
         <DropdownWrapper>
             <DropdownLabel htmlFor={id}>{label}</DropdownLabel>
             <DropdownSelect
                 id={id}
-                value={value !== null && value !== undefined ? String(value) : ""}
+                value={getSelectedValue()}
                 onChange={(event: ChangeEvent<HTMLSelectElement>) =>
                     onChange(event.target.value === "" ? null : Number(event.target.value))
                 }

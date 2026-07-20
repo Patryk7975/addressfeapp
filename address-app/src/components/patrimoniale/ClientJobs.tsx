@@ -6,6 +6,9 @@ import { EmployerType } from "./enums/EmployerType";
 import type { Job } from "./models/Job";
 import { UpsertJobs } from "./services/JobApi";
 import { Button } from "../controls/Button";
+import { Textbox } from "../controls/Textbox";
+import { Dropdown } from "../controls/Dropdown";
+import { Datepicker } from "../controls/Datepicker";
 
 const createInitialJob = (): Job => ({
     id: null,
@@ -135,30 +138,22 @@ export const ClientJobs = ({ clientId }: ClientJobsProps) => {
                     <tbody>
                         <tr>
                             <td className="employment-status-col">
-                                <label htmlFor="employment-status">Employment status</label>
-                                <select
-                                    className="textbox"
+                                <Dropdown
                                     id="employment-status"
-                                    value={toSelectValue(EmploymentStatus, newJob.clientEmploymentStatus)}
-                                    onChange={(event: ChangeEvent<HTMLSelectElement>) => handleFieldChange("clientEmploymentStatus", event.target.value === "" ? null : Number(event.target.value) as EmploymentStatus)}
-                                >
-                                    <option value="">Select</option>
-                                    {Object.entries(EmploymentStatus)
-                                        .filter(([, value]) => typeof value === "number")
-                                        .map(([label, value]) => (
-                                            <option key={label} value={String(value)}>
-                                                {label}
-                                            </option>
-                                        ))}
-                                </select>
+                                    label="Employment status"
+                                    value={newJob.clientEmploymentStatus}
+                                    options={Object.entries(EmploymentStatus)
+                                        .filter(([, v]) => typeof v === "number")
+                                        .map(([label, value]) => ({ label, value: value as number }))}
+                                    onChange={(val) => handleFieldChange("clientEmploymentStatus", val)}
+                                />
                             </td>
                             <td className="profession-col">
-                                <label htmlFor="profession">Profession</label>
-                                <input
-                                    className="textbox"
+                                <Textbox
                                     id="profession"
+                                    label="Profession"
                                     value={newJob.clientProfession ?? ""}
-                                    onChange={(event: ChangeEvent<HTMLInputElement>) => handleFieldChange("clientProfession", event.target.value)}
+                                    onChange={(val) => handleFieldChange("clientProfession", val)}
                                 />
                             </td>
                             <td className="confirmed-by-employer-col">
@@ -174,89 +169,62 @@ export const ClientJobs = ({ clientId }: ClientJobsProps) => {
                         </tr>
                         <tr>
                             <td className="contract-type-col">
-                                <label htmlFor="contract-type">Contract type term</label>
-                                <select
-                                    className="textbox"
+                                <Dropdown
                                     id="contract-type"
-                                    value={toSelectValue(ContractTypeTerm, newJob.contractTypeTerm)}
-                                    onChange={(event: ChangeEvent<HTMLSelectElement>) => handleFieldChange("contractTypeTerm", event.target.value === "" ? null : Number(event.target.value) as ContractTypeTerm)}
-                                >
-                                    <option value="">Select</option>
-                                    {Object.entries(ContractTypeTerm)
-                                        .filter(([, value]) => typeof value === "number")
-                                        .map(([label, value]) => (
-                                            <option key={label} value={String(value)}>
-                                                {label}
-                                            </option>
-                                        ))}
-                                </select>
+                                    label="Contract type term"
+                                    value={newJob.contractTypeTerm}
+                                    options={Object.entries(ContractTypeTerm)
+                                        .filter(([, v]) => typeof v === "number")
+                                        .map(([label, value]) => ({ label, value: value as number }))}
+                                    onChange={(val) => handleFieldChange("contractTypeTerm", val)}
+                                />
                             </td>
                             <td className="contract-working-time-col">
-                                <label htmlFor="contract-working-time">Working time</label>
-                                <select
-                                    className="textbox"
+                                <Dropdown
                                     id="contract-working-time"
-                                    value={toSelectValue(ContractWorkingTime, newJob.contractWorkingTime)}
-                                    onChange={(event: ChangeEvent<HTMLSelectElement>) => handleFieldChange("contractWorkingTime", event.target.value === "" ? null : Number(event.target.value) as ContractWorkingTime)}
-                                >
-                                    <option value="">Select</option>
-                                    {Object.entries(ContractWorkingTime)
-                                        .filter(([, value]) => typeof value === "number")
-                                        .map(([label, value]) => (
-                                            <option key={label} value={String(value)}>
-                                                {label}
-                                            </option>
-                                        ))}
-                                </select>
+                                    label="Working time"
+                                    value={newJob.contractWorkingTime}
+                                    options={Object.entries(ContractWorkingTime)
+                                        .filter(([, v]) => typeof v === "number")
+                                        .map(([label, value]) => ({ label, value: value as number }))}
+                                    onChange={(val) => handleFieldChange("contractWorkingTime", val)}
+                                />
                             </td>
                             <td className="employer-type-col">
-                                <label htmlFor="employer-type">Employer type</label>
-                                <select
-                                    className="textbox"
+                                <Dropdown
                                     id="employer-type"
-                                    value={toSelectValue(EmployerType, newJob.employerType)}
-                                    onChange={(event: ChangeEvent<HTMLSelectElement>) => handleFieldChange("employerType", event.target.value === "" ? null : Number(event.target.value) as EmployerType)}
-                                >
-                                    <option value="">Select</option>
-                                    {Object.entries(EmployerType)
-                                        .filter(([, value]) => typeof value === "number")
-                                        .map(([label, value]) => (
-                                            <option key={label} value={String(value)}>
-                                                {label}
-                                            </option>
-                                        ))}
-                                </select>
+                                    label="Employer type"
+                                    value={newJob.employerType}
+                                    options={Object.entries(EmployerType)
+                                        .filter(([, v]) => typeof v === "number")
+                                        .map(([label, value]) => ({ label, value: value as number }))}
+                                    onChange={(val) => handleFieldChange("employerType", val)}
+                                />
                             </td>
                         </tr>
                         <tr>
                             <td className="start-date-col">
-                                <label htmlFor="start-date">Start date</label>
-                                <input
-                                    className="textbox"
+                                <Datepicker
                                     id="start-date"
-                                    type="date"
-                                    value={newJob.startDate ?? ""}
-                                    onChange={(event: ChangeEvent<HTMLInputElement>) => handleFieldChange("startDate", event.target.value)}
+                                    label="Start date"
+                                    value={newJob.startDate}
+                                    onChange={(val) => handleFieldChange("startDate", val)}
                                 />
                             </td>
                             <td className="end-date-col">
-                                <label htmlFor="end-date">End date</label>
-                                <input
-                                    className="textbox"
+                                <Datepicker
                                     id="end-date"
-                                    type="date"
-                                    value={newJob.endDate ?? ""}
-                                    onChange={(event: ChangeEvent<HTMLInputElement>) => handleFieldChange("endDate", event.target.value)}
+                                    label="End date"
+                                    value={newJob.endDate}
+                                    onChange={(val) => handleFieldChange("endDate", val)}
                                 />
                             </td>
                             <td colSpan={2} className="check-date-col">
-                                <label htmlFor="check-date">Check date</label>
-                                <input
-                                    className="textbox"
+                                <Datepicker
                                     id="check-date"
-                                    type="date"
-                                    value={newJob.checkDate ?? ""}
-                                    onChange={(event: ChangeEvent<HTMLInputElement>) => handleFieldChange("checkDate", event.target.value)}
+                                    label="Check date"
+                                    value={newJob.checkDate}
+                                    onChange={(val) => handleFieldChange("checkDate", val)}
                                 />
                             </td>
                         </tr>

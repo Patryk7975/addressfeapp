@@ -636,7 +636,7 @@ input[type="checkbox"] {
 .client-jobs-form-controls label {
   display: block;
   margin-bottom: var(--space-xs);
-  color: var(--text-secondary);
+  color: #888;
   font-weight: 600;
 }
 
