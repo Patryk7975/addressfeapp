@@ -1,9 +1,11 @@
-import { useState, type ChangeEvent, type FormEvent } from "react";
+import { useState, type FormEvent } from "react";
 import { CurrencyCode } from "./enums/CurrencyCode";
 import { Period } from "./enums/Period";
 import type { Income } from "./models/Income";
 import { UpsertIncome } from "./services/IncomeApi";
 import { Button } from "../controls/Button";
+import { Decimal } from "../controls/Decimal";
+import { Dropdown } from "../controls/Dropdown";
 
 const createInitialIncome = (): Income => ({
     id: null,
@@ -58,64 +60,44 @@ export const ClientIncome = ({ clientId }: ClientIncomeProps) => {
                     <tbody>
                         <tr>
                             <td>
-                                <label htmlFor="income-amount">Amount</label>
-                                <input
-                                    className="textbox"
+                                <Decimal
                                     id="income-amount"
-                                    type="number"
-                                    step="0.01"
-                                    value={newIncome.amount ?? ""}
-                                    onChange={(event: ChangeEvent<HTMLInputElement>) => handleFieldChange("amount", event.target.value === "" ? null : Number(event.target.value))}
+                                    label="Amount"
+                                    value={newIncome.amount}
+                                    onChange={(val) => handleFieldChange("amount", val)}
                                 />
                             </td>
                             <td>
-                                <label htmlFor="income-gross-amount">Gross amount</label>
-                                <input
-                                    className="textbox"
+                                <Decimal
                                     id="income-gross-amount"
-                                    type="number"
-                                    step="0.01"
-                                    value={newIncome.grossAmount ?? ""}
-                                    onChange={(event: ChangeEvent<HTMLInputElement>) => handleFieldChange("grossAmount", event.target.value === "" ? null : Number(event.target.value))}
+                                    label="Gross amount"
+                                    value={newIncome.grossAmount}
+                                    onChange={(val) => handleFieldChange("grossAmount", val)}
                                 />
                             </td>
                         </tr>
                         <tr>
                             <td>
-                                <label htmlFor="income-currency">Currency</label>
-                                <select
-                                    className="textbox"
+                                <Dropdown
                                     id="income-currency"
-                                    value={newIncome.currency ?? ""}
-                                    onChange={(event: ChangeEvent<HTMLSelectElement>) => handleFieldChange("currency", event.target.value === "" ? null : Number(event.target.value) as CurrencyCode)}
-                                >
-                                    <option value="">Select</option>
-                                    {Object.entries(CurrencyCode)
-                                        .filter(([, value]) => typeof value === "number")
-                                        .map(([label, value]) => (
-                                            <option key={label} value={value}>
-                                                {label}
-                                            </option>
-                                        ))}
-                                </select>
+                                    label="Currency"
+                                    value={newIncome.currency}
+                                    options={Object.entries(CurrencyCode)
+                                        .filter(([, v]) => typeof v === "number")
+                                        .map(([label, value]) => ({ label, value: value as number }))}
+                                    onChange={(val) => handleFieldChange("currency", val)}
+                                />
                             </td>
                             <td>
-                                <label htmlFor="income-period">Period</label>
-                                <select
-                                    className="textbox"
+                                <Dropdown
                                     id="income-period"
-                                    value={newIncome.period ?? ""}
-                                    onChange={(event: ChangeEvent<HTMLSelectElement>) => handleFieldChange("period", event.target.value === "" ? null : Number(event.target.value) as Period)}
-                                >
-                                    <option value="">Select</option>
-                                    {Object.entries(Period)
-                                        .filter(([, value]) => typeof value === "number")
-                                        .map(([label, value]) => (
-                                            <option key={label} value={value}>
-                                                {label}
-                                            </option>
-                                        ))}
-                                </select>
+                                    label="Period"
+                                    value={newIncome.period}
+                                    options={Object.entries(Period)
+                                        .filter(([, v]) => typeof v === "number")
+                                        .map(([label, value]) => ({ label, value: value as number }))}
+                                    onChange={(val) => handleFieldChange("period", val)}
+                                />
                             </td>
                         </tr>
                     </tbody>
