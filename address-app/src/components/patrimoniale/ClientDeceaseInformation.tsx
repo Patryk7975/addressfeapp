@@ -1,8 +1,10 @@
-import { useState, type ChangeEvent, type FormEvent } from "react";
+import { useState, type FormEvent } from "react";
 import { DeceaseStatus } from "./enums/DeceaseStatus";
 import type { DeceaseInformation } from "./models/DeceaseInformation";
 import { CreateDeceaseInformation, UpdateDeceaseInformation } from "./services/OtherInfoApi";
 import { Button } from "../controls/Button";
+import { Dropdown } from "../controls/Dropdown";
+import { Datepicker } from "../controls/Datepicker";
 
 const createInitialDeceaseInfo = (): DeceaseInformation => ({
     id: null,
@@ -61,43 +63,32 @@ export const ClientDeceaseInformation = ({ clientId }: ClientDeceaseInformationP
                     <tbody>
                         <tr>
                             <td>
-                                <label htmlFor="decease-status">Decease status</label>
-                                <select
-                                    className="textbox"
+                                <Dropdown
                                     id="decease-status"
-                                    value={newDeceaseInfo.deceaseStatus ?? ""}
-                                    onChange={(event: ChangeEvent<HTMLSelectElement>) => handleFieldChange("deceaseStatus", event.target.value === "" ? null : Number(event.target.value) as DeceaseStatus)}
-                                >
-                                    <option value="">Select</option>
-                                    {Object.entries(DeceaseStatus)
-                                        .filter(([, value]) => typeof value === "number")
-                                        .map(([label, value]) => (
-                                            <option key={label} value={value}>
-                                                {label}
-                                            </option>
-                                        ))}
-                                </select>
+                                    label="Decease status"
+                                    value={newDeceaseInfo.deceaseStatus}
+                                    options={Object.entries(DeceaseStatus)
+                                        .filter(([, v]) => typeof v === "number")
+                                        .map(([label, value]) => ({ label, value: value as number }))}
+                                    onChange={(val) => handleFieldChange("deceaseStatus", val)}
+                                />
                             </td>
                             <td>
-                                <label htmlFor="decease-date">Decease date</label>
-                                <input
-                                    className="textbox"
+                                <Datepicker
                                     id="decease-date"
-                                    type="date"
-                                    value={newDeceaseInfo.deceaseDate ?? ""}
-                                    onChange={(event: ChangeEvent<HTMLInputElement>) => handleFieldChange("deceaseDate", event.target.value)}
+                                    label="Decease date"
+                                    value={newDeceaseInfo.deceaseDate}
+                                    onChange={(val) => handleFieldChange("deceaseDate", val)}
                                 />
                             </td>
                         </tr>
                         <tr>
                             <td colSpan={2}>
-                                <label htmlFor="decease-info-date">Information date</label>
-                                <input
-                                    className="textbox"
+                                <Datepicker
                                     id="decease-info-date"
-                                    type="date"
-                                    value={newDeceaseInfo.deceaseInformationDate ?? ""}
-                                    onChange={(event: ChangeEvent<HTMLInputElement>) => handleFieldChange("deceaseInformationDate", event.target.value)}
+                                    label="Information date"
+                                    value={newDeceaseInfo.deceaseInformationDate}
+                                    onChange={(val) => handleFieldChange("deceaseInformationDate", val)}
                                 />
                             </td>
                         </tr>
