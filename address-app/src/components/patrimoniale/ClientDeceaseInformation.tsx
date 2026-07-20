@@ -43,6 +43,14 @@ export const ClientDeceaseInformation = ({ clientId }: ClientDeceaseInformationP
         }
     };
 
+    const formatDateInDeceaseInfo = (date: string | null) => {
+        if (date) {
+            return date.substring(0, 10);
+        } else {
+            return "-";
+        }
+    }
+
     return <div className="client-deceaseInfo">
         {!isFormVisible && <Button size="small" onClick={() => setIsFormVisible(true)}>
             {deceaseInfo != null ? "Update decease info" : "Add new decease info"}
@@ -109,8 +117,8 @@ export const ClientDeceaseInformation = ({ clientId }: ClientDeceaseInformationP
             {deceaseInfo != null &&
                 <div>
                     <div>Status: {deceaseInfo.deceaseStatus ?? "-"}</div>
-                    <div>Decease date: {deceaseInfo.deceaseDate ?? "-"}</div>
-                    <div>Information date: {deceaseInfo.deceaseInformationDate ?? "-"}</div>
+                    <div>Decease date: {formatDateInDeceaseInfo(deceaseInfo.deceaseDate)}</div>
+                    <div>Information date: {formatDateInDeceaseInfo(deceaseInfo.deceaseInformationDate)}</div>
                 </div>
             }
         </div>
