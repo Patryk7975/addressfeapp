@@ -23,34 +23,6 @@ const createInitialJob = (): Job => ({
     checkDate: null,
 });
 
-/**
- * Resolves an enum value to a consistent numeric string for <select value={}>.
- * The API may return either a numeric value (e.g. 2) or a string key (e.g. "SelfEmployed").
- * The <option> values are always numeric strings (e.g. "1", "2").
- * This function always returns the numeric string, or "" if not found.
- */
-function toSelectValue(enumObj: Record<string | number, any>, val: any): string {
-    if (val === null || val === undefined || val === "") return "";
-
-    const asNum = Number(val);
-    if (!isNaN(asNum) && asNum !== 0) {
-        if (Object.values(enumObj).includes(asNum)) {
-            return String(asNum);
-        }
-    }
-
-    if (typeof val === "string") {
-        const lower = val.toLowerCase();
-        for (const [key, value] of Object.entries(enumObj)) {
-            if (typeof value === "number" && key.toLowerCase() === lower) {
-                return String(value);
-            }
-        }
-    }
-
-    return "";
-}
-
 function formatDate(dateStr: string | null): string {
     if (!dateStr) return "";
     return dateStr.includes("T") ? dateStr.split("T")[0] : dateStr;
