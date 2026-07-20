@@ -1,7 +1,7 @@
 import { VerificationStatus } from './../../../enums/VerificationStatus';
 import axios from "axios";
 import type { Job } from "../models/Job";
-import { handleError } from "../../../services/ApiUtils";
+import { handleError, normalizeDateInRequest } from "../../../services/ApiUtils";
 import { ChangeSource } from "../../../enums/ChangeSource";
 import { ChangeBasis } from "../../../enums/ChangeBasis";
 
@@ -25,9 +25,9 @@ export const UpsertJobs = async (clientId: string, version: number, jobs: Job[])
             contractTypeTerm: e.contractTypeTerm,
             employerType: e.employerType,
             contractWorkingTime: e.contractWorkingTime,
-            startDate: e.startDate,
-            endDate: e.endDate,
-            checkDate: e.checkDate,
+            startDate: normalizeDateInRequest(e.startDate),
+            endDate: normalizeDateInRequest(e.endDate),
+            checkDate: normalizeDateInRequest(e.checkDate),
             metaData: {
                 changeSource: ChangeSource.Seller,
                 changeBasis: ChangeBasis.DirectConversation,
