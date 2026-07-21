@@ -52,7 +52,7 @@ export const ClientIncome = ({ clientId }: ClientIncomeProps) => {
 
     return <div className="client-income">
         {!isFormVisible && <Button size="small" onClick={() => setIsFormVisible(true)}>
-            {income != null ? "Update income" : "Save"}
+            {income != null ? "Update income" : "Add new income"}
         </Button>}
         {isFormVisible &&
             <form onSubmit={handleCreateIncome} className="client-income-form-controls">
