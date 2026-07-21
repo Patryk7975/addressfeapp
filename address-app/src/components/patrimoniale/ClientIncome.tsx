@@ -106,7 +106,7 @@ export const ClientIncome = ({ clientId }: ClientIncomeProps) => {
                     <Button size="small" color="secondary" onClick={() => setIsFormVisible(false)}>
                         Cancel
                     </Button>
-                    <Button size="small">{income != null ? "Save" : "Add income"}</Button>
+                    <Button size="small">Save</Button>
                 </div>
             </form>
         }
