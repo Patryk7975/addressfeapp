@@ -18,12 +18,12 @@ export const UpsertIncome = async (clientId: string, version: number, income: In
     const url = `${baseUrl}api/financials/${clientId}`;
 
     const payload = {
-        netIncome: {
+        income: {
             currency: income.currency,
             period: income.period,
-            amount: income.amount,
+            netAmount: income.netAmount,
             grossAmount: income.grossAmount,
-            netIncomeMetadata: {
+            metadata: {
                 changeSource: ChangeSource.Seller,
                 changeBasis: ChangeBasis.DirectConversation,
                 verificationStatus: VerificationStatus.NotVerified,

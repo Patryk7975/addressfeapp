@@ -5,6 +5,6 @@ export interface Income {
     id : string | null,
     currency: CurrencyCode | null; 
     period: Period | null;  
-    amount: number | null;
+    netAmount: number | null;
     grossAmount: number | null;
 }

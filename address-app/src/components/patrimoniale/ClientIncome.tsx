@@ -9,7 +9,7 @@ import { Dropdown } from "../controls/Dropdown";
 
 const createInitialIncome = (): Income => ({
     id: null,
-    amount: null,
+    netAmount: null,
     grossAmount: null,
     period: null,
     currency: null
@@ -61,10 +61,10 @@ export const ClientIncome = ({ clientId }: ClientIncomeProps) => {
                         <tr>
                             <td>
                                 <Decimal
-                                    id="income-amount"
+                                    id="income-net-amount"
                                     label="Net amount"
-                                    value={newIncome.amount}
-                                    onChange={(val) => handleFieldChange("amount", val)}
+                                    value={newIncome.netAmount}
+                                    onChange={(val) => handleFieldChange("netAmount", val)}
                                 />
                             </td>
                             <td>
@@ -116,7 +116,7 @@ export const ClientIncome = ({ clientId }: ClientIncomeProps) => {
             {income == null && <p>No income yet.</p>}
             {income != null &&
                 <div>
-                    <div>Net amount: {income.amount ?? "-"}</div>
+                    <div>Net amount: {income.netAmount ?? "-"}</div>
                     <div>Gross amount: {income.grossAmount ?? "-"}</div>
                     <div>Currency: {income.currency ?? "-"}</div>
                     <div>Period: {income.period ?? "-"}</div>
