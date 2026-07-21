@@ -36,7 +36,7 @@ export const ClientLegalEligibility = ({ clientId }: ClientLegalEligibilityProps
     return <div className="client-legal-eligibility">
         <div style={{ display: "flex", alignItems: "center", gap: "12px", flexWrap: "wrap" }}>
             <p style={{ margin: 0 }}>
-                Legal eligibility status is {legalEligibility == null ? "Unknown" : legalEligibility ? "Confirmed by employer" : "Not confirmed by employer"}
+                Legal eligibility status is {legalEligibility == null ? "Unknown" : legalEligibility ? "True" : "False"}
             </p>
             {!isFormVisible && <Button size="small" onClick={() => setIsFormVisible(prev => !prev)}>
                 {legalEligibility != null ? "Update legal eligibility" : "Set legal eligibility"}
@@ -48,7 +48,7 @@ export const ClientLegalEligibility = ({ clientId }: ClientLegalEligibilityProps
         <br />
         {isFormVisible &&
             <form onSubmit={handleCreateLegalEligibility} className="client-legal-eligibility-form-controls" style={{ display: "flex", alignItems: "center", gap: "12px", marginTop: "8px", flexWrap: "wrap" }}>
-                <label htmlFor="confirmed-by-employer">Confirmed by employer</label>
+                <label htmlFor="confirmed-by-employer">Has legal eligibility</label>
                 <input
                     className="checkbox-input"
                     id="confirmed-by-employer"
