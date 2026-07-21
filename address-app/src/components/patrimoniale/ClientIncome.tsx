@@ -62,7 +62,7 @@ export const ClientIncome = ({ clientId }: ClientIncomeProps) => {
                             <td>
                                 <Decimal
                                     id="income-amount"
-                                    label="Amount"
+                                    label="Net amount"
                                     value={newIncome.amount}
                                     onChange={(val) => handleFieldChange("amount", val)}
                                 />
@@ -103,7 +103,7 @@ export const ClientIncome = ({ clientId }: ClientIncomeProps) => {
                     </tbody>
                 </table>
                 <div>
-                    <Button size="small" color="secondary"  onClick={() => setIsFormVisible(false)}>
+                    <Button size="small" color="secondary" onClick={() => setIsFormVisible(false)}>
                         Cancel
                     </Button>
                     <Button size="small">{income != null ? "Save" : "Add income"}</Button>
@@ -116,7 +116,7 @@ export const ClientIncome = ({ clientId }: ClientIncomeProps) => {
             {income == null && <p>No income yet.</p>}
             {income != null &&
                 <div>
-                    <div>Amount: {income.amount ?? "-"}</div>
+                    <div>Net amount: {income.amount ?? "-"}</div>
                     <div>Gross amount: {income.grossAmount ?? "-"}</div>
                     <div>Currency: {income.currency ?? "-"}</div>
                     <div>Period: {income.period ?? "-"}</div>
