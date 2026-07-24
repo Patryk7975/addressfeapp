@@ -4,7 +4,7 @@ import { ContractWorkingTime } from "./enums/ContractWorkingTime";
 import { EmploymentStatus } from "./enums/EmploymentStatus";
 import { EmployerType } from "./enums/EmployerType";
 import type { Job } from "./models/Job";
-import { UpsertJobs } from "./services/JobApi";
+import { CreateJob, UpdateJob } from "./services/JobApi";
 import { Button } from "../controls/Button";
 import { Textbox } from "../controls/Textbox";
 import { Dropdown } from "../controls/Dropdown";
@@ -59,32 +59,54 @@ export const ClientJobs = ({ clientId }: ClientJobsProps) => {
         setIsFormVisible(true);
     };
 
-    const handleCreateJob = async (event: FormEvent<HTMLFormElement>) => {
+    const handleSaveForm = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
-        let jobsToSave: Job[];
-        if (editingJobIndex !== null) {
-            jobsToSave = jobs.map((job, index) =>
-                index === editingJobIndex ? newJob : job
-            );
-        } else {
-            const createdJob: Job = {
-                ...newJob,
-                id: null,
-            };
-            jobsToSave = [...jobs, createdJob];
-        }
+        const createdJob: Job = {
+            ...newJob,
+            id: null,
+        };
 
-        var response = await UpsertJobs(clientId, jobsVersion, jobsToSave);
+        editingJobIndex != null
+            ? await handleUpdateJob(createdJob)
+            : await handleCreateJob(createdJob);
+    };
+
+    const handleCreateJob = async (job: Job) => {
+        var response = await CreateJob(clientId, jobsVersion, job);
 
         if (response) {
-            setJobs(response!.clientJobs);
+            const newJobs = [...jobs, response.clientJob];
+
+            setJobs(newJobs);
             setJobsVersion(response.version);
             setNewJob(createInitialJob());
             setEditingJobIndex(null);
             setIsFormVisible(false);
         }
-    };
+    }
+
+    const handleUpdateJob = async (job: Job) => {
+
+        if (editingJobIndex == null)
+            return;
+
+        var response = await UpdateJob(clientId, jobs[editingJobIndex].id!, jobsVersion, job)
+
+        if (response) {
+            const newJobs = jobs.map((j, index) =>
+                editingJobIndex === index
+                    ? response?.clientJob!
+                    : j
+            );
+
+            setJobs(newJobs);
+            setJobsVersion(response.version);
+            setNewJob(createInitialJob());
+            setEditingJobIndex(null);
+            setIsFormVisible(false);
+        }
+    }
 
     const handleCancel = () => {
         setNewJob(createInitialJob());
@@ -103,7 +125,7 @@ export const ClientJobs = ({ clientId }: ClientJobsProps) => {
         {isFormVisible &&
             <form
                 key={editingJobIndex !== null ? `edit-${editingJobIndex}` : "create"}
-                onSubmit={handleCreateJob}
+                onSubmit={handleSaveForm}
                 className="client-jobs-form-controls"
             >
                 <table className="client-jobs-form-table">
