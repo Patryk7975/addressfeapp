@@ -10,7 +10,28 @@ interface JobsApiResponse {
     clientJob: Job
 }
 
+interface GetResponse {
+    clientProfessionalActivity: {
+        clientJobs: Job[],
+        version: number
+    }
+}
+
+
 const baseUrl = "http://localhost:7000/";
+
+
+export const GetJobs = async (clientId: string) => {
+    const url = `${baseUrl}api/professionalActivity/${clientId}`;
+
+    try {
+        const response = await axios.get<GetResponse>(url);
+        console.log('Odpowiedź:', response.data);
+        return response.data;
+    } catch (error) {
+        handleError(error)
+    }
+}
 
 export const CreateJob = async (clientId: string, version: number, job: Job) => {
     const url = `${baseUrl}api/professionalActivity/${clientId}/jobs`;

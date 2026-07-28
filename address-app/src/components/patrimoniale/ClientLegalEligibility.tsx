@@ -1,17 +1,28 @@
-import { useState, type ChangeEvent, type FormEvent } from "react";
+import { useEffect, useState, type ChangeEvent, type FormEvent } from "react";
 import { CreateLegalEligibility } from "./services/OtherInfoApi";
 import { Button } from "../controls/Button";
 
 interface ClientLegalEligibilityProps {
     clientId: string;
+    version: number;
+    clientLegalEligibility: boolean | null;
+    setOtherInfoVersion: (version: number) => void;
 }
 
-export const ClientLegalEligibility = ({ clientId }: ClientLegalEligibilityProps) => {
+export const ClientLegalEligibility = ({ clientId, version, clientLegalEligibility, setOtherInfoVersion }: ClientLegalEligibilityProps) => {
 
-    const [legalEligibility, setLegalEligibility] = useState<boolean | null>(null);
-    const [legalEligibilityVersion, setLegalEligibilityVersion] = useState<number>(0);
+    const [legalEligibility, setLegalEligibility] = useState<boolean | null>(clientLegalEligibility);
     const [newLegalEligibility, setNewLegalEligibility] = useState<boolean>(false);
     const [isFormVisible, setIsFormVisible] = useState(false);
+
+    useEffect(() => {
+        setLegalEligibility(clientLegalEligibility);
+    }, [clientLegalEligibility]);
+
+    useEffect(() => {
+        setOtherInfoVersion(version);
+    }, [version]);
+
 
     const handleFieldChange = (value: boolean) => {
         setNewLegalEligibility(value);
@@ -20,11 +31,11 @@ export const ClientLegalEligibility = ({ clientId }: ClientLegalEligibilityProps
     const handleCreateLegalEligibility = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
-        const response = await CreateLegalEligibility(clientId, legalEligibilityVersion, newLegalEligibility);
+        const response = await CreateLegalEligibility(clientId, version, newLegalEligibility);
 
         if (response) {
             setLegalEligibility(response.clientLegalEligibility.clientLegalEligibility);
-            setLegalEligibilityVersion(response.version);
+            setOtherInfoVersion(response.version);
             setIsFormVisible(false);
         }
     };

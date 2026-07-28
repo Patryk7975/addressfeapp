@@ -10,7 +10,26 @@ interface IncomesApiResponse {
     version: number
 }
 
+interface GetResponse {
+    clientFinancial: {
+        incomes: Income[],
+        version: number
+    }
+}
+
 const baseUrl = "http://localhost:7000/";
+
+export const GetIncomes = async (clientId: string) => {
+    const url = `${baseUrl}api/financials/${clientId}`;
+
+    try {
+        const response = await axios.get<GetResponse>(url);
+        console.log('Odpowiedź:', response.data);
+        return response.data;
+    } catch (error) {
+        handleError(error)
+    }
+}
 
 export const CreateIncome = async (clientId: string, version: number, income: Income) => {
     const url = `${baseUrl}api/financials/${clientId}/incomes`;

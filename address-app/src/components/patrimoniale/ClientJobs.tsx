@@ -1,4 +1,4 @@
-import { useState, type ChangeEvent, type FormEvent } from "react";
+import { useState, useEffect, type ChangeEvent, type FormEvent } from "react";
 import { ContractTypeTerm } from "./enums/ContractTypeTerm";
 import { ContractWorkingTime } from "./enums/ContractWorkingTime";
 import { EmploymentStatus } from "./enums/EmploymentStatus";
@@ -30,15 +30,22 @@ function formatDate(dateStr: string | null): string {
 
 interface ClientJobsProps {
     clientId: string;
+    version: number,
+    clientJobs: Job[]
 }
 
-export const ClientJobs = ({ clientId }: ClientJobsProps) => {
+export const ClientJobs = ({ clientId, version, clientJobs }: ClientJobsProps) => {
 
-    const [jobs, setJobs] = useState<Job[]>([]);
-    const [jobsVersion, setJobsVersion] = useState<number>(0);
+    const [jobs, setJobs] = useState<Job[]>(clientJobs);
+    const [jobsVersion, setJobsVersion] = useState<number>(version);
     const [newJob, setNewJob] = useState<Job>(createInitialJob);
     const [isFormVisible, setIsFormVisible] = useState(false);
     const [editingJobIndex, setEditingJobIndex] = useState<number | null>(null);
+
+    useEffect(() => {
+        setJobs(clientJobs);
+        setJobsVersion(version);
+    }, [clientJobs, version]);
 
     const handleFieldChange = (field: keyof Job, value: string | boolean | number | null) => {
         setNewJob((prevJob) => ({

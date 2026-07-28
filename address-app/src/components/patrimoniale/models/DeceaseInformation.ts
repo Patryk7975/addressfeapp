@@ -5,4 +5,5 @@ export interface DeceaseInformation {
     deceaseStatus: DeceaseStatus | null; 
     deceaseDate: string | null;  
     deceaseInformationDate: string | null;
+    isHistory: boolean
 }

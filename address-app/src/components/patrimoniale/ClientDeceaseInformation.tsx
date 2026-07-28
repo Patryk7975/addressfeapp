@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 import { DeceaseStatus } from "./enums/DeceaseStatus";
 import type { DeceaseInformation } from "./models/DeceaseInformation";
 import { CreateDeceaseInfo, UpdateDeceaseInfo } from "./services/OtherInfoApi";
@@ -10,20 +10,31 @@ const createInitialDeceaseInfo = (): DeceaseInformation => ({
     id: null,
     deceaseDate: null,
     deceaseInformationDate: null,
-    deceaseStatus: null
+    deceaseStatus: null,
+    isHistory: false
 });
 
 interface ClientDeceaseInformationProps {
     clientId: string;
+    version: number;
+    clientDeceaseInfos: DeceaseInformation[];
+    setOtherInfoVersion: (version: number) => void;
 }
 
-export const ClientDeceaseInformation = ({ clientId }: ClientDeceaseInformationProps) => {
+export const ClientDeceaseInformation = ({ clientId, version, clientDeceaseInfos, setOtherInfoVersion }: ClientDeceaseInformationProps) => {
 
-    const [deceaseInfos, setDeceaseInfos] = useState<DeceaseInformation[]>([]);
+    const [deceaseInfos, setDeceaseInfos] = useState<DeceaseInformation[]>(clientDeceaseInfos);
     const [newDeceaseInfo, setNewDeceaseInfo] = useState<DeceaseInformation>(createInitialDeceaseInfo());
-    const [deceaseInfoVersion, setDeceaseInfoVersion] = useState<number>(0);
     const [isFormVisible, setIsFormVisible] = useState(false);
     const [editingIndex, setEditingIndex] = useState<number | null>(null);
+
+    useEffect(() => {
+        setDeceaseInfos(clientDeceaseInfos);
+    }, [clientDeceaseInfos]);
+    
+    useEffect(() => {
+        setOtherInfoVersion(version);
+    }, [version]);
 
     const handleFieldChange = (field: keyof DeceaseInformation, value: string | number | null) => {
         setNewDeceaseInfo((prevDeceaseInfo) => ({
@@ -55,13 +66,13 @@ export const ClientDeceaseInformation = ({ clientId }: ClientDeceaseInformationP
     };
 
     const handleCreateDeceaseInfo = async (deceaseInfo: DeceaseInformation) => {
-        const response = await CreateDeceaseInfo(clientId, deceaseInfoVersion, deceaseInfo);
+        const response = await CreateDeceaseInfo(clientId, version, deceaseInfo);
 
         if (response) {
             const newDeceaseInfos = [...deceaseInfos, response.deceaseInformation];
 
             setDeceaseInfos(newDeceaseInfos);
-            setDeceaseInfoVersion(response.version);
+            setOtherInfoVersion(response.version);
             setNewDeceaseInfo(createInitialDeceaseInfo());
             setEditingIndex(null);
             setIsFormVisible(false);
@@ -73,7 +84,7 @@ export const ClientDeceaseInformation = ({ clientId }: ClientDeceaseInformationP
         if (editingIndex == null)
             return;
 
-        var response = await UpdateDeceaseInfo(clientId, deceaseInfos[editingIndex].id!, deceaseInfoVersion, deceaseInfo)
+        var response = await UpdateDeceaseInfo(clientId, deceaseInfos[editingIndex].id!, version, deceaseInfo)
 
         if (response) {
             const newDeceaseInfos = deceaseInfos.map((j, index) =>
@@ -83,7 +94,7 @@ export const ClientDeceaseInformation = ({ clientId }: ClientDeceaseInformationP
             );
 
             setDeceaseInfos(newDeceaseInfos);
-            setDeceaseInfoVersion(response.version);
+            setOtherInfoVersion(response.version);
             setNewDeceaseInfo(createInitialDeceaseInfo());
             setEditingIndex(null);
             setIsFormVisible(false);

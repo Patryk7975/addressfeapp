@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 import { CurrencyCode } from "./enums/CurrencyCode";
 import { Period } from "./enums/Period";
 import type { Income } from "./models/Income";
@@ -17,15 +17,22 @@ const createInitialIncome = (): Income => ({
 
 interface ClientIncomeProps {
     clientId: string;
+    clientIncomes: Income[],
+    version: number
 }
 
-export const ClientIncome = ({ clientId }: ClientIncomeProps) => {
+export const ClientIncome = ({ clientId, clientIncomes, version }: ClientIncomeProps) => {
 
-    const [incomes, setIncomes] = useState<Income[]>([]);
+    const [incomes, setIncomes] = useState<Income[]>(clientIncomes);
     const [newIncome, setNewIncome] = useState<Income>(createInitialIncome());
-    const [incomeVersion, setIncomeVersion] = useState<number>(0);
+    const [incomeVersion, setIncomeVersion] = useState<number>(version);
     const [isFormVisible, setIsFormVisible] = useState(false);
     const [editingIncomeIndex, setEditingIncomeIndex] = useState<number | null>(null);
+
+    useEffect(() => {
+        setIncomes(clientIncomes);
+        setIncomeVersion(version);
+    }, [clientIncomes, version]);
 
     const handleFieldChange = (field: keyof Income, value: string | number | null) => {
         setNewIncome((prevIncome) => ({

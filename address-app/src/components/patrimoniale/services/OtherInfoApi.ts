@@ -15,8 +15,28 @@ interface LegalEligibilityApiResponse {
     version: number
 }
 
+interface GetResponse {
+    clientOtherInformation: {
+        clientLegalEligibilityEntry: LegalEligibility,
+        deceaseInformationHistory: DeceaseInformation[]
+        version: number
+    }
+}
+
 const baseUrl = "http://localhost:7000/";
 
+export const GetOtherInformation = async (clientId: string) => {
+    const url = `${baseUrl}api/other/${clientId}`;
+
+    try {
+        const response = await axios.get<GetResponse>(url);
+        console.log('Odpowiedź:', response.data);
+      
+        return response.data;
+    } catch (error) {
+        handleError(error)
+    }
+}
 
 export const CreateLegalEligibility = async (clientId: string, version: number, legalEligibility: boolean) => {
     const url = `${baseUrl}api/other/${clientId}/clientLegalEligibilities`;
