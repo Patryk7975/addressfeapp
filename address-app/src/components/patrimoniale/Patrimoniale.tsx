@@ -14,6 +14,7 @@ import type { Income } from "./models/Income";
 import { GetIncomes } from "./services/IncomeApi";
 import type { DeceaseInformation } from "./models/DeceaseInformation";
 import { GetOtherInformation } from "./services/OtherInfoApi";
+import { ImportPatrimoniale } from "./services/PatrimonialeApi";
 
 const PatrimonialeColumnsSection = styled.div`
   display: flex;
@@ -40,6 +41,11 @@ export const Patrimoniale = () => {
     };
 
     const importPatrimoniale = async () => {
+
+        const patrimonialeResponse = await ImportPatrimoniale(client!.id);
+        if (!patrimonialeResponse)
+            return;
+
         const jobsResponse = await GetJobs(client!.id);
         if (jobsResponse) {
             setJobs(jobsResponse.clientProfessionalActivity.clientJobs);

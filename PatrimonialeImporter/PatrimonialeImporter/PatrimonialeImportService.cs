@@ -1,4 +1,4 @@
-﻿using ClosedXML.Excel;
+using ClosedXML.Excel;
 using PatrimonialeImporter.Enums;
 using PatrimonialeImporter.Models;
 using System.Text;
@@ -7,49 +7,71 @@ using System.Text.Json.Serialization;
 
 namespace PatrimonialeImporter
 {
-    public class PatrimonialeImportService
+    public class PatrimonialeImportService : IPatrimonialeImportService
     {
-        public void RunImport(IXLWorksheet worksheet)
+        private readonly HttpClient _httpClient;
+
+        public PatrimonialeImportService(HttpClient httpClient)
         {
-            var requests = BuildPatrimonialeRequests(worksheet);
-            SendRequestsToApi(requests);
+            _httpClient = httpClient;
         }
 
-        private void SendRequestsToApi(List<ClientPatrimonialeRequest> requests)
+        public async Task<ImportResult> RunImportAsync(Guid clientId, IXLWorksheet worksheet, CancellationToken cancellationToken = default)
+        {
+            var requests = BuildPatrimonialeRequests(clientId, worksheet);
+            return await SendRequestsToApiAsync(requests, cancellationToken);
+        }
+
+        private async Task<ImportResult> SendRequestsToApiAsync(List<ClientPatrimonialeRequest> requests, CancellationToken cancellationToken)
         {
             var apiBaseUrl = "http://localhost:7000/api/patrimoniale";
+            var result = new ImportResult
+            {
+                TotalProcessed = requests.Count
+            };
+
+            var jsonOptions = new JsonSerializerOptions
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
+            };
 
             foreach (var request in requests)
             {
-                using var httpClient = new HttpClient();
                 var url = $"{apiBaseUrl}/{request.ClientId}";
                 var body = request.PatrimonialeRequestDto;
-
-                var jsonOptions = new JsonSerializerOptions
-                {
-                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-                    DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
-                };
 
                 string json = JsonSerializer.Serialize(body, jsonOptions);
                 using var content = new StringContent(json, Encoding.UTF8, "application/json");
 
                 try
                 {
-                    var response = httpClient.PostAsync(url, content).GetAwaiter().GetResult();
+                    var response = await _httpClient.PostAsync(url, content, cancellationToken);
                     if (!response.IsSuccessStatusCode)
                     {
-                        Console.WriteLine($"POST {url} failed: {(int)response.StatusCode} {response.ReasonPhrase}");
+                        var errorMsg = $"POST {url} failed: {(int)response.StatusCode} {response.ReasonPhrase}";
+                        Console.WriteLine(errorMsg);
+                        result.FailedCount++;
+                        result.Errors.Add(errorMsg);
+                    }
+                    else
+                    {
+                        result.SuccessCount++;
                     }
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"Error sending POST to {url}: {ex}");
+                    var errorMsg = $"Error sending POST to {url}: {ex.Message}";
+                    Console.WriteLine(errorMsg);
+                    result.FailedCount++;
+                    result.Errors.Add(errorMsg);
                 }
             }
+
+            return result;
         }
 
-        private List<ClientPatrimonialeRequest> BuildPatrimonialeRequests(IXLWorksheet worksheet)
+        private List<ClientPatrimonialeRequest> BuildPatrimonialeRequests(Guid clientId, IXLWorksheet worksheet)
         {
             var result = new List<ClientPatrimonialeRequest>();
 
@@ -62,7 +84,7 @@ namespace PatrimonialeImporter
 
                 try
                 {
-                    result.Add(BuildPatrimonialeRequestFromRow(row, batchId));
+                    result.Add(BuildPatrimonialeRequestFromRow(clientId, row, batchId));
                 }
                 catch (Exception ex)
                 {
@@ -74,10 +96,8 @@ namespace PatrimonialeImporter
             return result;
         }
 
-        private ClientPatrimonialeRequest BuildPatrimonialeRequestFromRow(IXLRow row, Guid batchId)
+        private ClientPatrimonialeRequest BuildPatrimonialeRequestFromRow(Guid clientId, IXLRow row, Guid batchId)
         {
-            var clientGuid = Guid.Parse(row.Cell(1).Value.ToString());
-
             var job = GetJobDtoFromRow(row);
             var income = GetIncomeFromRow(row);
             var deceaseInfo = GetDeceaseInfoFromRow(row);
@@ -103,7 +123,7 @@ namespace PatrimonialeImporter
 
             return new ClientPatrimonialeRequest
             {
-                ClientId = clientGuid,
+                ClientId = clientId,
                 PatrimonialeRequestDto = new()
                 {
                     CheckDate = checkDate,
@@ -150,7 +170,6 @@ namespace PatrimonialeImporter
 
             return hasDecease ? deceaseInfo : null;
         }
-
 
         private static PatrimonialeIncomeDto? GetIncomeFromRow(IXLRow row)
         {
@@ -242,4 +261,3 @@ namespace PatrimonialeImporter
         }
     }
 }
-
