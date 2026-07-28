@@ -1,7 +1,7 @@
 import { useState, type FormEvent } from "react";
 import { DeceaseStatus } from "./enums/DeceaseStatus";
 import type { DeceaseInformation } from "./models/DeceaseInformation";
-import { CreateDeceaseInformation, UpdateDeceaseInformation } from "./services/OtherInfoApi";
+import { CreateDeceaseInfo, UpdateDeceaseInfo } from "./services/OtherInfoApi";
 import { Button } from "../controls/Button";
 import { Dropdown } from "../controls/Dropdown";
 import { Datepicker } from "../controls/Datepicker";
@@ -19,10 +19,11 @@ interface ClientDeceaseInformationProps {
 
 export const ClientDeceaseInformation = ({ clientId }: ClientDeceaseInformationProps) => {
 
-    const [deceaseInfo, setDeceaseInfo] = useState<DeceaseInformation | null>(null);
-    const [deceaseInfoVersion, setDeceaseInfoVersion] = useState<number>(0);
+    const [deceaseInfos, setDeceaseInfos] = useState<DeceaseInformation[]>([]);
     const [newDeceaseInfo, setNewDeceaseInfo] = useState<DeceaseInformation>(createInitialDeceaseInfo());
+    const [deceaseInfoVersion, setDeceaseInfoVersion] = useState<number>(0);
     const [isFormVisible, setIsFormVisible] = useState(false);
+    const [editingIndex, setEditingIndex] = useState<number | null>(null);
 
     const handleFieldChange = (field: keyof DeceaseInformation, value: string | number | null) => {
         setNewDeceaseInfo((prevDeceaseInfo) => ({
@@ -31,18 +32,68 @@ export const ClientDeceaseInformation = ({ clientId }: ClientDeceaseInformationP
         }));
     };
 
-    const handleCreateDeceaseInfo = async (event: FormEvent<HTMLFormElement>) => {
+   const handleEditDeceaseInfo = (index: number) => {
+        const income = deceaseInfos[index];
+        setNewDeceaseInfo({
+            ...income,
+        });
+        setEditingIndex(index);
+        setIsFormVisible(true);
+    };
+
+    const handleSaveForm = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
-        const response = deceaseInfo?.id
-            ? await UpdateDeceaseInformation(clientId, deceaseInfo.id, deceaseInfoVersion, newDeceaseInfo)
-            : await CreateDeceaseInformation(clientId, newDeceaseInfo);
+        const createdInfo: DeceaseInformation = {
+            ...newDeceaseInfo,
+            id: null,
+        };
+
+        editingIndex != null
+            ? await handleUpdateDeceaseInfo(createdInfo)
+            : await handleCreateDeceaseInfo(createdInfo);
+    };
+
+    const handleCreateDeceaseInfo = async (deceaseInfo: DeceaseInformation) => {
+        const response = await CreateDeceaseInfo(clientId, deceaseInfoVersion, deceaseInfo);
 
         if (response) {
-            setDeceaseInfo(response.deceaseInformation);
+            const newDeceaseInfos = [...deceaseInfos, response.deceaseInformation];
+
+            setDeceaseInfos(newDeceaseInfos);
             setDeceaseInfoVersion(response.version);
+            setNewDeceaseInfo(createInitialDeceaseInfo());
+            setEditingIndex(null);
             setIsFormVisible(false);
         }
+    };
+
+    const handleUpdateDeceaseInfo = async (deceaseInfo: DeceaseInformation) => {
+
+        if (editingIndex == null)
+            return;
+
+        var response = await UpdateDeceaseInfo(clientId, deceaseInfos[editingIndex].id!, deceaseInfoVersion, deceaseInfo)
+
+        if (response) {
+            const newDeceaseInfos = deceaseInfos.map((j, index) =>
+                editingIndex === index
+                    ? response?.deceaseInformation!
+                    : j
+            );
+
+            setDeceaseInfos(newDeceaseInfos);
+            setDeceaseInfoVersion(response.version);
+            setNewDeceaseInfo(createInitialDeceaseInfo());
+            setEditingIndex(null);
+            setIsFormVisible(false);
+        }
+    }
+  
+    const handleCancel = () => {
+        setNewDeceaseInfo(createInitialDeceaseInfo());
+        setEditingIndex(null);
+        setIsFormVisible(false);
     };
 
     const formatDateInDeceaseInfo = (date: string | null) => {
@@ -53,13 +104,21 @@ export const ClientDeceaseInformation = ({ clientId }: ClientDeceaseInformationP
         }
     }
 
-    return <div className="client-deceaseInfo">
-        {!isFormVisible && <Button size="small" onClick={() => setIsFormVisible(true)}>
-            {deceaseInfo != null ? "Update decease info" : "Add new decease info"}
+   return <div className="client-deceaseInfos">
+        {!isFormVisible && <Button size="small" onClick={() => {
+            setNewDeceaseInfo(createInitialDeceaseInfo());
+            setEditingIndex(null);
+            setIsFormVisible(true);
+        }}>
+            Add new decease info
         </Button>}
         {isFormVisible &&
-            <form onSubmit={handleCreateDeceaseInfo} className="client-jobs-form-controls">
-                <table className="client-jobs-form-table">
+            <form
+                key={editingIndex !== null ? `edit-${editingIndex}` : "create"}
+                onSubmit={handleSaveForm}
+                className="client-icnomes-form-controls"
+            >
+                <table className="client-decease-infos-form-table">
                     <tbody>
                         <tr>
                             <td>
@@ -95,7 +154,7 @@ export const ClientDeceaseInformation = ({ clientId }: ClientDeceaseInformationP
                     </tbody>
                 </table>
                 <div>
-                    <Button size="small" color="secondary" onClick={() => setIsFormVisible(false)}>
+                    <Button size="small" color="secondary" onClick={handleCancel}>
                         Cancel
                     </Button>
                     <Button size="small">Save</Button>
@@ -103,15 +162,20 @@ export const ClientDeceaseInformation = ({ clientId }: ClientDeceaseInformationP
             </form>
         }
         <div className="patrimoniale-existing-elements-list">
-            <h4>Decease info</h4>
-            {deceaseInfo == null && <p>No decease info yet.</p>}
-            {deceaseInfo != null &&
-                <div>
+            <h4>Decease infos ({deceaseInfos.length})</h4>
+            {deceaseInfos.length === 0 && <p>No decease info yet.</p>}
+            <ul>
+                {deceaseInfos.map((deceaseInfo, index) => (
+                    <li key={deceaseInfo.id}>
                     <div>Status: {deceaseInfo.deceaseStatus ?? "-"}</div>
                     <div>Decease date: {formatDateInDeceaseInfo(deceaseInfo.deceaseDate)}</div>
                     <div>Information date: {formatDateInDeceaseInfo(deceaseInfo.deceaseInformationDate)}</div>
-                </div>
-            }
+                    <div style={{ marginTop: "8px" }}>
+                        <Button size="small" onClick={() => handleEditDeceaseInfo(index)}>Update</Button>
+                    </div>
+                    </li>
+                ))}
+            </ul>    
         </div>
     </div >
 }

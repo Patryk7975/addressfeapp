@@ -41,7 +41,7 @@ export const CreateLegalEligibility = async (clientId: string, version: number, 
     }
 }
 
-export const CreateDeceaseInformation = async (clientId: string, deceaseInfo: DeceaseInformation) => {
+export const CreateDeceaseInfo = async (clientId: string, version: number, deceaseInfo: DeceaseInformation) => {
     const url = `${baseUrl}api/other/${clientId}/deceaseInformation`;
 
     const payload = {
@@ -56,7 +56,7 @@ export const CreateDeceaseInformation = async (clientId: string, deceaseInfo: De
                 sellerId: "3fa85f64-5717-4562-b3fc-2c963f66afa6"
             }
         },
-        version: 0
+        version: version
     }
 
     try {
@@ -68,7 +68,7 @@ export const CreateDeceaseInformation = async (clientId: string, deceaseInfo: De
     }
 }
 
-export const UpdateDeceaseInformation = async (clientId: string, deceaseInfoId: string, version: number, deceaseInfo: DeceaseInformation) => {
+export const UpdateDeceaseInfo = async (clientId: string, deceaseInfoId: string, version: number, deceaseInfo: DeceaseInformation) => {
     const url = `${baseUrl}api/other/${clientId}/deceaseInformation/${deceaseInfoId}`;
 
     const payload = {
