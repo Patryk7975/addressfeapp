@@ -2,7 +2,7 @@ import { useState, type FormEvent } from "react";
 import { CurrencyCode } from "./enums/CurrencyCode";
 import { Period } from "./enums/Period";
 import type { Income } from "./models/Income";
-import { UpsertIncome } from "./services/IncomeApi";
+import { CreateIncome, UpdateIncome } from "./services/IncomeApi";
 import { Button } from "../controls/Button";
 import { Decimal } from "../controls/Decimal";
 import { Dropdown } from "../controls/Dropdown";
@@ -21,10 +21,11 @@ interface ClientIncomeProps {
 
 export const ClientIncome = ({ clientId }: ClientIncomeProps) => {
 
-    const [income, setIncome] = useState<Income | null>(null);
+    const [incomes, setIncomes] = useState<Income[]>([]);
     const [newIncome, setNewIncome] = useState<Income>(createInitialIncome());
     const [incomeVersion, setIncomeVersion] = useState<number>(0);
     const [isFormVisible, setIsFormVisible] = useState(false);
+    const [editingIncomeIndex, setEditingIncomeIndex] = useState<number | null>(null);
 
     const handleFieldChange = (field: keyof Income, value: string | number | null) => {
         setNewIncome((prevIncome) => ({
@@ -33,7 +34,16 @@ export const ClientIncome = ({ clientId }: ClientIncomeProps) => {
         }));
     };
 
-    const handleCreateIncome = async (event: FormEvent<HTMLFormElement>) => {
+    const handleEditIncome = (index: number) => {
+        const income = incomes[index];
+        setNewIncome({
+            ...income,
+        });
+        setEditingIncomeIndex(index);
+        setIsFormVisible(true);
+    };
+
+    const handleSaveForm = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
         const createdIncome: Income = {
@@ -41,21 +51,68 @@ export const ClientIncome = ({ clientId }: ClientIncomeProps) => {
             id: null,
         };
 
-        const response = await UpsertIncome(clientId, incomeVersion, createdIncome);
+        editingIncomeIndex != null
+            ? await handleUpdateIncome(createdIncome)
+            : await handleCreateIncome(createdIncome);
+    };
+
+
+    const handleCreateIncome = async (income: Income) => {
+        const response = await CreateIncome(clientId, incomeVersion, income);
 
         if (response) {
-            setIncome(response.netIncome);
+            const newIncomes = [...incomes, response.income];
+
+            setIncomes(newIncomes);
             setIncomeVersion(response.version);
+            setNewIncome(createInitialIncome());
+            setEditingIncomeIndex(null);
             setIsFormVisible(false);
         }
     };
 
-    return <div className="client-income">
-        {!isFormVisible && <Button size="small" onClick={() => setIsFormVisible(true)}>
-            {income != null ? "Update income" : "Add new income"}
+    const handleUpdateIncome = async (income: Income) => {
+
+        if (editingIncomeIndex == null)
+            return;
+
+        var response = await UpdateIncome(clientId, incomes[editingIncomeIndex].id!, incomeVersion, income)
+
+        if (response) {
+            const newIncomes = incomes.map((j, index) =>
+                editingIncomeIndex === index
+                    ? response?.income!
+                    : j
+            );
+
+            setIncomes(newIncomes);
+            setIncomeVersion(response.version);
+            setNewIncome(createInitialIncome());
+            setEditingIncomeIndex(null);
+            setIsFormVisible(false);
+        }
+    }
+
+    const handleCancel = () => {
+        setNewIncome(createInitialIncome());
+        setEditingIncomeIndex(null);
+        setIsFormVisible(false);
+    };
+
+    return <div className="client-incomes">
+        {!isFormVisible && <Button size="small" onClick={() => {
+            setNewIncome(createInitialIncome());
+            setEditingIncomeIndex(null);
+            setIsFormVisible(true);
+        }}>
+            Add new job
         </Button>}
         {isFormVisible &&
-            <form onSubmit={handleCreateIncome} className="client-income-form-controls">
+            <form
+                key={editingIncomeIndex !== null ? `edit-${editingIncomeIndex}` : "create"}
+                onSubmit={handleSaveForm}
+                className="client-icnomes-form-controls"
+            >
                 <table className="client-income-form-table">
                     <tbody>
                         <tr>
@@ -103,7 +160,7 @@ export const ClientIncome = ({ clientId }: ClientIncomeProps) => {
                     </tbody>
                 </table>
                 <div>
-                    <Button size="small" color="secondary" onClick={() => setIsFormVisible(false)}>
+                    <Button size="small" color="secondary" onClick={handleCancel}>
                         Cancel
                     </Button>
                     <Button size="small">Save</Button>
@@ -112,16 +169,21 @@ export const ClientIncome = ({ clientId }: ClientIncomeProps) => {
         }
 
         <div className="patrimoniale-existing-elements-list">
-            <h4>Income</h4>
-            {income == null && <p>No income yet.</p>}
-            {income != null &&
-                <div>
+            <h4>Incomes ({incomes.length})</h4>
+            {incomes.length === 0 && <p>No incomes yet.</p>}
+            <ul>
+                {incomes.map((income, index) => (
+                    <li key={income.id}>
                     <div>Net amount: {income.netAmount ?? "-"}</div>
                     <div>Gross amount: {income.grossAmount ?? "-"}</div>
                     <div>Currency: {income.currency ?? "-"}</div>
                     <div>Period: {income.period ?? "-"}</div>
-                </div>
-            }
+                    <div style={{ marginTop: "8px" }}>
+                        <Button size="small" onClick={() => handleEditIncome(index)}>Update</Button>
+                    </div>
+                    </li>
+                ))}
+            </ul>
         </div>
     </div>
 

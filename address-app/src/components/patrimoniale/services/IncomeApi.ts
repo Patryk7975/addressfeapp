@@ -6,16 +6,43 @@ import { ChangeBasis } from "../../../enums/ChangeBasis";
 import type { Income } from '../models/Income';
 
 interface IncomesApiResponse {
-    clientFinancial: {
-        version: number,
-        netIncome: Income
-    };
+    income: Income,
+    version: number
 }
 
 const baseUrl = "http://localhost:7000/";
 
-export const UpsertIncome = async (clientId: string, version: number, income: Income) => {
-    const url = `${baseUrl}api/financials/${clientId}`;
+export const CreateIncome = async (clientId: string, version: number, income: Income) => {
+    const url = `${baseUrl}api/financials/${clientId}/incomes`;
+
+    const payload = {
+        income: {
+            currency: income.currency,
+            period: income.period,
+            netAmount: income.netAmount,
+            grossAmount: income.grossAmount,
+            metadata: {
+                changeSource: ChangeSource.Seller,
+                changeBasis: ChangeBasis.DirectConversation,
+                verificationStatus: VerificationStatus.NotVerified,
+                investorId: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+                sellerId: "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+            }
+        },
+        version: version
+    }
+
+    try {
+        const response = await axios.post<IncomesApiResponse>(url, payload);
+        console.log('Odpowiedź:', response.data);
+        return response.data;
+    } catch (error) {
+        handleError(error)
+    }
+}
+
+export const UpdateIncome = async (clientId: string, incomeId: string, version: number, income: Income) => {
+    const url = `${baseUrl}api/financials/${clientId}/incomes/${incomeId}`;
 
     const payload = {
         income: {
@@ -37,7 +64,7 @@ export const UpsertIncome = async (clientId: string, version: number, income: In
     try {
         const response = await axios.put<IncomesApiResponse>(url, payload);
         console.log('Odpowiedź:', response.data);
-        return response.data.clientFinancial;
+        return response.data;
     } catch (error) {
         handleError(error)
     }
