@@ -12,6 +12,5 @@ export interface Job {
     clientProfession: string | null;
     confirmedByEmployer: boolean | null; 
     startDate: string | null;
-    endDate: string | null;
-    checkDate: string | null;
+    endDate: string | null
 }

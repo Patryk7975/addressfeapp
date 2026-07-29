@@ -9,6 +9,7 @@ import { Button } from "../controls/Button";
 import { Textbox } from "../controls/Textbox";
 import { Dropdown } from "../controls/Dropdown";
 import { Datepicker } from "../controls/Datepicker";
+import { VerificationStatus } from "../../enums/VerificationStatus";
 
 const createInitialJob = (): Job => ({
     id: null,
@@ -19,8 +20,7 @@ const createInitialJob = (): Job => ({
     contractWorkingTime: null,
     employerType: null,
     startDate: null,
-    endDate: null,
-    checkDate: null,
+    endDate: null
 });
 
 function formatDate(dateStr: string | null): string {
@@ -60,7 +60,6 @@ export const ClientJobs = ({ clientId, version, clientJobs }: ClientJobsProps) =
             ...job,
             startDate: formatDate(job.startDate),
             endDate: formatDate(job.endDate),
-            checkDate: formatDate(job.checkDate),
         });
         setEditingJobIndex(index);
         setIsFormVisible(true);
@@ -83,7 +82,20 @@ export const ClientJobs = ({ clientId, version, clientJobs }: ClientJobsProps) =
         var response = await CreateJob(clientId, jobsVersion, job);
 
         if (response) {
-            const newJobs = [...jobs, response.clientJob];
+            const responseJob : Job = 
+            {
+                id: response.clientJob.id,
+                clientEmploymentStatus: response.clientJob.clientEmploymentStatus,
+                clientProfession: response.clientJob.clientProfession,
+                confirmedByEmployer: response.clientJob.metadata.verificationStatus?.toString().toLowerCase() == VerificationStatus[VerificationStatus.VerifiedPositive].toString().toLowerCase(),
+                contractTypeTerm: response.clientJob.contractTypeTerm,
+                contractWorkingTime: response.clientJob.contractWorkingTime,
+                employerType: response.clientJob.employerType,
+                startDate: response.clientJob.startDate,
+                endDate: response.clientJob.endDate  
+            }
+
+            const newJobs = [...jobs, responseJob];
 
             setJobs(newJobs);
             setJobsVersion(response.version);
@@ -101,9 +113,23 @@ export const ClientJobs = ({ clientId, version, clientJobs }: ClientJobsProps) =
         var response = await UpdateJob(clientId, jobs[editingJobIndex].id!, jobsVersion, job)
 
         if (response) {
+            const responseJob : Job = 
+            {
+                id: response.clientJob.id,
+                clientEmploymentStatus: response.clientJob.clientEmploymentStatus,
+                clientProfession: response.clientJob.clientProfession,
+                confirmedByEmployer: response.clientJob.metadata.verificationStatus?.toString().toLowerCase() == VerificationStatus[VerificationStatus.VerifiedPositive].toString().toLowerCase(),
+                contractTypeTerm: response.clientJob.contractTypeTerm,
+                contractWorkingTime: response.clientJob.contractWorkingTime,
+                employerType: response.clientJob.employerType,
+                startDate: response.clientJob.startDate,
+                endDate: response.clientJob.endDate  
+            }
+
+
             const newJobs = jobs.map((j, index) =>
                 editingJobIndex === index
-                    ? response?.clientJob!
+                    ? responseJob
                     : j
             );
 
@@ -158,7 +184,7 @@ export const ClientJobs = ({ clientId, version, clientJobs }: ClientJobsProps) =
                                 />
                             </td>
                             <td className="confirmed-by-employer-col">
-                                <label htmlFor="confirmed-by-employer">Confirmed by employer</label>
+                                <label htmlFor="confirmed-by-employer">Confirmed</label>
                                 <input
                                     className="checkbox-input"
                                     id="confirmed-by-employer"
@@ -218,14 +244,6 @@ export const ClientJobs = ({ clientId, version, clientJobs }: ClientJobsProps) =
                                     label="End date"
                                     value={newJob.endDate}
                                     onChange={(val) => handleFieldChange("endDate", val)}
-                                />
-                            </td>
-                            <td colSpan={2} className="check-date-col">
-                                <Datepicker
-                                    id="check-date"
-                                    label="Check date"
-                                    value={newJob.checkDate}
-                                    onChange={(val) => handleFieldChange("checkDate", val)}
                                 />
                             </td>
                         </tr>

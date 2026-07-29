@@ -15,6 +15,7 @@ import { GetIncomes } from "./services/IncomeApi";
 import type { DeceaseInformation } from "./models/DeceaseInformation";
 import { GetOtherInformation } from "./services/OtherInfoApi";
 import { ImportPatrimoniale } from "./services/PatrimonialeApi";
+import { VerificationStatus } from "../../enums/VerificationStatus";
 
 const PatrimonialeColumnsSection = styled.div`
   display: flex;
@@ -48,7 +49,22 @@ export const Patrimoniale = () => {
 
         const jobsResponse = await GetJobs(client!.id);
         if (jobsResponse) {
-            setJobs(jobsResponse.clientProfessionalActivity.clientJobs);
+            setJobs(jobsResponse.clientProfessionalActivity.clientJobs.map(e => {
+                const responseJob : Job = 
+                {
+                    id: e.id,
+                    clientEmploymentStatus: e.clientEmploymentStatus,
+                    clientProfession: e.clientProfession,
+                    confirmedByEmployer: e.metadata.verificationStatus?.toString().toLowerCase() == VerificationStatus[VerificationStatus.VerifiedPositive].toString().toLowerCase(),
+                    contractTypeTerm: e.contractTypeTerm,
+                    contractWorkingTime: e.contractWorkingTime,
+                    employerType: e.employerType,
+                    startDate: e.startDate,
+                    endDate: e.endDate  
+                }
+                
+                return responseJob;
+            }));
             setJobsVersion(jobsResponse.clientProfessionalActivity.version);
         }
 

@@ -4,15 +4,36 @@ import type { Job } from "../models/Job";
 import { handleError, normalizeDateInRequest } from "../../../services/ApiUtils";
 import { ChangeSource } from "../../../enums/ChangeSource";
 import { ChangeBasis } from "../../../enums/ChangeBasis";
+import type { EmploymentStatus } from '../enums/EmploymentStatus';
+import type { ContractWorkingTime } from '../enums/ContractWorkingTime';
+import type { EmployerType } from '../enums/EmployerType';
+import type { ContractTypeTerm } from '../enums/ContractTypeTerm';
+import type { Income } from '../models/Income';
+
+interface JobDto {
+    id : string | null,
+    clientEmploymentStatus: EmploymentStatus | null; 
+    contractTypeTerm: ContractTypeTerm | null;
+    contractWorkingTime: ContractWorkingTime | null;
+    employerType: EmployerType | null;
+    clientProfession: string | null;
+    startDate: string | null;
+    endDate: string | null;
+    metadata: {
+        verificationStatus: VerificationStatus | null;
+    },
+    incomes: Income[]
+}
+
 
 interface JobsApiResponse {
     version: number,
-    clientJob: Job
+    clientJob: JobDto
 }
 
 interface GetResponse {
     clientProfessionalActivity: {
-        clientJobs: Job[],
+        clientJobs: JobDto[],
         version: number
     }
 }
@@ -40,7 +61,6 @@ export const CreateJob = async (clientId: string, version: number, job: Job) => 
         clientJob: {
             clientEmploymentStatus: job.clientEmploymentStatus,
             clientProfession: job.clientProfession,
-            confirmedByEmployer: job.confirmedByEmployer,
             contractTypeTerm: job.contractTypeTerm,
             employerType: job.employerType,
             contractWorkingTime: job.contractWorkingTime,
@@ -49,7 +69,7 @@ export const CreateJob = async (clientId: string, version: number, job: Job) => 
             metaData: {
                 changeSource: ChangeSource.Seller,
                 changeBasis: ChangeBasis.DirectConversation,
-                verificationStatus: VerificationStatus.NotVerified,
+                verificationStatus: job.confirmedByEmployer ? VerificationStatus.VerifiedPositive : VerificationStatus.NotVerified,
                 investorId: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
                 sellerId: "3fa85f64-5717-4562-b3fc-2c963f66afa6"
             }
@@ -73,7 +93,6 @@ export const UpdateJob = async (clientId: string, jobId: string, version: number
         clientJob: {
             clientEmploymentStatus: job.clientEmploymentStatus,
             clientProfession: job.clientProfession,
-            confirmedByEmployer: job.confirmedByEmployer,
             contractTypeTerm: job.contractTypeTerm,
             employerType: job.employerType,
             contractWorkingTime: job.contractWorkingTime,
@@ -82,7 +101,7 @@ export const UpdateJob = async (clientId: string, jobId: string, version: number
             metaData: {
                 changeSource: ChangeSource.Seller,
                 changeBasis: ChangeBasis.DirectConversation,
-                verificationStatus: VerificationStatus.NotVerified,
+                verificationStatus: job.confirmedByEmployer ? VerificationStatus.VerifiedPositive : VerificationStatus.NotVerified,
                 investorId: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
                 sellerId: "3fa85f64-5717-4562-b3fc-2c963f66afa6"
             }
