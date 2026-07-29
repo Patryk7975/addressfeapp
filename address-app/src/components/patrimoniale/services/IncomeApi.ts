@@ -40,6 +40,7 @@ export const CreateIncome = async (clientId: string, version: number, income: In
             period: income.period,
             netAmount: income.netAmount,
             grossAmount: income.grossAmount,
+            jobId: income.job?.id,
             metadata: {
                 changeSource: ChangeSource.Seller,
                 changeBasis: ChangeBasis.DirectConversation,
@@ -69,6 +70,7 @@ export const UpdateIncome = async (clientId: string, incomeId: string, version: 
             period: income.period,
             netAmount: income.netAmount,
             grossAmount: income.grossAmount,
+            jobId: income.job?.id,
             metadata: {
                 changeSource: ChangeSource.Seller,
                 changeBasis: ChangeBasis.DirectConversation,

@@ -47,7 +47,11 @@ export const Patrimoniale = () => {
         if (!patrimonialeResponse)
             return;
 
-        const jobsResponse = await GetJobs(client!.id);
+        await refreshData();
+    }
+
+    const refreshData = async () => {
+       const jobsResponse = await GetJobs(client!.id);
         if (jobsResponse) {
             setJobs(jobsResponse.clientProfessionalActivity.clientJobs.map(e => {
                 const responseJob : Job = 
@@ -79,7 +83,7 @@ export const Patrimoniale = () => {
             setDeceaseInfos(otherInfoResponse.clientOtherInformation.deceaseInformationHistory.filter(e => !e.isHistory));         
             setLegalEligibility(otherInfoResponse.clientOtherInformation.clientLegalEligibilityEntry?.clientLegalEligibility)
             setOtherInfosVersion(otherInfoResponse.clientOtherInformation.version);
-        }    
+        } 
     }
 
     return <> 
@@ -96,7 +100,7 @@ export const Patrimoniale = () => {
 
                 <PatrimonialeColumnsSection>
                     <div style={{ flex: "1.8 1 0", minWidth: "280px", maxWidth: "calc(100% - 600px)" }}>
-                        <ClientJobs clientId={client.id} clientJobs={jobs} version={jobsVersion} />
+                        <ClientJobs clientId={client.id} clientJobs={jobs} version={jobsVersion} refreshData={refreshData} />
                     </div>
                     <div style={{ flex: "1 1 0", minWidth: "280px" }}>
                         <ClientIncome clientId={client.id} clientIncomes={incomes} version={incomeVersion} />

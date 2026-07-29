@@ -12,7 +12,8 @@ const createInitialIncome = (): Income => ({
     netAmount: null,
     grossAmount: null,
     period: null,
-    currency: null
+    currency: null,
+    job: null
 });
 
 interface ClientIncomeProps {
@@ -28,6 +29,7 @@ export const ClientIncome = ({ clientId, clientIncomes, version }: ClientIncomeP
     const [incomeVersion, setIncomeVersion] = useState<number>(version);
     const [isFormVisible, setIsFormVisible] = useState(false);
     const [editingIncomeIndex, setEditingIncomeIndex] = useState<number | null>(null);
+    const [openJobDetailsIndexes, setOpenJobDetailsIndexes] = useState<number[]>([]);
 
     useEffect(() => {
         setIncomes(clientIncomes);
@@ -40,6 +42,14 @@ export const ClientIncome = ({ clientId, clientIncomes, version }: ClientIncomeP
             [field]: value as Income[keyof Income],
         }));
     };
+
+    const onOpenJobDetails = (index: number) => {
+        setOpenJobDetailsIndexes([...openJobDetailsIndexes, index]);
+    }
+
+    const onCloseJobDetails = (index: number) => {
+        setOpenJobDetailsIndexes(openJobDetailsIndexes.filter(e => e != index));
+    }
 
     const handleEditIncome = (index: number) => {
         const income = incomes[index];
@@ -181,13 +191,29 @@ export const ClientIncome = ({ clientId, clientIncomes, version }: ClientIncomeP
             <ul>
                 {incomes.map((income, index) => (
                     <li key={income.id}>
-                    <div>Net amount: {income.netAmount ?? "-"}</div>
-                    <div>Gross amount: {income.grossAmount ?? "-"}</div>
-                    <div>Currency: {income.currency ?? "-"}</div>
-                    <div>Period: {income.period ?? "-"}</div>
-                    <div style={{ marginTop: "8px" }}>
-                        <Button size="small" color="secondary" onClick={() => handleEditIncome(index)}>Update</Button>
-                    </div>
+                        <div>Net amount: {income.netAmount ?? "-"}</div>
+                        <div>Gross amount: {income.grossAmount ?? "-"}</div>
+                        <div>Currency: {income.currency ?? "-"}</div>
+                        <div>Period: {income.period ?? "-"}</div>
+                        <div style={{ marginTop: "8px" }}>
+                            <Button size="small" color="secondary" onClick={() => handleEditIncome(index)}>Update</Button>
+                            {income.job && openJobDetailsIndexes.filter(e => e == index).length == 0 &&
+                                <Button size="small" color="secondary" onClick={() => onOpenJobDetails(index)}>Show job details</Button>
+                            }
+                        </div>
+
+                        {income.job && openJobDetailsIndexes.filter(e => e == index).length > 0 &&
+                            <div>
+                                <strong>{income.job.clientProfession ?? "No profession"}</strong>
+                                <div>Status: {income.job.clientEmploymentStatus ?? "-"}</div>
+                                <div>Contract: {income.job.contractTypeTerm ?? "-"}</div>
+                                <div>Working time: {income.job.contractWorkingTime ?? "-"}</div>
+                                <div>Employer type: {income.job.employerType ?? "-"}</div>
+                                <div style={{ marginTop: "8px" }}>
+                                    <Button size="small" color="secondary" onClick={() => onCloseJobDetails(index)}>Hide job details</Button>
+                                </div>
+                            </div>
+                        }
                     </li>
                 ))}
             </ul>

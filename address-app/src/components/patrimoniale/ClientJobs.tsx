@@ -31,10 +31,11 @@ function formatDate(dateStr: string | null): string {
 interface ClientJobsProps {
     clientId: string;
     version: number,
-    clientJobs: Job[]
+    clientJobs: Job[],
+    refreshData: () => Promise<void>
 }
 
-export const ClientJobs = ({ clientId, version, clientJobs }: ClientJobsProps) => {
+export const ClientJobs = ({ clientId, version, clientJobs, refreshData }: ClientJobsProps) => {
 
     const [jobs, setJobs] = useState<Job[]>(clientJobs);
     const [jobsVersion, setJobsVersion] = useState<number>(version);
@@ -138,6 +139,7 @@ export const ClientJobs = ({ clientId, version, clientJobs }: ClientJobsProps) =
             setNewJob(createInitialJob());
             setEditingJobIndex(null);
             setIsFormVisible(false);
+            await refreshData();
         }
     }
 
