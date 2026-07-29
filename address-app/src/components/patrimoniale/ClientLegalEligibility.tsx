@@ -45,7 +45,7 @@ export const ClientLegalEligibility = ({ clientId, version, clientLegalEligibili
             <p style={{ margin: 0 }}>
                 Legal eligibility status is {legalEligibility == null ? "Unknown" : legalEligibility ? "True" : "False"}
             </p>
-            {!isFormVisible && <Button size="small" onClick={() => setIsFormVisible(prev => !prev)}>
+            {!isFormVisible && <Button size="small" color={legalEligibility != null ? "secondary" : "primary"} onClick={() => setIsFormVisible(prev => !prev)}>
                 {legalEligibility != null ? "Update legal eligibility" : "Set legal eligibility"}
             </Button>}
             {isFormVisible && <Button size="small" color="secondary" onClick={() => setIsFormVisible(prev => !prev)}>

@@ -186,7 +186,7 @@ export const ClientIncome = ({ clientId, clientIncomes, version }: ClientIncomeP
                     <div>Currency: {income.currency ?? "-"}</div>
                     <div>Period: {income.period ?? "-"}</div>
                     <div style={{ marginTop: "8px" }}>
-                        <Button size="small" onClick={() => handleEditIncome(index)}>Update</Button>
+                        <Button size="small" color="secondary" onClick={() => handleEditIncome(index)}>Update</Button>
                     </div>
                     </li>
                 ))}

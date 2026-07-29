@@ -182,7 +182,7 @@ export const ClientDeceaseInformation = ({ clientId, version, clientDeceaseInfos
                     <div>Decease date: {formatDateInDeceaseInfo(deceaseInfo.deceaseDate)}</div>
                     <div>Information date: {formatDateInDeceaseInfo(deceaseInfo.deceaseInformationDate)}</div>
                     <div style={{ marginTop: "8px" }}>
-                        <Button size="small" onClick={() => handleEditDeceaseInfo(index)}>Update</Button>
+                        <Button size="small" color="secondary" onClick={() => handleEditDeceaseInfo(index)}>Update</Button>
                     </div>
                     </li>
                 ))}

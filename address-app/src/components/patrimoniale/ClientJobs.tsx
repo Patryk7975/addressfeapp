@@ -253,7 +253,7 @@ export const ClientJobs = ({ clientId, version, clientJobs }: ClientJobsProps) =
                         <div>Employer type: {job.employerType ?? "-"}</div>
                         <div>Confirmed: {job.confirmedByEmployer ? "Yes" : "No"}</div>
                         <div style={{ marginTop: "8px" }}>
-                            <Button size="small" onClick={() => handleEditJob(index)}>Update</Button>
+                            <Button size="small" color="secondary" onClick={() => handleEditJob(index)}>Update</Button>
                         </div>
                     </li>
                 ))}
