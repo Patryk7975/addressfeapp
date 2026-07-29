@@ -1,7 +1,6 @@
 using ClosedXML.Excel;
 using Microsoft.AspNetCore.Mvc;
 using PatrimonialeImporter.Models;
-using System.Reflection;
 
 namespace PatrimonialeImporter.Controllers
 {
@@ -22,21 +21,21 @@ namespace PatrimonialeImporter.Controllers
         [HttpPost("RunImport/{clientId}")]
         public async Task<ActionResult<ImportResult>> RunImport(Guid clientId, CancellationToken cancellationToken)
         {
-            var assembly = Assembly.GetExecutingAssembly();
-            var srcExcelFileName = assembly.GetManifestResourceNames().FirstOrDefault(e => e.EndsWith("xlsx"));
+            var directory = AppContext.BaseDirectory;
+            var parts = directory.Split("\\");
 
-            if (string.IsNullOrEmpty(srcExcelFileName))
+            var filePath = "";
+            foreach (var part in parts)
             {
-                return NotFound("Nie znaleziono zasobu pliku Excel.");
+                if (part.ToLower() == "bin" || part.ToLower() == "debug" || part.ToLower() == "release" || part.ToLower().StartsWith("net"))
+                    continue;
+
+                filePath += part + "\\";
             }
 
-            using Stream? stream = assembly.GetManifestResourceStream(srcExcelFileName);
-            if (stream == null)
-            {
-                return NotFound("Nie można otworzyć strumienia zasobu Excel.");
-            }
+            filePath += @"Resources\PatrimonialeData.xlsx";
 
-            using var workbook = new XLWorkbook(stream);
+            using var workbook = new XLWorkbook(filePath);
             var worksheet = workbook.Worksheet(1);
 
             var result = await _importService.RunImportAsync(clientId, worksheet, cancellationToken);

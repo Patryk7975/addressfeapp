@@ -8,10 +8,11 @@
 
   <ItemGroup>
     <None Remove="PatrimonialeData.xlsx" />
+    <None Remove="Resources\PatrimonialeData.xlsx" />
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="Resources\PatrimonialeData.xlsx" />
+    <Content Include="Resources\PatrimonialeData.xlsx" />
   </ItemGroup>
 
   <ItemGroup>
