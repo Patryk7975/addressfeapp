@@ -210,40 +210,46 @@ export const AddAddressToClient = async (clientId: string, address: AddressData)
 
 export const UpdateClientAddress = async (clientId: string, addressId: string, address: AddressData) => {
     const url = `${baseUrl}api/address/${clientId}/addresses/${addressId}`;
+    const payload: AddressData = {
+        ...address,
+        firstLevelOfDivision: address.firstLevelOfDivision ? { ...address.firstLevelOfDivision } : null,
+        secondLevelOfDivision: address.secondLevelOfDivision ? { ...address.secondLevelOfDivision } : null,
+        thirdLevelOfDivision: address.thirdLevelOfDivision ? { ...address.thirdLevelOfDivision } : null,
+        usages: address.usages?.map(u => ({ ...u })) ?? [],
+    };
 
-    if (address.firstLevelOfDivision != null && (address.firstLevelOfDivision.value === "" || address.firstLevelOfDivision.value === null)) {
-        address.firstLevelOfDivision.meaning = null;
+    if (payload.firstLevelOfDivision != null && (payload.firstLevelOfDivision.value === "" || payload.firstLevelOfDivision.value === null)) {
+        payload.firstLevelOfDivision.meaning = null;
     }
 
-    if (address.secondLevelOfDivision != null && (address.secondLevelOfDivision.value === "" || address.secondLevelOfDivision.value === null)) {
-        address.secondLevelOfDivision.meaning = null;
+    if (payload.secondLevelOfDivision != null && (payload.secondLevelOfDivision.value === "" || payload.secondLevelOfDivision.value === null)) {
+        payload.secondLevelOfDivision.meaning = null;
     }
 
-    if (address.thirdLevelOfDivision != null && (address.thirdLevelOfDivision.value === "" || address.thirdLevelOfDivision.value === null)) {
-        address.thirdLevelOfDivision.meaning = null;
+    if (payload.thirdLevelOfDivision != null && (payload.thirdLevelOfDivision.value === "" || payload.thirdLevelOfDivision.value === null)) {
+        payload.thirdLevelOfDivision.meaning = null;
     }
 
-    if (address.type == AddressType.PlaceOfStay)
-        address.placeOfStayData = { placeOfStayReason: 'PermanentDeparture' }
-    else if (address.type == AddressType.PostOfficeBox) {
-        address.streetPrefix=null;
-        address.placeOfStayData = null;
-        }
+    if (payload.type == AddressType.PlaceOfStay)
+        payload.placeOfStayData = { placeOfStayReason: 'PermanentDeparture' }
+    else if (payload.type == AddressType.PostOfficeBox) {
+        payload.streetPrefix = null;
+        payload.placeOfStayData = null;
+    }
     else
-        address.placeOfStayData = null;
+        payload.placeOfStayData = null;
 
-        if (address.country === Country.Spain) {
-        address.firstLevelOfDivision = { value: "test1", meaning: "autonomousCommunity" };
-        address.secondLevelOfDivision = { value: "test2", meaning: "province" };
-        address.thirdLevelOfDivision = { value: "test3", meaning: "municipality" };
-        address.floor = "2";
+    if (payload.country === Country.Spain) {
+        payload.firstLevelOfDivision = { value: "test1", meaning: "autonomousCommunity" };
+        payload.secondLevelOfDivision = { value: "test2", meaning: "province" };
+        payload.thirdLevelOfDivision = { value: "test3", meaning: "municipality" };
+        payload.floor = "2";
     }
 
-
-    address.id = null;
+    payload.id = null;
 
     try {
-        const response = await axios.put(url, address);
+        const response = await axios.put(url, payload);
         console.log('Odpowiedź:', response.data);
 
         return await GetClient(clientId);
