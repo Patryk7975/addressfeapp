@@ -132,8 +132,8 @@ namespace PatrimonialeImporter
                     PatrimonialeId = Guid.NewGuid(),
                     PatrimonialeBatchId = batchId,
                     DeceasedInformation = deceaseInfo,
-                    PatrimonialeIncome = income,
-                    PatrimonialeJob = job
+                    Income = income,
+                    Job = job
                 }
             };
         }

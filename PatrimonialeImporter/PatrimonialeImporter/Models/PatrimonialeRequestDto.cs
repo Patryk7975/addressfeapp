@@ -10,11 +10,11 @@
 
         public DateOnly? CheckDate { get; init; }
 
-        public PatrimonialeJobDto? PatrimonialeJob { get; init; }
+        public PatrimonialeJobDto? Job { get; init; }
 
         public bool? LegalEligibility { get; init; }
 
-        public PatrimonialeIncomeDto? PatrimonialeIncome { get; init; }
+        public PatrimonialeIncomeDto? Income { get; init; }
 
         public PatrimonialeDeceasedInfoDto? DeceasedInformation { get; init; }
     }
