@@ -20,11 +20,16 @@ export const GetCities = async (city: string | null, postalCode: string | null) 
   }
 };
 
+export interface StreetItem {
+  street: string;
+  prefix?: string | null;
+}
+
 export const GetStreets = async (city: string | null, street: string | null, postalCode: string | null) => {
   const url = `${baseUrl}addresses/find-streets`;
 
   try {
-    const response = await axios.post<string[]>(url, {
+    const response = await axios.post<(string | StreetItem)[]>(url, {
       city,
       street,
       postalCode,

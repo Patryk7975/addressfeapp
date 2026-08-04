@@ -6,13 +6,13 @@ interface AutocompleteTextBoxProps {
     displayName: string;
     value: string | undefined;
     handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
-    fetchSuggestions: (value: string) => Promise<string[]>;
+    fetchSuggestions: (value: string) => Promise<any[]>;
     minLength: number;
     className?: string;
 }
 
 export const AutocompleteTextBox = ({ propertyName, displayName, value, handleChange, fetchSuggestions, minLength, className }: AutocompleteTextBoxProps) => {
-    const [suggestions, setSuggestions] = useState<string[]>([]);
+    const [suggestions, setSuggestions] = useState<any[]>([]);
     const [showSuggestions, setShowSuggestions] = useState(false);
     const wrapperRef = useRef<HTMLDivElement>(null);
     const debounceRef = useRef<number | null>(null);
@@ -58,7 +58,7 @@ export const AutocompleteTextBox = ({ propertyName, displayName, value, handleCh
         if (inputValue.length >= minLength) {
             try {
                 const results = await fetchSuggestions(inputValue);
-                setSuggestions(results);
+                setSuggestions(Array.isArray(results) ? results : []);
                 setShowSuggestions(true);
             } catch (error) {
                 console.error("Error fetching suggestions", error);
@@ -70,11 +70,50 @@ export const AutocompleteTextBox = ({ propertyName, displayName, value, handleCh
         }
     }
 
-    const handleSuggestionClick = (suggestion: string) => {
+    const getSuggestionLabel = (suggestion: any): string => {
+        if (typeof suggestion === "string") {
+            return suggestion;
+        }
+        if (suggestion && typeof suggestion === "object") {
+            if ("street" in suggestion) {
+                const prefix = suggestion.prefix ? `${suggestion.prefix} ` : "";
+                return `${prefix}${suggestion.street}`;
+            }
+            if ("name" in suggestion) {
+                return String(suggestion.name);
+            }
+            if ("value" in suggestion) {
+                return String(suggestion.value);
+            }
+            return Object.values(suggestion).filter(Boolean).join(" ");
+        }
+        return String(suggestion ?? "");
+    };
+
+    const getSuggestionValue = (suggestion: any): string => {
+        if (typeof suggestion === "string") {
+            return suggestion;
+        }
+        if (suggestion && typeof suggestion === "object") {
+            if ("street" in suggestion && typeof suggestion.street === "string") {
+                return suggestion.street;
+            }
+            if ("name" in suggestion && typeof suggestion.name === "string") {
+                return suggestion.name;
+            }
+            if ("value" in suggestion && typeof suggestion.value === "string") {
+                return suggestion.value;
+            }
+        }
+        return getSuggestionLabel(suggestion);
+    };
+
+    const handleSuggestionClick = (suggestion: any) => {
+        const value = getSuggestionValue(suggestion);
         const event = {
             target: {
                 name: propertyName,
-                value: suggestion
+                value: value
             }
         } as React.ChangeEvent<HTMLInputElement>;
         handleChange(event);
@@ -97,7 +136,7 @@ export const AutocompleteTextBox = ({ propertyName, displayName, value, handleCh
                 <ul className="suggestions-list">
                     {suggestions.map((suggestion, index) => (
                         <li key={index} onClick={() => handleSuggestionClick(suggestion)}>
-                            {suggestion}
+                            {getSuggestionLabel(suggestion)}
                         </li>
                     ))}
                 </ul>
