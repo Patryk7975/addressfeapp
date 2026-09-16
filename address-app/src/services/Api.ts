@@ -354,7 +354,7 @@ export const CreateConsents = async (clientId: string, consents: ConsentRequestD
 
             const consent = new Consent();
             consent.id = e.id;
-            consent.changeSource = e.changeSource;
+            consent.changeSource = "Client";
             consent.consentTypeKey = e.consentType.type;
             consent.consentTypeName = e.consentType.consentLocalName;
             consent.consentGroup = e.consentType.consentGroup;

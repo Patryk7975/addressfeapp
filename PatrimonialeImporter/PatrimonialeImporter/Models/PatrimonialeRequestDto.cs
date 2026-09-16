@@ -17,6 +17,13 @@
         public PatrimonialeIncomeDto? Income { get; init; }
 
         public PatrimonialeDeceasedInfoDto? DeceasedInformation { get; init; }
-    }
 
+        public string? ChangeSource { get; init; }
+
+        public Guid? SellerId { get; init; }
+
+        public Guid? InvestorId { get; init; }
+
+        public string? ChangeBasis { get; init; }
+    }
 }

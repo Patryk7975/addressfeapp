@@ -133,7 +133,11 @@ namespace PatrimonialeImporter
                     PatrimonialeBatchId = batchId,
                     DeceasedInformation = deceaseInfo,
                     Income = income,
-                    Job = job
+                    Job = job,
+                    ChangeSource = "Seller",
+                    ChangeBasis = "DirectConversation",
+                    SellerId = Guid.NewGuid(),
+                    InvestorId = Guid.NewGuid()
                 }
             };
         }
