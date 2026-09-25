@@ -3,7 +3,7 @@ import type { ClientData } from "../../models/ClientData";
 import { AddClientButton } from "../AddClientButton";
 import type { ConsentType } from "./models/ConsentType";
 import { CreateConsents as CreateConsents, GetConsentTypes } from "../../services/Api";
-import { ContactWithdrawalReasons, MarketingWithdrawalReasons } from "./configuration/WithdrawalReasonConfiguration";
+import { ContactWithdrawalReasons, MarketingWithdrawalReasons, DataSharingWithdrawalReasons } from "./configuration/WithdrawalReasonConfiguration";
 import type { Consent, ConsentRequestDto } from "./models/Consent";
 import { ConsentsTable } from "./ConsentsTable";
 
@@ -46,6 +46,17 @@ export const Consents = () => {
             .find(reason => reason.label.toLowerCase() === lowerCaseName || reason.key.toLowerCase() === lowerCaseName);
     }
 
+    const getDataSharingWithdrawalReason = (name: string | null) => {
+        if (!name || name === "null") {
+            return null;
+        }
+
+        const lowerCaseName = name.toLowerCase();
+
+        return DataSharingWithdrawalReasons
+            .find(reason => reason.label.toLowerCase() === lowerCaseName || reason.key.toLowerCase() === lowerCaseName);
+    }
+
     const saveAddingNewConsent = async (newConsent: ConsentRequestDto) => {
 
         if (!client) {
@@ -58,7 +69,8 @@ export const Consents = () => {
             changeSource: consent.changeSource,
             isConsent: consent.isConsent,
             validityDate: consent.validityDate,
-            contactConsentWithdrawalReason: consent.contactConsentWithdrawalReason
+            contactConsentWithdrawalReason: consent.contactConsentWithdrawalReason,
+            dataSharingConsentWithdrawalReason: consent.dataSharingConsentWithdrawalReason
         }));
 
         request.push(newConsent);
@@ -69,6 +81,9 @@ export const Consents = () => {
             }
             if (consent.contactConsentWithdrawalReason) {
                 consent.contactConsentWithdrawalReason = getContactWithdrawalReason(consent.contactConsentWithdrawalReason)?.key ?? null;
+            }
+            if (consent.dataSharingConsentWithdrawalReason) {
+                consent.dataSharingConsentWithdrawalReason = getDataSharingWithdrawalReason(consent.dataSharingConsentWithdrawalReason)?.key ?? null;
             }
         }
 
@@ -81,6 +96,9 @@ export const Consents = () => {
             }
             if (consent.contactConsentWithdrawalReason) {
                 consent.contactConsentWithdrawalReason = getContactWithdrawalReason(consent.contactConsentWithdrawalReason)?.label ?? consent.contactConsentWithdrawalReason;
+            }
+            if (consent.dataSharingConsentWithdrawalReason) {
+                consent.dataSharingConsentWithdrawalReason = getDataSharingWithdrawalReason(consent.dataSharingConsentWithdrawalReason)?.label ?? consent.dataSharingConsentWithdrawalReason;
             }
         }
 
@@ -101,6 +119,7 @@ export const Consents = () => {
 
         updatedConsent.marketingConsentWithdrawalReason = getMarketingWithdrawalReason(editingWithdrawalReason)?.key ?? "null";
         updatedConsent.contactConsentWithdrawalReason = getContactWithdrawalReason(editingWithdrawalReason)?.key ?? "null";
+        updatedConsent.dataSharingConsentWithdrawalReason = getDataSharingWithdrawalReason(editingWithdrawalReason)?.key ?? "null";
 
         const request: ConsentRequestDto[] = updated.map(consent => ({
             consentTypeKey: consent.consentTypeKey,
@@ -108,7 +127,8 @@ export const Consents = () => {
             changeSource: consent.changeSource,
             isConsent: consent.isConsent,
             validityDate: consent.validityDate,
-            contactConsentWithdrawalReason: consent.contactConsentWithdrawalReason
+            contactConsentWithdrawalReason: consent.contactConsentWithdrawalReason,
+            dataSharingConsentWithdrawalReason: consent.dataSharingConsentWithdrawalReason
         }));
 
         for (let consent of request) {
@@ -117,6 +137,9 @@ export const Consents = () => {
             }
             if (consent.contactConsentWithdrawalReason) {
                 consent.contactConsentWithdrawalReason = getContactWithdrawalReason(consent.contactConsentWithdrawalReason)?.key ?? null;
+            }
+            if (consent.dataSharingConsentWithdrawalReason) {
+                consent.dataSharingConsentWithdrawalReason = getDataSharingWithdrawalReason(consent.dataSharingConsentWithdrawalReason)?.key ?? null;
             }
         }
 
@@ -129,6 +152,9 @@ export const Consents = () => {
                 }
                 if (consent.contactConsentWithdrawalReason) {
                     consent.contactConsentWithdrawalReason = getContactWithdrawalReason(consent.contactConsentWithdrawalReason)?.label ?? consent.contactConsentWithdrawalReason;
+                }
+                if (consent.dataSharingConsentWithdrawalReason) {
+                    consent.dataSharingConsentWithdrawalReason = getDataSharingWithdrawalReason(consent.dataSharingConsentWithdrawalReason)?.label ?? consent.dataSharingConsentWithdrawalReason;
                 }
             }
             setConsents(response);
@@ -172,6 +198,24 @@ export const Consents = () => {
                     saveEditedConsent={saveEditedConsent}
                     consents={consents.filter(item => item.consentGroup === "contact")}
                 />
+                <br/>
+                <ConsentsTable
+                    title="Zgody na przetwarzanie danych"
+                    possibleConsentTypes={possibleConsentTypes.filter(type => type.consentGroup === "dataSharing")}
+                    possibleWithdrawalReasons={DataSharingWithdrawalReasons}
+                    saveAddingNewConsent={saveAddingNewConsent}
+                    saveEditedConsent={saveEditedConsent}
+                    consents={consents.filter(item => item.consentGroup === "dataSharing")}
+                />    
+                <br/>
+                <ConsentsTable
+                    title="Oświadczenia"
+                    possibleConsentTypes={possibleConsentTypes.filter(type => type.consentGroup === "declarationsAcknowledgements")}
+                    possibleWithdrawalReasons={[]}
+                    saveAddingNewConsent={saveAddingNewConsent}
+                    saveEditedConsent={saveEditedConsent}
+                    consents={consents.filter(item => item.consentGroup === "declarationsAcknowledgements")}
+                />                 
             </>
         }
     </>

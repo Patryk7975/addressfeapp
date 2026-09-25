@@ -2,7 +2,7 @@ import { useState, type ChangeEvent } from "react";
 import { Dropdown } from "../Dropdown";
 import { CheckBox } from "../CheckBox";
 import type { ConsentType } from "./models/ConsentType";
-import { ContactWithdrawalReasons, MarketingWithdrawalReasons, type WithdrawalReason } from "./configuration/WithdrawalReasonConfiguration";
+import { ContactWithdrawalReasons, MarketingWithdrawalReasons, DataSharingWithdrawalReasons, type WithdrawalReason } from "./configuration/WithdrawalReasonConfiguration";
 import type { Consent, ConsentRequestDto } from "./models/Consent";
 import { Button } from "../controls/Button";
 
@@ -76,7 +76,11 @@ export const ConsentsTable = ({ title, possibleConsentTypes, possibleWithdrawalR
                     ? ContactWithdrawalReasons
                         .find(reason => reason.key.toLowerCase() === consent.contactConsentWithdrawalReason.toLowerCase())?.label 
                             ?? consent.contactConsentWithdrawalReason
-                    : "null"
+                    : consent.dataSharingConsentWithdrawalReason 
+                        ? DataSharingWithdrawalReasons
+                            .find(reason => reason.key.toLowerCase() === consent.dataSharingConsentWithdrawalReason.toLowerCase())?.label 
+                                ?? consent.dataSharingConsentWithdrawalReason
+                        : "null"
         );
     };
 
@@ -96,13 +100,18 @@ export const ConsentsTable = ({ title, possibleConsentTypes, possibleWithdrawalR
             .find(reason => reason.label.toLowerCase() === selectedNewConsentWithdrawalReason.toLowerCase()
                 || reason.key.toLowerCase() === selectedNewConsentWithdrawalReason.toLowerCase())?.key ?? null : null
 
+        const dataSharingWithdrawalReason = selectedNewConsentWithdrawalReason ? DataSharingWithdrawalReasons
+            .find(reason => reason.label.toLowerCase() === selectedNewConsentWithdrawalReason.toLowerCase()
+                || reason.key.toLowerCase() === selectedNewConsentWithdrawalReason.toLowerCase())?.key ?? null : null
+
         const newConsent: ConsentRequestDto = {
             consentTypeKey: selectedType.type,
             marketingConsentWithdrawalReason: marketingWithdrawalReason,
             changeSource: "Client",
             isConsent: isNewCosentGiven,
             validityDate: isNewCosentGiven ? new Date(2046, 1, 1).toISOString() : null,
-            contactConsentWithdrawalReason: contactWithdrawalReason
+            contactConsentWithdrawalReason: contactWithdrawalReason,
+            dataSharingConsentWithdrawalReason: dataSharingWithdrawalReason
         };
 
         if (await saveAddingNewConsent(newConsent)) {

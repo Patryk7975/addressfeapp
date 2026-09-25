@@ -18,3 +18,12 @@ export const MarketingWithdrawalReasons: WithdrawalReason[] = [
   {key: "NoMoreMessages", label: "Nie chcę otrzymywać więcej wiadomości"},
   {key: "DontWantToProvideReason", label: "Nie chcę podawać powodu"},
 ];
+
+export const DataSharingWithdrawalReasons: WithdrawalReason[] = [
+  {key: "TooManyMessages", label: "Otrzymywałem zbyt wiele wiadomości"},
+  {key: "ContentNotRelevant", label: "Treść wiadomości nie była dopasowana do moich zainteresowań"},
+  {key: "NeverSubscribed", label: "Nigdy nie zapisywałem się do tej listy"},
+  {key: "NotInterestedInTopic", label: "Nie interesuje mnie ta tematyka"},
+  {key: "NoMoreMessages", label: "Nie chcę otrzymywać więcej wiadomości"},
+  {key: "DontWantToProvideReason", label: "Nie chcę podawać powodu"},
+];

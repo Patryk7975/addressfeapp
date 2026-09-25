@@ -5,6 +5,7 @@ export interface ConsentRequestDto {
     isConsent: boolean; 
     validityDate: string | null;  
     contactConsentWithdrawalReason: string | null;
+    dataSharingConsentWithdrawalReason: string | null;
 }
 
 export class Consent {
@@ -16,5 +17,6 @@ export class Consent {
     isConsent = false;
     validityDate = null;
     contactConsentWithdrawalReason = '';
+    dataSharingConsentWithdrawalReason = '';
     consentGroup = '';
 }
