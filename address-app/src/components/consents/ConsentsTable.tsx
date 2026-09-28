@@ -68,7 +68,7 @@ export const ConsentsTable = ({ title, possibleConsentTypes, possibleWithdrawalR
         setEditingConsentId(id);
         setEditingIsConsent(consent.isConsent);
         setEditingWithdrawalReason(
-            consent.marketingConsentWithdrawalReason
+            consent.marketingConsentWithdrawalReason && consent.consentGroup == "marketing"
                 ? MarketingWithdrawalReasons
                     .find(reason => reason.key.toLowerCase() === consent.marketingConsentWithdrawalReason.toLowerCase())?.label 
                         ?? consent.marketingConsentWithdrawalReason
@@ -76,7 +76,7 @@ export const ConsentsTable = ({ title, possibleConsentTypes, possibleWithdrawalR
                     ? ContactWithdrawalReasons
                         .find(reason => reason.key.toLowerCase() === consent.contactConsentWithdrawalReason.toLowerCase())?.label 
                             ?? consent.contactConsentWithdrawalReason
-                    : consent.dataSharingConsentWithdrawalReason 
+                    : consent.dataSharingConsentWithdrawalReason && consent.consentGroup == "dataSharing"
                         ? DataSharingWithdrawalReasons
                             .find(reason => reason.key.toLowerCase() === consent.dataSharingConsentWithdrawalReason.toLowerCase())?.label 
                                 ?? consent.dataSharingConsentWithdrawalReason
@@ -92,7 +92,7 @@ export const ConsentsTable = ({ title, possibleConsentTypes, possibleWithdrawalR
             return;
         }
 
-        const marketingWithdrawalReason = selectedNewConsentWithdrawalReason ? MarketingWithdrawalReasons
+        const marketingWithdrawalReason = selectedNewConsentWithdrawalReason && selectedType.consentGroup === "marketing" ? MarketingWithdrawalReasons
             .find(reason => reason.label.toLowerCase() === selectedNewConsentWithdrawalReason.toLowerCase()
                 || reason.key.toLowerCase() === selectedNewConsentWithdrawalReason.toLowerCase())?.key ?? null : null
 
@@ -100,7 +100,7 @@ export const ConsentsTable = ({ title, possibleConsentTypes, possibleWithdrawalR
             .find(reason => reason.label.toLowerCase() === selectedNewConsentWithdrawalReason.toLowerCase()
                 || reason.key.toLowerCase() === selectedNewConsentWithdrawalReason.toLowerCase())?.key ?? null : null
 
-        const dataSharingWithdrawalReason = selectedNewConsentWithdrawalReason ? DataSharingWithdrawalReasons
+        const dataSharingWithdrawalReason = selectedNewConsentWithdrawalReason && selectedType.consentGroup === "dataSharing" ? DataSharingWithdrawalReasons
             .find(reason => reason.label.toLowerCase() === selectedNewConsentWithdrawalReason.toLowerCase()
                 || reason.key.toLowerCase() === selectedNewConsentWithdrawalReason.toLowerCase())?.key ?? null : null
 
@@ -176,7 +176,9 @@ export const ConsentsTable = ({ title, possibleConsentTypes, possibleWithdrawalR
                                                                     ? item.marketingConsentWithdrawalReason
                                                                     : item.contactConsentWithdrawalReason 
                                                                         ? item.contactConsentWithdrawalReason 
-                                                                        : "-"
+                                                                        : item.dataSharingConsentWithdrawalReason
+                                                                            ? item.dataSharingConsentWithdrawalReason
+                                                                            : "-"
                                                             )}
                                                         </td>
                                                         <td>

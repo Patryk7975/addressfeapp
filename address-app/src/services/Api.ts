@@ -39,6 +39,7 @@ interface ConsentApiResponse {
         },
         marketingConsentWithdrawalReason: string,
         contactConsentWithdrawalReason: string,
+        dataSharingConsentWithdrawalReason: string,
         isConsent: boolean,
         changeSource: string,
         id: string,
@@ -344,6 +345,8 @@ export const CreateConsents = async (clientId: string, consents: ConsentRequestD
             consent.contactConsentWithdrawalReason = null;
         if (consent.marketingConsentWithdrawalReason == "")
             consent.marketingConsentWithdrawalReason = null;
+        if (consent.dataSharingConsentWithdrawalReason == "")
+            consent.dataSharingConsentWithdrawalReason = null;
     }
 
     try {
@@ -361,6 +364,7 @@ export const CreateConsents = async (clientId: string, consents: ConsentRequestD
             consent.isConsent = e.isConsent;
             consent.marketingConsentWithdrawalReason = e.marketingConsentWithdrawalReason;
             consent.contactConsentWithdrawalReason = e.contactConsentWithdrawalReason;
+            consent.dataSharingConsentWithdrawalReason = e.dataSharingConsentWithdrawalReason;
 
             return consent;
         });

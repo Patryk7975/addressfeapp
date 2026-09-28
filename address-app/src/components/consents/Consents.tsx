@@ -117,9 +117,15 @@ export const Consents = () => {
 
         updatedConsent.isConsent = editingIsConsent;
 
-        updatedConsent.marketingConsentWithdrawalReason = getMarketingWithdrawalReason(editingWithdrawalReason)?.key ?? "null";
+        updatedConsent.marketingConsentWithdrawalReason = updatedConsent.consentGroup == "marketing" 
+            ? getMarketingWithdrawalReason(editingWithdrawalReason)?.key ?? "null"
+            : "null";
+
         updatedConsent.contactConsentWithdrawalReason = getContactWithdrawalReason(editingWithdrawalReason)?.key ?? "null";
-        updatedConsent.dataSharingConsentWithdrawalReason = getDataSharingWithdrawalReason(editingWithdrawalReason)?.key ?? "null";
+
+        updatedConsent.dataSharingConsentWithdrawalReason = updatedConsent.consentGroup == "dataSharing" 
+            ? getDataSharingWithdrawalReason(editingWithdrawalReason)?.key ?? "null"
+            : "null";
 
         const request: ConsentRequestDto[] = updated.map(consent => ({
             consentTypeKey: consent.consentTypeKey,
