@@ -109,33 +109,44 @@ export const Consents = () => {
     };
 
     const saveEditedConsent = async (id: string, editingIsConsent: boolean, editingWithdrawalReason: string) => {
-        const updated = [...consents];
-        const updatedConsent = updated.find(consent => consent.id === id);
-        if (!updatedConsent) {
+        const originalConsent = consents.find(consent => consent.id === id);
+        if (!originalConsent) {
             return;
         }
 
-        updatedConsent.isConsent = editingIsConsent;
+        const selectedReasonKey = editingWithdrawalReason && editingWithdrawalReason !== "null"
+            ? originalConsent.consentGroup === "marketing"
+                ? getMarketingWithdrawalReason(editingWithdrawalReason)?.key ?? null
+                : originalConsent.consentGroup === "contact"
+                    ? getContactWithdrawalReason(editingWithdrawalReason)?.key ?? null
+                    : originalConsent.consentGroup === "dataSharing"
+                        ? getDataSharingWithdrawalReason(editingWithdrawalReason)?.key ?? null
+                        : null
+            : null;
 
-        updatedConsent.marketingConsentWithdrawalReason = updatedConsent.consentGroup == "marketing" 
-            ? getMarketingWithdrawalReason(editingWithdrawalReason)?.key ?? "null"
-            : "null";
+        const request: ConsentRequestDto[] = consents.map(consent => {
+            if (consent.id !== id) {
+                return {
+                    consentTypeKey: consent.consentTypeKey,
+                    marketingConsentWithdrawalReason: consent.marketingConsentWithdrawalReason,
+                    changeSource: consent.changeSource,
+                    isConsent: consent.isConsent,
+                    validityDate: consent.validityDate,
+                    contactConsentWithdrawalReason: consent.contactConsentWithdrawalReason,
+                    dataSharingConsentWithdrawalReason: consent.dataSharingConsentWithdrawalReason
+                };
+            }
 
-        updatedConsent.contactConsentWithdrawalReason = getContactWithdrawalReason(editingWithdrawalReason)?.key ?? "null";
-
-        updatedConsent.dataSharingConsentWithdrawalReason = updatedConsent.consentGroup == "dataSharing" 
-            ? getDataSharingWithdrawalReason(editingWithdrawalReason)?.key ?? "null"
-            : "null";
-
-        const request: ConsentRequestDto[] = updated.map(consent => ({
-            consentTypeKey: consent.consentTypeKey,
-            marketingConsentWithdrawalReason: consent.marketingConsentWithdrawalReason,
-            changeSource: consent.changeSource,
-            isConsent: consent.isConsent,
-            validityDate: consent.validityDate,
-            contactConsentWithdrawalReason: consent.contactConsentWithdrawalReason,
-            dataSharingConsentWithdrawalReason: consent.dataSharingConsentWithdrawalReason
-        }));
+            return {
+                consentTypeKey: consent.consentTypeKey,
+                marketingConsentWithdrawalReason: consent.consentGroup === "marketing" ? selectedReasonKey : null,
+                changeSource: consent.changeSource,
+                isConsent: editingIsConsent,
+                validityDate: consent.validityDate,
+                contactConsentWithdrawalReason: consent.consentGroup === "contact" ? selectedReasonKey : null,
+                dataSharingConsentWithdrawalReason: consent.consentGroup === "dataSharing" ? selectedReasonKey : null
+            };
+        });
 
         for (let consent of request) {
             if (consent.marketingConsentWithdrawalReason) {
