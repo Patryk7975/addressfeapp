@@ -4,6 +4,7 @@ import { Filtering } from './components/Filtering';
 import { Consents } from './components/consents/Consents';
 import { Patrimoniale } from './components/patrimoniale/Patrimoniale';
 import { ContactData } from './components/contact-data/ContactData';
+import { ClientImportForm } from './components/ClientImportForm';
 import styled from 'styled-components';
 
 const MainContainer = styled.div`
@@ -22,7 +23,7 @@ const TabContentContainer = styled.div`
 `;
 
 function App() {
-  const [activeTab, setActiveTab] = useState<'contactData' | 'filtering' | 'consents' | 'patrimoniale'>('contactData');
+  const [activeTab, setActiveTab] = useState<'contactData' | 'filtering' | 'consents' | 'patrimoniale' | 'import'>('contactData');
 
   return (
     <>
@@ -53,6 +54,12 @@ function App() {
             >
               Patrimoniale
             </button>
+            <button
+              className={`nav-tab-button ${activeTab === 'import' ? 'active' : ''}`}
+              onClick={() => setActiveTab('import')}
+            >
+              Import
+            </button>
           </div>
         </MenuContainer>
         <TabContentContainer>
@@ -62,8 +69,10 @@ function App() {
             <Filtering />
           ) : activeTab === 'consents' ? (
             <Consents />
-          ) : (
+          ) : activeTab === 'patrimoniale' ? (
             <Patrimoniale />
+          ) : (
+            <ClientImportForm />
           )
           }
         </TabContentContainer>

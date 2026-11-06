@@ -29,6 +29,36 @@ interface ClientApiResponse {
     };
 }
 
+export interface ClientImportAddress {
+    streetPrefix: string;
+    streetName: string;
+    buildingNumber: string;
+    city: string;
+    postalCode: string;
+    country: string;
+    type: string;
+    notes: string;
+    usage: {
+        type: string;
+        status: string;
+    };
+}
+
+export interface ClientImportRequest {
+    addresses: ClientImportAddress[];
+    type: string;
+    fullName: string;
+    birthCountry: string;
+    isPep: boolean;
+    placeOfBirth: string;
+    gender: string;
+    changeSource: string;
+    changeBasis: string;
+    verificationStatus: string;
+    sellerId: string;
+    investorId: string;
+}
+
 interface ConsentApiResponse {
     items: {
         consentType: {
@@ -63,6 +93,13 @@ interface BlackEmailsApiResponse {
 }
 
 const baseUrl = "http://localhost:7000/";
+
+export const ImportClient = async (payload: ClientImportRequest, token: string) => {
+    const response = await axios.post(`${baseUrl}api/import`, payload, {
+        headers: { Authorization: `Bearer ${token}` },
+    });
+    return response.data;
+}
 
 export const CreateClient = async (firstName: string, lastName: string) => {
     const url = baseUrl + "api/clients";
